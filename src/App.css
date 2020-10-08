@@ -1,9 +1,551 @@
+section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+section .set2 {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  top: 30%;
+  right: 90;
+  pointer-events: none;
+  z-index: 11;
+  /* border: 1px solid #fff; */
+}
+
+/* .light {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--x) var(--y), transparent 10%, rgba(0,0,0,0.95) 20%);
+} */
+
+/* .container {
+    position: relative;
+    margin: 20px;
+} */
+img {
+  width: 100%;
+}
+
+.china,
+.italy,
+.japan,
+.iran
+ {
+  display: block;
+  position: absolute;
+  /* border: 3px solid orange; */
+  /* background: -webkit-linear-gradient(left top, crimson 0%, #f90 100%); */
+  background: rgb(255, 196, 0);
+  border-radius: 50%;
+  /* border: 7px solid rgba(245, 171, 53, .1);
+     
+     border-right: 7px solid rgba(245, 171, 53, .4);
+     border-bottom: 7px solid rgba(245, 171, 53, .5); */
+  top: 62%;
+  width: 70px;
+  height: 70px;
+  z-index: 12;
+  opacity: 0;
+  animation: spina 24s ease infinite;
+}
+
+.china{
+  left: 70%;
+  top: 45%;
+  animation-delay: 0s;
+}
+.italy{
+  left: 46%;
+  top: 40%;
+  animation-delay: 6s;
+}
+.japan{
+  left: 75%;
+  top: 40%;
+  animation-delay: 5s;
+}
+.iran{
+  left: 52%;
+  top: 45%;
+  animation-delay: 3s;
+}
+
+@keyframes spina {
+  0% {
+    /* transform: rotate(0deg); */
+    transform: scale(.1);
+  }
+  50%{
+    transform: scale(1);
+     background: rgb(255, 30, 0);
+     opacity: .7;
+  }
+  100% {
+    /* transform: rotate(360deg); */
+    transform: scale(.1);
+  }
+}
+
+
+
+.york,
+.uk,
+.russia
+ {
+  display: block;
+  position: absolute;
+  /* border: 3px solid orange; */
+  /* background: -webkit-linear-gradient(left top, crimson 0%, #f90 100%); */
+  background: rgb(255, 196, 0);
+  border-radius: 50%;
+  /* border: 7px solid rgba(245, 171, 53, .1);
+     
+     border-right: 7px solid rgba(245, 171, 53, .4);
+     border-bottom: 7px solid rgba(245, 171, 53, .5); */
+  top: 62%;
+  width: 70px;
+  height: 70px;
+  z-index: 12;
+  opacity: 0;
+  animation: spinb 36s ease infinite;
+}
+.york {
+  left: 25%;
+  top: 35%;
+  animation-delay: 20s;
+}
+.uk {
+  left: 42%;
+  top: 30%;
+   animation-delay: 24s;
+}
+.russia{
+  left: 58%;
+  top: 25%;
+   animation-delay: 24s;
+}
+
+@keyframes spinb {
+  0% {
+    /* transform: rotate(0deg); */
+    transform: scale(.1);
+  }
+  50%{
+    transform: scale(1.33);
+     background: rgb(255, 30, 0);
+     opacity: 0.8;
+  }
+  100% {
+    /* transform: rotate(360deg); */
+    transform: scale(.1);
+  }
+}
+
+
+
+
+
+
+.brazil,
+.congo,
+.indo,
+.mexico,
+.indi
+  {
+  display: block;
+  position: absolute;
+  /* border: 3px solid orange; */
+  /* background: -webkit-linear-gradient(left top, crimson 0%, #f90 100%); */
+  background: rgb(255, 196, 0);
+  border-radius: 50%;
+  /* border: 7px solid rgba(245, 171, 53, .1);
+     
+     border-right: 7px solid rgba(245, 171, 53, .4);
+     border-bottom: 7px solid rgba(245, 171, 53, .5); */
+  top: 62%;
+  width: 70px;
+  height: 70px;
+  z-index: 12;
+  opacity: 0;
+  animation: spinc 48s ease infinite;
+}
+
+.brazil {
+  left: 31%;
+  top: 69%;
+  animation-delay: 48s;
+}
+.congo {
+  left: 44%;
+  top: 57%;
+  animation-delay: 44s;
+}
+.indo{
+  left: 70%;
+  top: 64%;
+   animation-delay: 44s;
+}
+.mexico {
+  left: 21%;
+  animation-delay: 38s;
+}
+.indi {
+  left: 62%;
+  top: 53%;
+   animation-delay: 44s;
+}
+
+@keyframes spinc {
+  0% {
+    /* transform: rotate(0deg); */
+    transform: scale(.1);
+    opacity: 0;
+  }
+  50%{
+    transform: scale(1.5);
+     background: rgb(255, 30, 0);
+     opacity: .7;
+  }
+  100% {
+    /* transform: rotate(360deg); */
+    transform: scale(.1);
+
+  }
+}
+
+
+
+
+
+
+
+
+
+section .set2 div {
+  position: absolute;
+  display: block;
+}
+
+section .set2 div:nth-child(1) {
+  left: 90%;
+  animation: animate 115s linear infinite;
+  animation-delay: -7s;
+}
+section .set2 div:nth-child(2) {
+  left: 60%;
+  animation: animate 130s linear infinite;
+  animation-delay: -5s;
+}
+section .set2 div:nth-child(3) {
+  left: 50%;
+  animation: animate 120s linear infinite;
+  animation-delay: 0s;
+}
+section .set2 div:nth-child(4) {
+  left: 79%;
+  animation: animate 110s linear infinite;
+  animation-delay: -17s;
+}
+section .set2 div:nth-child(5) {
+  left: 82%;
+  animation: animate 140s linear infinite;
+  animation-delay: -15s;
+}
+section .set2 div:nth-child(6) {
+  left: 45%;
+  animation: animate 120s linear infinite;
+  animation-delay: -10s;
+}
+section .set2 div:nth-child(7) {
+  left: 40%;
+  animation: animate 135s linear infinite;
+  animation-delay: 0s;
+  /* border: 5px solid red; */
+}
+section .set2 div:nth-child(13) {
+  left: 40%;
+  animation: animate 135s linear infinite;
+  animation-delay: 2s;
+  /* border: 5px solid red; */
+}
+section .set2 div:nth-child(8) {
+  left: 63%;
+  animation: animate 130s linear infinite;
+  animation-delay: 5s;
+}
+section .set2 div:nth-child(9) {
+  top: 40%;
+  animation: animate 130s linear infinite;
+  animation-delay: 10s;
+}
+section .set2 div:nth-child(10) {
+  left: 79%;
+  animation: animate 30s linear infinite;
+  animation-delay: 137s;
+}
+section .set2 div:nth-child(11) {
+  bottom: 17%;
+  animation: animate 40s linear infinite;
+  animation-delay: 135s;
+}
+section .set2 div:nth-child(12) {
+  left: 35%;
+  animation: animate 40s linear infinite;
+  animation-delay: -1s;
+}
+
+section .set2 div:nth-child(13) {
+  left: 55%;
+  animation: animate 25s linear infinite;
+  animation-delay: 7s;
+}
+section .set2 div:nth-child(14) {
+  left: 43%;
+  animation: animate 30s linear infinite;
+  animation-delay: 5s;
+}
+section .set2 div:nth-child(15) {
+  top: 39%;
+  animation: animate 20s linear infinite;
+  animation-delay: 10s;
+  opacity: 0.1;
+}
+section .set2 div:nth-child(16) {
+  left: 79%;
+  animation: animate 10s linear infinite;
+  animation-delay: -7s;
+}
+section .set2 div:nth-child(17) {
+  bottom: 67%;
+  animation: animate 40s linear infinite;
+  animation-delay: -10s;
+}
+section .set2 div:nth-child(18) {
+  left: 25%;
+  animation: animate 20s linear infinite;
+  animation-delay: -15s;
+}
+@keyframes animate {
+  0% {
+    opacity: 0;
+    right: -10%;
+    transform: rotate(-100deg);
+  }
+  10% {
+    opacity: 0;
+  }
+  20% {
+    /* transform: translateX(-200px) rotate(-200deg); */
+  }
+  40% {
+    /* transform: translateY(-50px) rotate(50deg); */
+  }
+  60% {
+    /* transform: translateY(200px) rotate(180deg); */
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(-70px) rotate(-80deg);
+    transform: scale(1.5);
+  }
+  100% {
+    left: 110%;
+    transform: translateY(-30px) rotate(225deg);
+  }
+}
+
+section .set {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+section .set div {
+  position: absolute;
+  display: block;
+}
+
+section .set div:nth-child(1) {
+  left: 20%;
+  animation: animate 155s linear infinite;
+  animation-delay: -7s;
+}
+section .set div:nth-child(2) {
+  left: 90%;
+  animation: animate 270s linear infinite;
+  animation-delay: -5s;
+}
+section .set div:nth-child(3) {
+  left: 70%;
+  animation: animate 160s linear infinite;
+  animation-delay: 0s;
+  opacity: 0.1;
+}
+section .set div:nth-child(4) {
+  left: 49%;
+  animation: animate 105s linear infinite;
+  animation-delay: -17s;
+}
+section .set div:nth-child(5) {
+  left: 87%;
+  animation: animate 270s linear infinite;
+  animation-delay: -15s;
+}
+section .set div:nth-child(6) {
+  left: 45%;
+  animation: animate 160s linear infinite;
+  animation-delay: -10s;
+}
+
+#world button:nth-child(14) {
+  animation: anim 50s linear infinite;
+  animation-delay: 0s;
+}
+#world button:nth-child(7) {
+  animation: anim 50s linear infinite;
+  animation-delay: -10s;
+}
+#world button:nth-child(3) {
+  animation: anim 50s linear infinite;
+  animation-delay: -20s;
+}
+#world button:nth-child(6) {
+  animation: anim 50s linear infinite;
+  animation-delay: -30s;
+}
+#world button:nth-child(10) {
+  animation: anim 50s linear infinite;
+  animation-delay: -40s;
+}
+
+@keyframes anim {
+  20% {
+    opacity: 1;
+    color: #fff;
+  }
+  40% {
+    opacity: 0;
+    color: #fff;
+  }
+  100% {
+    opacity: 0;
+    color: #fff;
+  }
+}
+
+@keyframes animate {
+  0% {
+    opacity: 0;
+    top: -10%;
+    transform: translateX(0px) rotate(30deg);
+  }
+  10% {
+  }
+  20% {
+    transform: translateX(-500px) rotate(80deg);
+  }
+  21% {
+    /* transform: rotate(-80deg); */
+  }
+  40% {
+    /* transform: translateX(-50px) rotate(50deg); */
+    opacity: 0.8;
+  }
+  790% {
+    /* transform: translateX(20px) rotate(-20deg); */
+    transform: translateX(500px) rotate(-80deg);
+  }
+  80% {
+    /* transform: translateX(-70px) rotate(70deg); */
+    transform: scale(0.5);
+  }
+  100% {
+    top: 110%;
+    opacity: 0;
+    transform: translateX(-30px) rotate(30deg);
+  }
+}
+
+/* .set {
+  transform: scale(0.8) rotateX(180deg);
+  filter: blur(2px);
+} */
+
+#world {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mapbutton {
+  width: 20%;
+  height: 33vh;
+  background: transparent;
+  border: none;
+  color: transparent;
+  font-size: 0.33em;
+  transition: color 2s;
+  padding: 7em;
+  /* background-image: url('/africaoutline.png');
+ background-repeat: no-repeat; */
+  /* opacity: 0; */
+}
+
+.mapbutton:hover {
+  /* background: #282c34;
+  /* opacity: 0.6; */
+  color: #fff;
+  /* color: black; */
+}
+
+.text {
+  background: transparent;
+  color: transparent;
+  padding: 2em;
+  transition: color 2s;
+}
+
+.text:hover {
+  background: #282c34;
+  opacity: 0.8;
+  color: #fff;
+}
+
 .App {
-  text-align: center;
+  text-align: left;
+
+  /* background-color: rgb(17, 17, 41); */
+  overflow: hidden;
+
+  /* background: rgb(2,81,102);
+background: linear-gradient(94deg, rgba(2,81,102,1) 0%, rgba(4,11,13,1) 100%, rgba(149,149,193,0) 100%); */
+  background: rgb(2, 81, 102);
+  background: linear-gradient(
+    120deg,
+    rgba(2, 81, 102, 0.6306897759103641) 0%,
+    rgba(2, 81, 102, 1) 19%,
+    rgba(4, 11, 13, 1) 100%
+  );
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 20vmin;
   pointer-events: none;
 }
 
@@ -13,15 +555,189 @@
   }
 }
 
+p {
+  font-size: 16px;
+  padding: 0.5em 2em 0em 1.5em;
+  color: #fff;
+}
+
+h4 {
+  padding: 1em 0em 0em 1em;
+}
+
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  height: 0vh;
+  display: flex;
+  flex-wrap: wrap;
+  /* align-items: center;
+  align-content: flex-start; */
+  justify-content: flex-end;
+  font-size: calc(20px + 1.5vmin);
+  color: white;
+}
+
+.App-side {
+  background-color: #282c34;
+  opacity: 0.85;
+  height: 100vh;
+  width: 20vw;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-size: calc(20px + 2.5vmin);
+  color: rgb(45, 182, 130);
+}
+
+.App-side-india {
+  background-color: #282c34;
+  background-image: url("/africa-01.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position-x: -130%;
+  opacity: 0.85;
+  height: 100vh;
+  width: 99vw;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-start;
+  font-size: calc(20px + 2.5vmin);
+  color: rgb(45, 182, 130);
+}
+
+.App-side-menu {
+  width: 20vw;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  font-size: calc(20px + 2.5vmin);
+  color: rgb(45, 182, 130);
+}
+
+.App-side-close {
+  margin: 1em 0em 0em 1em;
+}
+
+a {
+  color: black;
+}
+
+.map {
+  min-height: 100vh;
+  background-image: url("./info2.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position-x: 10%;
+  /* border: 1px solid #fff; */
+  font-size: calc(20px + 2.5vmin);
+  color: rgb(45, 182, 130);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  z-index: 10;
+}
+
+.region {
+  border: 1px solid #fff;
+  height: 20vh;
+  width: 17vw;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.region-button {
+  background-image: url("/africa-01.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 20vh;
+  width: 17vw;
+  display: flex;
+  justify-content: start;
+  text-align: left;
+}
+
+.menu {
+  /* border: 1px solid #fff; */
+  height: 50vh;
+  width: 9vw;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  align-content: center;
+}
+
+.link {
+  background: transparent;
+  opacity: 0.1;
+  border-radius: 50%;
+  border: 8px solid black;
+  color: black;
+  transition: opacity 2s;
+}
+
+.india {
+  height: 2.7em;
+  width: 2.7em;
+  position: absolute;
+  top: 64%;
+  left: 62.7%;
+  border-color: orange;
+}
+
+.india:hover {
+  opacity: 0.9;
+}
+
+.indonesia {
+  height: 7rem;
+  width: 7rem;
+  /* position: absolute;
+  top: 60vh;
+  left: 85vw; */
+  border-color: orange;
+}
+
+.indonesia:hover {
+  opacity: 0.9;
+}
+
+.App-sid {
+  background-color: #fff;
+  height: 5rem;
+  width: 5rem;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  font-size: calc(10px + 2.5vmin);
+  color: rgb(45, 182, 130);
+}
+
+.button {
+  height: 4rem;
+  width: 6rem;
+  text-align: center;
+  border: 5px solid #fff;
+  color: red;
+}
+
+.hi {
+  background-color: grey;
+  height: 5vh;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-items: start;
+
+  font-size: calc(10px + 1.5vmin);
+  color: rgb(45, 182, 130);
 }
 
 .App-link {
@@ -35,4 +751,11 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.hidden {
+  display: none;
+}
+
+.visible {
 }
