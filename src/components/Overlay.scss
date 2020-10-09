@@ -1,0 +1,190 @@
+img {
+  width: 100%;
+}
+
+.china,
+.italy,
+.japan,
+.iran
+ {
+  display: block;
+  position: absolute;
+  /* border: 3px solid orange; */
+  /* background: -webkit-linear-gradient(left top, crimson 0%, #f90 100%); */
+  background: rgb(255, 196, 0);
+  border-radius: 50%;
+  /* border: 7px solid rgba(245, 171, 53, .1);
+     
+     border-right: 7px solid rgba(245, 171, 53, .4);
+     border-bottom: 7px solid rgba(245, 171, 53, .5); */
+  top: 62%;
+  width: 70px;
+  height: 70px;
+  z-index: 12;
+  opacity: 0;
+  animation: spina 24s ease infinite;
+}
+
+.china{
+  left: 70%;
+  top: 45%;
+  animation-delay: 0s;
+}
+.italy{
+  left: 46%;
+  top: 40%;
+  animation-delay: 6s;
+}
+.japan{
+  left: 75%;
+  top: 40%;
+  animation-delay: 5s;
+}
+.iran{
+  left: 52%;
+  top: 45%;
+  animation-delay: 3s;
+}
+
+@keyframes spina {
+  0% {
+    /* transform: rotate(0deg); */
+    transform: scale(.1);
+  }
+  50%{
+    transform: scale(1);
+     background: rgb(255, 30, 0);
+     opacity: .7;
+  }
+  100% {
+    /* transform: rotate(360deg); */
+    transform: scale(.1);
+  }
+}
+
+
+
+.york,
+.uk,
+.russia
+ {
+  display: block;
+  position: absolute;
+  /* border: 3px solid orange; */
+  /* background: -webkit-linear-gradient(left top, crimson 0%, #f90 100%); */
+  background: rgb(255, 196, 0);
+  border-radius: 50%;
+  /* border: 7px solid rgba(245, 171, 53, .1);
+     
+     border-right: 7px solid rgba(245, 171, 53, .4);
+     border-bottom: 7px solid rgba(245, 171, 53, .5); */
+  top: 62%;
+  width: 70px;
+  height: 70px;
+  z-index: 12;
+  opacity: 0;
+  animation: spinb 36s ease infinite;
+}
+.york {
+  left: 25%;
+  top: 35%;
+  animation-delay: 20s;
+}
+.uk {
+  left: 42%;
+  top: 30%;
+   animation-delay: 24s;
+}
+.russia{
+  left: 58%;
+  top: 25%;
+   animation-delay: 24s;
+}
+
+@keyframes spinb {
+  0% {
+    /* transform: rotate(0deg); */
+    transform: scale(.1);
+  }
+  50%{
+    transform: scale(1.33);
+     background: rgb(255, 30, 0);
+     opacity: 0.8;
+  }
+  100% {
+    /* transform: rotate(360deg); */
+    transform: scale(.1);
+  }
+}
+
+
+
+
+
+
+.brazil,
+.congo,
+.indo,
+.mexico,
+.indi
+  {
+  display: block;
+  position: absolute;
+  /* border: 3px solid orange; */
+  /* background: -webkit-linear-gradient(left top, crimson 0%, #f90 100%); */
+  background: rgb(255, 196, 0);
+  border-radius: 50%;
+  /* border: 7px solid rgba(245, 171, 53, .1);
+     
+     border-right: 7px solid rgba(245, 171, 53, .4);
+     border-bottom: 7px solid rgba(245, 171, 53, .5); */
+  top: 62%;
+  width: 70px;
+  height: 70px;
+  z-index: 12;
+  opacity: 0;
+  animation: spinc 48s ease infinite;
+}
+
+.brazil {
+  left: 31%;
+  top: 69%;
+  animation-delay: 48s;
+}
+.congo {
+  left: 44%;
+  top: 57%;
+  animation-delay: 44s;
+}
+.indo{
+  left: 70%;
+  top: 64%;
+   animation-delay: 44s;
+}
+.mexico {
+  left: 21%;
+  animation-delay: 38s;
+}
+.indi {
+  left: 62%;
+  top: 53%;
+   animation-delay: 44s;
+}
+
+@keyframes spinc {
+  0% {
+    /* transform: rotate(0deg); */
+    transform: scale(.1);
+    opacity: 0;
+  }
+  50%{
+    transform: scale(1.5);
+     background: rgb(255, 30, 0);
+     opacity: .7;
+  }
+  100% {
+    /* transform: rotate(360deg); */
+    transform: scale(.1);
+
+  }
+}
