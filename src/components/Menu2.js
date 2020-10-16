@@ -7,7 +7,7 @@ import { Button } from "react-bootstrap";
         return (
           <div className={this.props.state ? "visible" : "hidden"}>
             <Animated
-              animationIn="fadeInRight"
+              animationIn="fadeInLeft"
               animationOut="fadeOut"
               isVisible={true}
             >

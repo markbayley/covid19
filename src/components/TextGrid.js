@@ -1,8 +1,19 @@
 import React, { Component } from "react";
+import Asia from "./Asia";
+
 import './TextGrid.scss'
 
 class TextGrid extends Component {
+  constructor(props) {
+    super(props)
+  
+    this.state = {
+       asia: 1000,
+    }
+  }
+  
   render() {
+    const asia = this.state.asia;
     return (
       <>
         <button
@@ -133,10 +144,19 @@ class TextGrid extends Component {
             // alignItems: "center"
           }}
         >
-          {" "}
-          North America is poorly positioned to deal with the outbreak and its
-          winter months.
-          <br />
+          {/* <Asia asia={this.state.asia} />
+          {asia}
+
+          <br /> */}
+          Asia is poorly positioned to deal with the outbreak and its winter
+          months.
+          <div class="svg-wrapper">
+            <svg height="2" width="320" xmlns="http://www.w3.org/2000/svg">
+              <rect class="shape" height="90" width="320" />
+            </svg>
+
+            <div class="text"> </div>
+          </div>
           {/* <button className="link indonesia"></button> */}
         </button>
         <button
@@ -172,6 +192,7 @@ class TextGrid extends Component {
           }}
         ></button>
         <button
+          onClick={this.props.toggleRegion}
           className="mapbutton"
           style={{
             padding: "3rem 7rem 0rem 0rem",
@@ -180,8 +201,8 @@ class TextGrid extends Component {
             // outline: "none 0",
           }}
         >
-          North America is poorly positioned to deal with the outbreak and its
-          winter months pose.
+          India is poorly positioned to deal with the outbreak and its winter
+          months pose.
         </button>
         <button
           className="mapbutton"

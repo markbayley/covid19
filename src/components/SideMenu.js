@@ -20,7 +20,7 @@ class SideMenu extends Component {
                   animationOut="fadeOut"
                   isVisible={true}
                 >
-                  <i class="fa fa-info-circle"></i> Info
+                  <i className="fa fa-info-circle"></i> Info
                 </Animated>
               </Button>
 
@@ -35,7 +35,7 @@ class SideMenu extends Component {
                   animationOut="fadeOut"
                   isVisible={true}
                 >
-                  <i class="fa fa-search"></i> Facts
+                  <i className="fa fa-search"></i> Facts
                 </Animated>
               </Button>
 
@@ -50,7 +50,7 @@ class SideMenu extends Component {
                   animationOut="fadeOut"
                   isVisible={true}
                 >
-                  <i class="fa fa-globe"></i> Map
+                  <i className="fa fa-globe"></i> Map
                 </Animated>
               </Button>
 
@@ -65,7 +65,7 @@ class SideMenu extends Component {
                   animationOut="fadeOut"
                   isVisible={true}
                 >
-                  <i class="fa fa-globe"></i> India
+                  <i className="fa fa-globe"></i> India
                 </Animated>
               </Button>
             </div>

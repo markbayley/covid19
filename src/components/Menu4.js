@@ -1,15 +1,23 @@
 import React, { Component } from 'react'
 import { Animated } from "react-animated-css";
 import { Button } from "react-bootstrap";
+import { Search } from 'react-bootstrap-icons';
+import ContinentStats from './ContinentStats';
+
+import Covid from './Covid';
 
  class Menu4 extends Component {
     render() {
         return (
-          <div className={this.props.state ? "visible" : "hidden"} style={{border: "3px solid orange"}}>
+          <div
+            className={this.props.state ? "visible" : "hidden"}
+            // style={{ border: "3px solid orange" }}
+          >
             <Animated
-              animationIn="fadeInt"
-              animationOut="fadeOut"
+              animationIn="zoomIn"
+              animationOut="zoomOut"
               isVisible={true}
+              animationInDuration={2000}
             >
               <div className="App-side-india">
                 <div className="App-side-menu">
@@ -19,40 +27,13 @@ import { Button } from "react-bootstrap";
                     variant="outline-light"
                     className="App-side-close"
                   >
-                    <Animated
-                      animationIn="fadeInDown"
-                      animationOut="fadeOut"
-                      isVisible={true}
-                    >
-                      <div>x</div>
-                    </Animated>
+                    <div>x</div>
                   </Button>
                   <div className={!this.props.state ? "hidden" : "visible"}>
-                    <div className="App-side-button">
-                      <h4>India </h4>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud
-                        exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat.
-                      </p>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud
-                        exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat.
-                      </p>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud
-                        exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat.
-                      </p>
-                    </div>
+                    Data
                   </div>
+                
+                  <Covid />
                 </div>
               </div>
             </Animated>

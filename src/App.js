@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./App.css";
-import FormValidation from "./components/FormValidation";
 import Background from "./components/Background";
 import Overlay from "./components/Overlay";
 import Menu1 from "./components/Menu1";
@@ -9,6 +8,14 @@ import Menu3 from "./components/Menu3";
 import Menu4 from "./components/Menu4";
 import SideMenu from "./components/SideMenu";
 import TextGrid from "./components/TextGrid";
+import Loading from "./components/Loading";
+import Covid from "./components/Covid";
+import ContinentStats from "./components/ContinentStats";
+
+
+
+
+
 
 
 class App extends Component {
@@ -20,20 +27,8 @@ class App extends Component {
       info: false,
       facts: false,
       india: false,
-      items: [],
-      isLoaded: true,
+    
     };
-  }
-
-  componentDidMount() {
-    fetch("https://disease.sh/v3/covid-19/all")
-      .then((res) => res.json())
-      .then((res) => {
-        this.setState({
-          isLoaded: true,
-          items: res.colors,
-        });
-      });
   }
 
   toggleMap = () => {
@@ -60,25 +55,33 @@ class App extends Component {
     });
   };
 
+
+
+
+
+
+
   render() {
-   
+    
     return (
       <>
         <section>
           <Background />
           <Overlay />
+          {/* <ContinentStats
+       
+          /> */}
+          {/* <Loading /> */}
+          <Covid />
           <div className="map">
             <div className="grid">
-              {/*  INFO */}
+            
               <Menu1 state={this.state.info} toggleInfo={this.toggleInfo} />
 
-              {/* FACTS */}
               <Menu2 state={this.state.facts} toggleFacts={this.toggleFacts} />
 
-              {/* MAP */}
               <Menu3 state={this.state.visible} toggleMap={this.toggleMap} />
 
-              {/* INDIA */}
               <Menu4
                 className="link india"
                 state={this.state.india}
