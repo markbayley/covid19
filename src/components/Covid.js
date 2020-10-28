@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Loading from "./Loading";
 import axios from "axios";
 import CountryTable from "./CountryTable";
-// import Chart from "./Chart";
+import Chart from "./Chart";
 import { Search } from "react-bootstrap-icons";
 import CountUp from "react-countup";
 import { Row, Col } from "react-bootstrap";
@@ -128,6 +128,7 @@ class Covid extends Component {
       selectedCountries,
       filterText,
     } = this.state;
+    
 
 
     return (
@@ -136,15 +137,19 @@ class Covid extends Component {
         style={{
           position: "absolute",
           width: "100vw",
-          marginTop: "25px"
+          marginTop: "25px",
         }}
       >
         <Row>
-          <Col xl={5}>
-           
-          </Col>
+          <Col xl={5}></Col>
           <Col xl={1}>
-            <h5>Cases</h5>
+            <h5>
+         
+              {
+                <i style={{ color: "grey" }} className="fa fa-male"></i>
+              }{" "}
+              Cases
+            </h5>
             <h3>
               <CountUp
                 start={0}
@@ -155,7 +160,9 @@ class Covid extends Component {
             </h3>
           </Col>
           <Col xl={1}>
-            <h5>Deaths</h5>
+            <h5>
+              {<i style={{ color: "black" }} className="fa fa-male"></i>} Deaths
+            </h5>
             <h3>
               <CountUp
                 start={0}
@@ -165,8 +172,11 @@ class Covid extends Component {
               />
             </h3>
           </Col>
-           <Col xl={1}>
-            <h5>Active</h5>
+          <Col xl={1}>
+            <h5>
+              {<i style={{ color: "orangered" }} className="fa fa-male"></i>}{" "}
+              Active
+            </h5>
             <h3>
               <CountUp
                 start={0}
@@ -182,8 +192,8 @@ class Covid extends Component {
           <Loading />
         ) : (
           <div>
-            {/* <CountryTable countries={countries} />
-            <div className="input-group input-group-lg mb-3">
+            {/* <CountryTable countries={countries} /> */}
+            {/* <div className="input-group input-group-lg mb-3">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="inputGroup-sizing-lg">
                   <Search />
@@ -198,8 +208,8 @@ class Covid extends Component {
                 aria-describedby="inputGroup-sizing-lg"
                 placeholder="Search"
               />
-            </div> */}
-            {/* <Chart countries={selectedCountries} /> */}
+            </div>  */}
+            <Chart countries={selectedCountries} />
             {/* <CountryTable
               countries={countries.filter((country) => {
                 if (filterText === "") {

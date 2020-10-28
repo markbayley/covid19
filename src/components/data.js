@@ -1,0 +1,33 @@
+const countries = [
+    {   "updated":1603527470314,
+        "country":"Afghanistan",
+        "countryInfo":{
+            "_id":4,
+            "iso2":"AF",
+            "iso3":"AFG",
+            "lat":33,
+            "long":65,
+            "flag":"https://disease.sh/assets/img/flags/af.png"
+         },
+        "cases":40768,
+        "todayCases":81,
+        "deaths":1511,
+        "todayDeaths":4,
+        "recovered":34023,
+        "todayRecovered":13,
+        "active":5234,
+        "critical":93,
+        "casesPerOneMillion":1040,
+        "deathsPerOneMillion":39,
+        "tests":119550,
+        "testsPerOneMillion":3050,
+        "population":39196742,
+        "continent":"Asia",
+        "oneCasePerPeople":961,
+        "oneDeathPerPeople":25941,
+        "oneTestPerPeople":328,
+        "activePerOneMillion":133.53,
+        "recoveredPerOneMillion":868.01,
+        "criticalPerOneMillion":2.37
+    }
+]

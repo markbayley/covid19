@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Asia from "./Asia";
+
 
 import './TextGrid.scss'
 
@@ -13,7 +13,7 @@ class TextGrid extends Component {
   }
   
   render() {
-    const asia = this.state.asia;
+  
     return (
       <>
         <button
@@ -150,12 +150,12 @@ class TextGrid extends Component {
           <br /> */}
           Asia is poorly positioned to deal with the outbreak and its winter
           months.
-          <div class="svg-wrapper">
+          <div className="svg-wrapper">
             <svg height="2" width="320" xmlns="http://www.w3.org/2000/svg">
-              <rect class="shape" height="90" width="320" />
+              <rect className="shape" height="90" width="320" />
             </svg>
 
-            <div class="text"> </div>
+            <div className="text"> </div>
           </div>
           {/* <button className="link indonesia"></button> */}
         </button>

@@ -11,71 +11,75 @@ import TextGrid from "./components/TextGrid";
 import Loading from "./components/Loading";
 import Covid from "./components/Covid";
 import ContinentStats from "./components/ContinentStats";
+import DataTable from "./components/DataTable";
+import CountryStats from "./components/CountryStats";
 
 
 
+let initialState = {
+  visible: true,
+  info: false,
+  facts: false,
+  india: false,
+  china: 1000
+};
 
 
 
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    ...initialState,
+  };
 
-    this.state = {
-      visible: true,
-      info: false,
-      facts: false,
-      india: false,
-    
-    };
-  }
+  // Set state to default state
+  setDefaultState = () => {
+    this.setState({
+      ...initialState,
+    });
+  };
 
   toggleMap = () => {
     this.setState({
+      ...initialState,
       visible: !this.state.visible,
     });
   };
 
   toggleFacts = () => {
     this.setState({
+      ...initialState,
       facts: !this.state.facts,
     });
   };
 
   toggleInfo = () => {
     this.setState({
+      ...initialState,
       info: !this.state.info,
     });
   };
 
   toggleRegion = () => {
     this.setState({
+      ...initialState,
       india: !this.state.india,
     });
   };
 
-
-
-
-
-
-
   render() {
-    
     return (
       <>
         <section>
           <Background />
           <Overlay />
-          {/* <ContinentStats
-       
-          /> */}
+          {/* <DataTable /> */}
+          <ContinentStats toggleInfo={this.toggleInfo} />
+          <CountryStats toggleInfo={this.toggleInfo} />
           {/* <Loading /> */}
           <Covid />
           <div className="map">
             <div className="grid">
-            
               <Menu1 state={this.state.info} toggleInfo={this.toggleInfo} />
 
               <Menu2 state={this.state.facts} toggleFacts={this.toggleFacts} />
@@ -92,6 +96,7 @@ class App extends Component {
             </div>
 
             <SideMenu
+              china={this.state.china}
               state={this.state.visible}
               toggleMap={this.toggleMap}
               toggleInfo={this.toggleInfo}

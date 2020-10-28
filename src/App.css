@@ -5,9 +5,12 @@ p {
   color: #fff;
 }
 
-a {
-  color: black;
-}
+  a:hover {
+    text-decoration: none !important;
+    color: black !important;
+    cursor: pointer !important;
+  }
+
 
 h4 {
   padding: 1em 0em 0em 1em;
@@ -65,3 +68,6 @@ h4 {
 .india:hover {
   opacity: 0.9;
 }
+
+
+

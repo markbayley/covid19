@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+
 class CountryTable extends Component {
   render() {
     const {
@@ -9,7 +10,7 @@ class CountryTable extends Component {
       onRowSelected,
     } = this.props;
     return (
-      <table className="table table-striped">
+      <table className="">
         <thead>
           <tr>
             <th>
@@ -19,7 +20,7 @@ class CountryTable extends Component {
             </th>
             <th>
               <a href="/" onClick={onSortByTotal}>
-                Total
+                Total 
               </a>
             </th>
           </tr>
@@ -36,7 +37,10 @@ class CountryTable extends Component {
                 onClick={() => onRowSelected(country)}
               >
                 <td>{country.name}</td>
-                <td>{country.total}</td>
+                <td>
+                  {country.total}
+                 
+                </td>
               </tr>
             );
           })}
