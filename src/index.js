@@ -9,7 +9,7 @@ import Map from "./components/Map";
 ReactDOM.render(
   <React.StrictMode>
     {/* <App /> */}
-    <Map />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -3,6 +3,7 @@ import mapboxgl from "mapbox-gl";
 import "./Map.css";
 
 import { COUNTRY_URL } from "../api/api";
+import { numberWithCommas } from "../utils/numberWithCommas";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoibWFya3liMTUyIiwiYSI6ImNrZzJraGl1NTAwcjkyeXFyMHljNjExcmoifQ.RxhYWJnYveNc1LjK6wB9sQ";
@@ -32,23 +33,65 @@ const Map = ({ toggleInfo }) => {
           const cases = country.cases;
           const active = country.active;
           const deaths = country.deaths;
-          console.log(location, country);
+          const flag = country.countryInfo.flag;
+        
+          console.log(location, country, 'FLAG', flag);
 
           const popup = new mapboxgl.Popup({
             className: "popup",
           })
             .setLngLat([location[0], location[1]])
-            .setHTML(`<strong>${name}</strong><br/>Cases: ${cases}<br>Active: ${active}<br>Deaths: ${deaths}`)
-            .setMaxWidth("200px")
+            .setHTML(
+              `
+            <img src=${flag} alt="" width="30px" height="50px"></img><br />
+            <strong>${name.toUpperCase()}</strong><br/>
+            Cases: ${numberWithCommas(cases)}<br>
+            Active: ${numberWithCommas(active)}<br>
+            Deaths: ${numberWithCommas(deaths)}<br>
+            `
+            )
+            .setMaxWidth("100px")
             .addTo(map);
 
           new mapboxgl.Marker({
-            color: "turquoise"
+            color: "turquoise",
           })
             .setLngLat([location[0], location[1]])
-         
+
             .setPopup(popup)
+            
             .addTo(map);
+
+
+
+          //   map.addImage("pulsing-dot", pulsingDot, { pixelRatio: 2 });
+          //   map.addSource("points", {
+          //    type: "geojson",
+          //    data: {
+          //      type: "FeatureCollection",
+          //      features: [
+          //        {
+          //          type: "Feature",
+          //          geometry: {
+          //            type: "Point",
+          //            coordinates: [location[0], location[1]],
+          //          },
+          //        },
+          //      ],
+          //    },
+          //  });
+           
+
+          //   map.addLayer({
+          //     id: "points",
+          //     type: "symbol",
+          //     source: "points",
+          //     layout: {
+          //       "icon-image": "pulsing-dot",
+          //     },
+          //   });
+
+
         });
       } catch (error) {
         console.log(error);
@@ -132,7 +175,7 @@ const Map = ({ toggleInfo }) => {
             type: "Feature",
             geometry: {
               type: "Point",
-              coordinates: [0, 0],
+              coordinates: [50, 0],
             },
           },
         ],
@@ -148,6 +191,8 @@ const Map = ({ toggleInfo }) => {
     });
   });
 
+
+
     // Add navigation control (the +/- zoom buttons)
     map.addControl(new mapboxgl.NavigationControl(), "top-right");
 
@@ -159,6 +204,7 @@ const Map = ({ toggleInfo }) => {
     // Clean up on unmount
     return () => map.remove();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  
 
   const getData = (key) => {
     return countries.map((country) => country[key]);

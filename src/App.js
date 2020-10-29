@@ -13,6 +13,7 @@ import Covid from "./components/Covid";
 import ContinentStats from "./components/ContinentStats";
 import DataTable from "./components/DataTable";
 import CountryStats from "./components/CountryStats";
+import Map from './components/Map';
 
 
 
@@ -73,6 +74,7 @@ class App extends Component {
         <section>
           <Background />
           <Overlay />
+          <Map />
           {/* <DataTable /> */}
           <ContinentStats toggleInfo={this.toggleInfo} />
           <CountryStats toggleInfo={this.toggleInfo} />
