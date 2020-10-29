@@ -5,43 +5,48 @@ img {
 .asia {
   display: block;
   position: absolute;
-  left: 65%;
-  top: 43%;
+  // left: 26%;
+  // top: 3%;
+  left: 25%;
+  bottom: 3%;
   opacity: 1;
   background-color: none;
-    width: 120px;
+    width: auto;
   height: 70px;
-   color: rgb(111, 223, 211);
+  color: turquoise;
     font-size: .3em;
    text-align: center;
    padding-top: 2em;
 }
 
-.asia2 {
-  display: block;
-  position: absolute;
-  left: 65%;
-  top: 43%;
-  opacity: 1;
-  background-color: none;
-    width: 120px;
-  height: 70px;
-   color: orangered;
-    font-size: .3em;
-   text-align: center;
-   padding-top: 2em;
-}
+// .asia2 {
+//   display: block;
+//   position: absolute;
+//   left: 65%;
+//   // top: 43%;
+//   bottom: 3%;
+//   opacity: 1;
+//   background-color: none;
+//     width: 150px;
+//   height: 70px;
+//    color: orangered;
+//     font-size: .3em;
+//    text-align: center;
+//    padding-top: 2em;
+// }
 
 .southamerica {
   display: block;
   position: absolute;
-  left: 26%;
-  top: 68%;
+  // left: 26%;
+  // top: 3%;
+  left: 46%;
+  bottom: 3%;
   opacity: 1;
   background-color: none;
     width: 120px;
   height: 70px;
-  color: black;
+  color: turquoise;
     font-size: .3em;
    text-align: center;
    padding-top: 2em;
@@ -52,13 +57,14 @@ img {
 .europe {
   display: block;
   position: absolute;
-  left: 50%;
-  top: 33%;
+  left: 56%;
+  // top: 33%;
+   bottom: 3%;
   opacity: 1;
   background-color: none;
     width: 100px;
   height: 70px;
-   color: black;
+    color: turquoise;
     font-size: .3em;
    text-align: center;
    padding-top: 2em;
@@ -67,13 +73,15 @@ img {
 .africa {
   display: block;
   position: absolute;
-  left: 47%;
-  top: 60%;
+  // left: 47%;
+  // top: 60%;
+  left: 64%;
+   bottom: 3%;
   opacity: 1;
   background-color: none;
     width: 70px;
   height: 70px;
-   color: #fff;
+    color: turquoise;
     font-size: .3em;
    text-align: center;
    padding-top: 2em;
@@ -82,13 +90,14 @@ img {
 .oceania {
   display: block;
   position: absolute;
-  left: 73%;
-  top: 74%;
+  left: 71%;
+  // top: 74%;
+   bottom: 3%;
   opacity: 1;
   background-color: none;
     width: 70px;
   height: 70px;
-   color: #fff;
+    color: turquoise;
     font-size: .3em;
    text-align: center;
    padding-top: 2em;
@@ -97,13 +106,15 @@ img {
 .northamerica {
   display: block;
   position: absolute;
-  left: 15%;
-  top: 40%;
+  // left: 15%;
+  // top: 40%;
+  left: 36%;
+   bottom: 3%;
   opacity: 1;
   background-color: none;
     width: 120px;
   height: 70px;
-  color: black;
+  color: turquoise;
     font-size: .3em;
    text-align: center;
    padding-top: 2em;

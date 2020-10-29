@@ -3,6 +3,7 @@ import mapboxgl from "mapbox-gl";
 import "./Map.css";
 
 import { COUNTRY_URL } from "../api/api";
+
 import { numberWithCommas } from "../utils/numberWithCommas";
 
 mapboxgl.accessToken =
@@ -17,6 +18,8 @@ const Map = ({ toggleInfo }) => {
 
   const [countries, setCountries] = useState([]);
 
+ 
+ 
   
 
   useEffect(() => {
@@ -34,8 +37,9 @@ const Map = ({ toggleInfo }) => {
           const active = country.active;
           const deaths = country.deaths;
           const flag = country.countryInfo.flag;
-        
-          console.log(location, country, 'FLAG', flag);
+      
+
+          console.log(location, country, "FLAG", flag);
 
           const popup = new mapboxgl.Popup({
             className: "popup",
@@ -45,59 +49,49 @@ const Map = ({ toggleInfo }) => {
               `
             <img src=${flag} alt="" width="30px" height="50px"></img><br />
             <strong>${name.toUpperCase()}</strong><br/>
-            Cases: ${numberWithCommas(cases)}<br>
+            Cases: ${numberWithCommas(
+                cases
+              )}<br>
             Active: ${numberWithCommas(active)}<br>
             Deaths: ${numberWithCommas(deaths)}<br>
+           
             `
             )
             .setMaxWidth("100px")
             .addTo(map);
 
-          new mapboxgl.Marker({
-            color: "turquoise",
-          })
-            .setLngLat([location[0], location[1]])
-
-            .setPopup(popup)
-            
-            .addTo(map);
+     
 
 
-
-          //   map.addImage("pulsing-dot", pulsingDot, { pixelRatio: 2 });
-          //   map.addSource("points", {
-          //    type: "geojson",
-          //    data: {
-          //      type: "FeatureCollection",
-          //      features: [
-          //        {
-          //          type: "Feature",
-          //          geometry: {
-          //            type: "Point",
-          //            coordinates: [location[0], location[1]],
-          //          },
-          //        },
-          //      ],
-          //    },
-          //  });
-           
-
-          //   map.addLayer({
-          //     id: "points",
-          //     type: "symbol",
-          //     source: "points",
-          //     layout: {
-          //       "icon-image": "pulsing-dot",
-          //     },
-          //   });
+            // create a HTML element for each feature
+            var el = document.createElement("div");
+            el.className="marker";
+      
+            // make a marker for each feature and add to the map
+            new mapboxgl.Marker(el)
+              .setLngLat([location[0], location[1]])
+               
+              .setPopup(popup)
+              .addTo(map);
 
 
+         
         });
       } catch (error) {
         console.log(error);
       }
     }
     fetchCountries();
+
+
+
+
+  
+
+
+
+
+
 
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
@@ -106,18 +100,75 @@ const Map = ({ toggleInfo }) => {
       zoom: zoom,
     });
 
+map.doubleClickZoom.enable();
 
 
+ document.getElementById("africa").addEventListener("click", function () {
+   map.flyTo({
+     zoom: 3,
+     center: [
+       3.2,
+       1.8,
+     ],
+     essential: true, 
+   });
+ });
+
+ document.getElementById("europe").addEventListener("click", function () {
+   map.flyTo({
+     zoom: 4,
+     center: [6, 47],
+     essential: true,
+   });
+ });
+
+  document.getElementById("northamerica").addEventListener("click", function () {
+    map.flyTo({
+      zoom: 3,
+      center: [-120, 45],
+      essential: true,
+    });
+  });
+
+    document
+      .getElementById("southamerica")
+      .addEventListener("click", function () {
+        map.flyTo({
+          zoom: 3.5,
+          center: [-74, -4],
+          essential: true,
+        });
+      });
 
 
+        document
+          .getElementById("asia")
+          .addEventListener("click", function () {
+            map.flyTo({
+              zoom: 3.1,
+              center: [100, 17],
+              essential: true,
+            });
+          });
+
+       document.getElementById("oceania").addEventListener("click", function () {
+         map.flyTo({
+           zoom: 3.7,
+           center: [131, -28],
+           essential: true,
+         });
+       });
+
+
+    //Pulsing Dots
     var size = 100;
 
-  // implementation of CustomLayerInterface to draw a pulsing dot icon on the map
-  // see https://docs.mapbox.com/mapbox-gl-js/api/#customlayerinterface for more info
-  var pulsingDot = {
-    width: size,
-    height: size,
-    data: new Uint8Array(size * size * 4),
+    // implementation of CustomLayerInterface to draw a pulsing dot icon on the map
+    // see https://docs.mapbox.com/mapbox-gl-js/api/#customlayerinterface for more info
+    var pulsingDot = {
+      width: size,
+      height: size,
+      data: new Uint8Array(size * size * 4),
 
     // get rendering context for the map canvas when layer is added to the map
     onAdd: function () {
@@ -244,6 +295,8 @@ const Map = ({ toggleInfo }) => {
         <div>
           Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
         </div>
+        {/* <button id="fly">Fly</button>; */}
+   
       </div>
 
       <div className="map-container" ref={mapContainerRef} />

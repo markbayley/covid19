@@ -29,3 +29,58 @@
 }
 
 
+.marker {
+  background-color: rgb(3, 250, 238);
+  /* background-size: cover; */
+   height: 2em;
+    width: 2em;
+border: 5px solid rgba(1, 17, 24, 0.6);
+
+  border-radius: 50%;
+  cursor: pointer; 
+   transition: .3s ease;
+}
+
+
+.marker:hover {
+  background-color: orangered;
+  height: 4em;
+  width: 4em;
+  border: 13px solid rgb(65, 16, 16, 0.8);
+
+
+  
+}
+
+
+
+
+/* .circle {
+    width: 15px;
+    height: 15px;
+    background-color: #62bd19;
+    border-radius: 50%;
+    position: absolute;
+    top: 23px;
+    left: 23px;
+}
+
+.ringring {
+    border: 3px solid #62bd19;
+    -webkit-border-radius: 30px;
+    height: 25px;
+    width: 25px;
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    -webkit-animation: pulsate 1s ease-out;
+    -webkit-animation-iteration-count: infinite; 
+    opacity: 0.0
+}
+@-webkit-keyframes pulsate {
+    0% {-webkit-transform: scale(0.1, 0.1); opacity: 0.0;}
+    50% {opacity: 1.0;}
+    100% {-webkit-transform: scale(1.2, 1.2); opacity: 0.0;}
+} */
+
+

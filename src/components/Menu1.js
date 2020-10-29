@@ -36,7 +36,7 @@ class Menu1 extends Component {
                     <div className={!this.props.state ? "hidden" : "visible"}>
                       <div className="App-side-button">
                         <h4>Info </h4>
-
+                      {/* <Covid /> */}
                      {/* <DataTable /> */}
       
 

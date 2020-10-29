@@ -136,8 +136,9 @@ class Covid extends Component {
         className="text-info"
         style={{
           position: "absolute",
-          width: "100vw",
+          width: "90vw",
           marginTop: "25px",
+     
         }}
       >
         <Row>
@@ -174,7 +175,7 @@ class Covid extends Component {
           </Col>
           <Col xl={1}>
             <h5>
-              {<i style={{ color: "orangered" }} className="fa fa-male"></i>}{" "}
+              {<i style={{ color: "orange" }} className="fa fa-male"></i>}{" "}
               Active
             </h5>
             <h3>

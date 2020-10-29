@@ -54,6 +54,7 @@ const ContinentStats = ({toggleInfo}) => {
     <>
       <a
         className="asia"
+        id="asia"
         onClick={toggleInfo}
         // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
       >
@@ -66,27 +67,20 @@ const ContinentStats = ({toggleInfo}) => {
         {<i className="fa fa-male fa-4x"></i>}
         {<i className="fa fa-male fa-4x"></i>}
         {<i className="fa fa-male fa-4x"></i>}
-        <div>{icon}</div>
-        <div></div>
+        {<i className="fa fa-male fa-4x"></i>}
+        {<i className="fa fa-male fa-4x"></i>}
+        {<i className="fa fa-male fa-4x"></i>}
+        {<i className="fa fa-male fa-4x"></i>}
+        {<i className="fa fa-male fa-4x"></i>}
+        {<i className="fa fa-male fa-4x"></i>}
+
+        {/* <div>{icon}</div>
+        <div></div> */}
 
         <h6>{round(getData("cases")[1] / 1000000) + "m"}</h6>
       </a>
 
-      <a className="southamerica" onClick={toggleInfo}>
-        <h6> {continentLabels[2]}</h6>
-        {<i style={{ color: "grey" }} className="fa fa-male fa-4x"></i>}
-        {<i style={{ color: "grey" }} className="fa fa-male fa-4x"></i>}
-        {<i style={{ color: "grey" }} className="fa fa-male fa-4x"></i>}
-        {<i style={{ color: "grey" }} className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i style={{ color: "orangered" }} className="fa fa-male fa-4x"></i>}
-        <h6>{round(getData("cases")[2] / 1000000) + "m"}</h6>
-      </a>
-
-      <a className="europe" onClick={toggleInfo}>
+      <a className="europe" id="europe" onClick={toggleInfo}>
         <h6> {continentLabels[3]}</h6>
         {<i className="fa fa-male fa-4x"></i>}
         {<i className="fa fa-male fa-4x"></i>}
@@ -100,20 +94,34 @@ const ContinentStats = ({toggleInfo}) => {
         <h6>{round(getData("cases")[3] / 1000000) + "m"}</h6>
       </a>
 
-      <a className="africa" onClick={toggleInfo}>
+      <a className="southamerica" id="southamerica" onClick={toggleInfo}>
+        <h6> {continentLabels[2]}</h6>
+        {<i style={{ color: "grey" }} className="fa fa-male fa-4x"></i>}
+        {<i style={{ color: "grey" }} className="fa fa-male fa-4x"></i>}
+        {<i style={{ color: "grey" }} className="fa fa-male fa-4x"></i>}
+        {<i style={{ color: "grey" }} className="fa fa-male fa-4x"></i>}
+        {<i className="fa fa-male fa-4x"></i>}
+        {<i className="fa fa-male fa-4x"></i>}
+        {<i className="fa fa-male fa-4x"></i>}
+        {<i className="fa fa-male fa-4x"></i>}
+        {<i style={{ color: "orangered" }} className="fa fa-male fa-4x"></i>}
+        <h6>{round(getData("cases")[2] / 1000000) + "m"}</h6>
+      </a>
+
+      <a className="africa" id="africa" onClick={toggleInfo}>
         <h6> {continentLabels[4]}</h6>
         {<i className="fa fa-male fa-4x"></i>}
         {<i className="fa fa-male fa-4x"></i>}
         <h6>{round(getData("cases")[4] / 1000000) + "m"}</h6>
       </a>
 
-      <a className="oceania" onClick={toggleInfo}>
-        <h6> {continentLabels[5]}</h6>
+      <a className="oceania" id="oceania" onClick={toggleInfo}>
+        <h6> Oceania</h6>
         {<i className="fa fa-male fa-4x"></i>}
         <h6>{round(getData("cases")[5] / 1000000) + "m"}</h6>
       </a>
 
-      <a className="northamerica" onClick={toggleInfo}>
+      <a className="northamerica" id="northamerica" onClick={toggleInfo}>
         <h6> {continentLabels[0]}</h6>
         {<i className="fa fa-male fa-4x"></i>}
         {<i className="fa fa-male fa-4x"></i>}

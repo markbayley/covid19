@@ -7,7 +7,7 @@ p {
 
   a:hover {
     text-decoration: none !important;
-    color: black !important;
+    color: orangered !important;
     cursor: pointer !important;
   }
 
