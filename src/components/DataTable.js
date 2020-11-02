@@ -8,7 +8,7 @@ const DataTable = () => {
 
   const [countriesData, setCountriesData] = useState([]);
   const [copyCountriesData, setCopyCountriesData] = useState([]);
-  const [numberOfViewRows, setNumberOfViewRows] = useState(5);
+  const [numberOfViewRows, setNumberOfViewRows] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     async function fetchCountriesData() {
@@ -38,25 +38,25 @@ const DataTable = () => {
     const startIndex = (currentPage - 1) * numberOfViewRows + 1;
     return currentCountries.map((country, index) => {
       return (
-        <tbody key={country["country"]}>
+        <tbody key={country["country"]} style={{color: "#fff"}}>
      
           <tr>
             <th scope="row">{startIndex + index}</th>
             <td>
-              <img
+              {/* <img
                 src={country["countryInfo"]["flag"]}
                 alt=""
                 width="30px"
                 height="20px"
                 className="mr-2 d-none d-sm-inline"
-              ></img>
+              ></img> */}
               {country["country"]}
             </td>
             <td>{numberWithCommas(country["cases"])}</td>
             <td>{numberWithCommas(country["deaths"])}</td>
             <td>{numberWithCommas(country["recovered"])}</td>
-            <td>{numberWithCommas(country["todayCases"])}</td>
-            <td>{numberWithCommas(country["todayDeaths"])}</td>
+            {/* <td>{numberWithCommas(country["todayCases"])}</td> */}
+            {/* <td>{numberWithCommas(country["todayDeaths"])}</td> */}
           </tr>
         </tbody>
       );
@@ -137,7 +137,7 @@ const DataTable = () => {
   const totalPages = Math.ceil(copyCountriesData.length / numberOfViewRows);
   const next = currentPage !== totalPages;
   return (
-    <div className="mt-5">
+    <div className="" style={{ border: "1px solid #fff", fontSize: "14px"}}>
       <div className="d-flex  flex-column flex-sm-row justify-content-between mb-3">
         <div className="d-inline-flex">
           <span className="mt-1">{"show"}</span>
@@ -145,11 +145,11 @@ const DataTable = () => {
             className="form-control-sm mx-2 view-rows"
             onChange={(e) => handleSelect(e)}
           >
-            <option value="5" selected>
+            <option value="5">
               5
             </option>
             <option value="10">10</option>
-            <option value="20">20</option>
+            <option value="20" selected>20</option>
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
@@ -170,7 +170,7 @@ const DataTable = () => {
         </div>
       </div>
       <div className="table-responsive">
-        <table className={"table table-borderless "}>
+        <table className={" "}>
           <thead>
             <tr>
               <th>#</th>
@@ -227,7 +227,7 @@ const DataTable = () => {
                   ></span>
                 </div>
               </th>
-              <th>
+              {/* <th>
                 {"todayCases"}
                 <div className="d-inline-block d-inline">
                   <span
@@ -239,8 +239,8 @@ const DataTable = () => {
                     onClick={(e) => onSortDown(e, "todayCases")}
                   ></span>
                 </div>
-              </th>
-              <th>
+              </th> */}
+              {/* <th>
                 {"todayDeaths"}
                 <div className="d-inline-block d-inline">
                   <span
@@ -252,7 +252,7 @@ const DataTable = () => {
                     onClick={(e) => onSortDown(e, "todayDeaths")}
                   ></span>
                 </div>
-              </th>
+              </th> */}
             </tr>
           </thead>
           {displayData()}

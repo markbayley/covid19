@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import PieChart from "./PieChart";
 import { numberWithCommas } from "../utils/numberWithCommas";
+import { Animated } from "react-animated-css";
 
 import { CONTINENT_URL } from "../api/api";
+import { Button } from "react-bootstrap";
+import AsiaMenu from "./AsiaMenu";
+import SouthAmericaMenu from "./SouthAmericaMenu";
 
-const ContinentStats = ({toggleInfo}) => {
+const ContinentStats = ({toggleAsia, toggleEurope, toggleOceania, toggleNorthAmerica, toggleSouthAmerica, toggleAfrica, toggleGlobal}) => {
 
 
   const [continents, setContinents] = useState([]);
@@ -24,8 +28,10 @@ const ContinentStats = ({toggleInfo}) => {
     return continents.map((continent) => continent[key]);
   };
   const continentLabels = getData("continent");
+  const continentCases = getData("cases");
+  console.log('CC', continentCases);
 
-  
+  const cases = continentCases;
 
   const colors = [
     "#e76f51",
@@ -43,44 +49,113 @@ const ContinentStats = ({toggleInfo}) => {
 
   
  
-
-      
-  const icon =  <i className="fa fa-male fa-4x"></i>;
-
-
-
-
+ 
   return (
-    <>
-      <a
-        className="asia"
+    <div
+      style={{
+        left: "94%",
+        height: "100vh",
+        position: "absolute",
+      }}
+    >
+      <Button
+        className="asia button"
         id="asia"
-        onClick={toggleInfo}
+        onClick={toggleAsia}
+        size="md"
+        variant="info"
         // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
       >
-        <h6> {continentLabels[1]}</h6>
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
+        <h6>{continentLabels[1]}</h6>
+        {continentCases[1]}
+      </Button>
 
-        {/* <div>{icon}</div>
-        <div></div> */}
+      <Button
+        className="europe button"
+        onClick={toggleEurope}
+        size="md"
+        id="europe"
+        variant="info"
+      >
+        <h6>{continentLabels[3]}</h6>
+        {/* {continentCases[3]} */}
+      </Button>
 
-        <h6>{round(getData("cases")[1] / 1000000) + "m"}</h6>
-      </a>
+      <Button
+        className="northamerica button"
+        onClick={toggleNorthAmerica}
+        size="md"
+        id="northamerica"
+        variant="info"
+        // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
+      >
+        <h6>{continentLabels[0]}</h6>
+        {/* {continentCases[0]} */}
+      </Button>
 
-      <a className="europe" id="europe" onClick={toggleInfo}>
+      <Button
+        className="africa button"
+        onClick={toggleAfrica}
+        size="md"
+        id="africa"
+        variant="info"
+        // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
+      >
+        <h6>{continentLabels[4]}</h6>
+        {/* {continentCases[0]} */}
+      </Button>
+
+      <Button
+        className="southamerica button"
+        onClick={toggleSouthAmerica}
+        size="md"
+        id="southamerica"
+        variant="info"
+        // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
+      >
+        <h6>{continentLabels[2]}</h6>
+        {/* {continentCases[0]} */}
+      </Button>
+
+      <Button
+        className="oceania button"
+        onClick={toggleOceania}
+        size="md"
+        id="oceania"
+        // variant="outline-info"
+        variant="info"
+        // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
+      >
+        <h6>
+          {/* <i className="fa fa-info-circle"></i> */}
+          Oceania
+        </h6>
+        {/* {continentCases[0]} */}
+      </Button>
+
+      <Button
+        className="global button"
+        onClick={toggleGlobal}
+        size="md"
+        id="global"
+        // variant="outline-info"
+        variant="info"
+        // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
+      >
+        <h6>
+          {/* <i className="fa fa-info-circle"></i> */}
+          Global
+        </h6>
+        {/* {continentCases[0]} */}
+      </Button>
+
+      <SouthAmericaMenu
+        labels={continentLabels}
+        // colors={colors}
+        data={getData("cases")}
+      ></SouthAmericaMenu>
+
+      {/* <a className="europe" id="europe" onClick={toggleInfo}>
         <h6> {continentLabels[3]}</h6>
         {<i className="fa fa-male fa-4x"></i>}
         {<i className="fa fa-male fa-4x"></i>}
@@ -92,9 +167,8 @@ const ContinentStats = ({toggleInfo}) => {
         {<i className="fa fa-male fa-4x"></i>}
 
         <h6>{round(getData("cases")[3] / 1000000) + "m"}</h6>
-      </a>
-
-      <a className="southamerica" id="southamerica" onClick={toggleInfo}>
+      </a> */}
+      {/* <a className="southamerica" id="southamerica" onClick={toggleInfo}>
         <h6> {continentLabels[2]}</h6>
         {<i style={{ color: "grey" }} className="fa fa-male fa-4x"></i>}
         {<i style={{ color: "grey" }} className="fa fa-male fa-4x"></i>}
@@ -106,22 +180,20 @@ const ContinentStats = ({toggleInfo}) => {
         {<i className="fa fa-male fa-4x"></i>}
         {<i style={{ color: "orangered" }} className="fa fa-male fa-4x"></i>}
         <h6>{round(getData("cases")[2] / 1000000) + "m"}</h6>
-      </a>
+      </a> */}
 
-      <a className="africa" id="africa" onClick={toggleInfo}>
+      {/* <a className="africa" id="africa" onClick={toggleInfo}>
         <h6> {continentLabels[4]}</h6>
         {<i className="fa fa-male fa-4x"></i>}
         {<i className="fa fa-male fa-4x"></i>}
         <h6>{round(getData("cases")[4] / 1000000) + "m"}</h6>
       </a>
-
       <a className="oceania" id="oceania" onClick={toggleInfo}>
         <h6> Oceania</h6>
         {<i className="fa fa-male fa-4x"></i>}
         <h6>{round(getData("cases")[5] / 1000000) + "m"}</h6>
-      </a>
-
-      <a className="northamerica" id="northamerica" onClick={toggleInfo}>
+      </a> */}
+      {/* <a className="northamerica" id="northamerica" onClick={toggleInfo}>
         <h6> {continentLabels[0]}</h6>
         {<i className="fa fa-male fa-4x"></i>}
         {<i className="fa fa-male fa-4x"></i>}
@@ -134,7 +206,7 @@ const ContinentStats = ({toggleInfo}) => {
         {<i className="fa fa-male fa-4x"></i>}
         {<i className="fa fa-male fa-4x"></i>}
         <h6>{round(getData("cases")[0] / 1000000) + "m"}</h6>
-      </a>
+      </a> */}
       {/* <PieChart
         labels={continentLabels}
         colors={colors}
@@ -169,7 +241,7 @@ const ContinentStats = ({toggleInfo}) => {
           ></Continent>
         </div>
       </div> */}
-    </>
+    </div>
   );
 };
 

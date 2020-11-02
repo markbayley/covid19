@@ -4,8 +4,12 @@ import { Button, Overlay } from "react-bootstrap";
 import ContinentStats from './ContinentStats';
 import './SideMenu.scss'
 
+  
+
 
 class SideMenu extends Component {
+
+  
    
     render() {
       
@@ -19,9 +23,9 @@ class SideMenu extends Component {
               </a> */}
               {/* <a onClick={this.props.toggleInfo} className="china">
                 China <br /> */}
-                {/* {this.props.china} */}
-                {/* <ContinentStats/> */}
-              
+              {/* {this.props.china} */}
+              {/* <ContinentStats/> */}
+
               {/* </a> */}
               {/* <a onClick={this.props.toggleInfo} className="italy">
                 Italy
@@ -55,6 +59,22 @@ class SideMenu extends Component {
               {/* <a onClick={this.props.toggleInfo} className="mexico">
                 Mexico
               </a> */}
+
+              <Button
+                onClick={this.props.toggleAsia}
+                size="md"
+                variant="outline-info"
+                className="button"
+                id="asia"
+              >
+                <Animated
+                  animationIn="fadeInDown"
+                  animationOut="fadeOut"
+                  isVisible={true}
+                >
+                  <i className="fa fa-info-circle"></i> Asia
+                </Animated>
+              </Button>
 
               <Button
                 onClick={this.props.toggleInfo}

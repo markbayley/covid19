@@ -1,16 +1,16 @@
 import React, {Component} from 'react'
 import { Button } from "react-bootstrap"
 
-class Child extends Component {
-    render() {
+const Child = ({name, state, Increment}) => {
+   
     return (
       <div >
-        <h4>{this.props.name}</h4> <h3>{this.props.state}</h3>
+        <h4>{name}</h4> <h3>{state}</h3>
         <br />
-        <Button variant="outline-secondary" onClick={this.props.Increment}> Increment</Button>
+        <Button variant="outline-secondary" onClick={Increment}> Increment</Button>
       </div>
     );
 }
-}
+
 
 export default Child
