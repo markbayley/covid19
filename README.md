@@ -1,4 +1,12 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Coronavirus 2020 
+
+React app using Mapbox and API
+
+<img src="https://github.com/markbayley/covid19/blob/master/public/interface.png" width="auto" height="auto"/>
+
+Graphic design mockup in Adobe Illustrator
+
+<img src="https://github.com/markbayley/covid19/blob/master/public/info3.svg" width="auto" height="auto"/>
 
 ## Available Scripts
 

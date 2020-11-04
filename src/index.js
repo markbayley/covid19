@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import CoronaApp from './CoronaApp';
 import * as serviceWorker from './serviceWorker';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Map from "./components/Map";
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <App /> */}
     <App />
   </React.StrictMode>,
   document.getElementById('root')

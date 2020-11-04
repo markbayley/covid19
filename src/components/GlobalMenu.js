@@ -8,6 +8,8 @@ import { numberWithCommas } from "../utils/numberWithCommas";
 
 import Covid from "./Covid";
 import DataTable from "./DataTable";
+import BarGraph from "./BarGraph";
+import { Bar } from "react-chartjs-2";
 
 const GlobalMenu = ({props, state, toggleGlobal }) => {
         const [globalStats, setGlobalStats] = useState({});
@@ -32,8 +34,8 @@ const GlobalMenu = ({props, state, toggleGlobal }) => {
       <>
         <div className={state ? "visible" : "hidden"}>
           <Animated
-            animationIn="fadeInLeft"
-            animationOut="fadeOut"
+            animationIn="slideInLeft"
+            animationOut="slideOutLeft"
             isVisible={true}
           >
             <div className="App-side">
@@ -61,6 +63,7 @@ const GlobalMenu = ({props, state, toggleGlobal }) => {
                       aliqua. Ut enim ad minim veniam, quis nostrud exercitation
                       ullamco laboris nisi ut aliquip ex ea commodo consequat.
                     </p>
+                  
                     <h5>
                       {" "}
                       {
@@ -86,6 +89,7 @@ const GlobalMenu = ({props, state, toggleGlobal }) => {
                       sed do eiusmod tempor incididunt ut labore et dolore magna
                       aliqua.
                     </p>
+                 
                     <p>
                       {
                         <i
@@ -211,6 +215,8 @@ const GlobalMenu = ({props, state, toggleGlobal }) => {
                     </p>
                     {/* <Covid /> */}
                     {/* <DataTable /> */}
+                    {/* <BarGraph /> */}
+                 
                   </div>
                 </div>
               </div>

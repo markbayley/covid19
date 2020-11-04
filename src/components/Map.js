@@ -6,6 +6,8 @@ import { COUNTRY_URL } from "../api/api";
 
 import { numberWithCommas } from "../utils/numberWithCommas";
 import GlobalStats from "./GlobalStats";
+import BarGraph from "./BarGraph";
+import DataTable from "./DataTable";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoibWFya3liMTUyIiwiYSI6ImNrZzJraGl1NTAwcjkyeXFyMHljNjExcmoifQ.RxhYWJnYveNc1LjK6wB9sQ";
@@ -257,6 +259,10 @@ const Map = ({ toggleInfo }) => {
           Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
        
         </div>
+        {/* <hr /> */}
+        {/* <BarGraph /> */}
+        {/* <hr /> */}
+        {/* <DataTable /> */}
       </div>
 
       <div className="map-container" ref={mapContainerRef} />

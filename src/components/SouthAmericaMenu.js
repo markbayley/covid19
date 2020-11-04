@@ -36,7 +36,7 @@ const SouthAmericaMenu = ({ state, toggleSouthAmerica }) => {
     <>
       <div className={state ? "visible" : "hidden"}>
         <Animated
-          animationIn="fadeInRight"
+          animationIn="fadeInLeft"
           animationOut="fadeOut"
           isVisible={true}
         >

@@ -12,7 +12,7 @@ class AfricaMenu extends Component {
       <>
         <div className={this.props.state ? "visible" : "hidden"}>
           <Animated
-            animationIn="fadeInRight"
+            animationIn="fadeInLeft"
             animationOut="fadeOut"
             isVisible={true}
           >
@@ -39,36 +39,7 @@ class AfricaMenu extends Component {
                     {/* <Covid /> */}
                     {/* <DataTable /> */}
                     <p>
-                      <Button
-                        className="africa button"
-                        id="asia"
-                        onClick={this.toggleAfrica}
-                        size="md"
-                        variant="outline-info"
-                        // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
-                      >
-                        {/* <h6>
-                          <i className="fa fa-info-circle"></i>{" "}
                      
-                        </h6> */}
-
-                        {/* {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}
-        {<i className="fa fa-male fa-4x"></i>}  */}
-
-                        {/* <div>{icon}</div>
-        <div></div> */}
-                      </Button>
                       Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                       sed do eiusmod tempor incididunt ut labore et dolore magna
                       aliqua. Ut enim ad minim veniam, quis nostrud exercitation

@@ -23,6 +23,7 @@ import NorthAmericaMenu from "./components/NorthAmericaMenu";
 import SouthAmericaMenu from "./components/SouthAmericaMenu";
 import { getDefaultNormalizer } from "@testing-library/react";
 import GlobalMenu from "./components/GlobalMenu";
+import BarGraph from "./components/BarGraph";
 
 
 

@@ -137,10 +137,10 @@ const DataTable = () => {
   const totalPages = Math.ceil(copyCountriesData.length / numberOfViewRows);
   const next = currentPage !== totalPages;
   return (
-    <div className="" style={{ border: "1px solid #fff", fontSize: "14px"}}>
+    <div className="" style={{  fontSize: "13px", color: "turquoise"}}>
       <div className="d-flex  flex-column flex-sm-row justify-content-between mb-3">
         <div className="d-inline-flex">
-          <span className="mt-1">{"show"}</span>
+          {/* <span className="mt-1">{"show"}</span> */}
           <select
             className="form-control-sm mx-2 view-rows"
             onChange={(e) => handleSelect(e)}
@@ -153,13 +153,13 @@ const DataTable = () => {
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
-          <span className="mt-1">{"records"}</span>
+          {/* <span className="mt-1">{"records"}</span> */}
         </div>
         <div className="input-group search-bar mt-2 mt-sm-0">
           <input
             type="text"
-            className="form-control"
-            placeholder={"searchCountry"}
+            className="form-control-sm"
+            placeholder={"Enter country name"}
             onChange={(e) => onSearch(e)}
           />
           <div className="input-group-append">
