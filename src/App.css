@@ -48,7 +48,7 @@ h4, h5 {
 }
 
 .link {
-  background: transparent;
+  /* background: transparent; */
   opacity: 0.1;
   border-radius: 50%;
   border: 8px solid black;
@@ -111,7 +111,7 @@ h4, h5 {
 }
 
 .btn {
-  outline: none;
+  /* outline: none; */
 }
 
 .btn:focus {

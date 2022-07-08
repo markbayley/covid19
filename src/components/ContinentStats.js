@@ -53,77 +53,80 @@ const ContinentStats = ({toggleAsia, toggleEurope, toggleOceania, toggleNorthAme
   return (
     <div
       style={{
-        left: "94%",
+        right: "110px",
         height: "100vh",
         position: "absolute",
       }}
     >
+  
       <Button
         className="asia button"
         id="asia"
         onClick={toggleAsia}
-        size="md"
-        variant="info"
+        // size="md"
+        variant="outline-info"
         // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
       >
-        <h6>{continentLabels[1]}</h6>
+        <h6>Asia</h6>
         {continentCases[1]}
       </Button>
 
       <Button
         className="europe button"
         onClick={toggleEurope}
-        size="md"
+        // size="sm"
         id="europe"
-        variant="info"
+        variant="outline-info"
       >
-        <h6>{continentLabels[3]}</h6>
+        <h6>Europe</h6>
         {/* {continentCases[3]} */}
       </Button>
 
       <Button
         className="northamerica button"
         onClick={toggleNorthAmerica}
-        size="md"
+        // size="md"
         id="northamerica"
-        variant="info"
+        variant="outline-info"
         // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
       >
-        <h6>{continentLabels[0]}</h6>
+        <h6>Nth America</h6>
         {/* {continentCases[0]} */}
       </Button>
 
       <Button
         className="africa button"
         onClick={toggleAfrica}
-        size="md"
+        // size="md"
         id="africa"
-        variant="info"
+        variant="outline-info"
         // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
       >
-        <h6>{continentLabels[4]}</h6>
+        <h6>Africa</h6>
         {/* {continentCases[0]} */}
       </Button>
+     
 
       <Button
         className="southamerica button"
         onClick={toggleSouthAmerica}
-        size="md"
+        // size="md"
         id="southamerica"
-        variant="info"
+        variant="outline-info"
+        // color="info"
         // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
       >
-        <h6>{continentLabels[2]}</h6>
+        <h6>Sth America</h6>
         {/* {continentCases[0]} */}
       </Button>
 
       <Button
         className="oceania button"
         onClick={toggleOceania}
-        size="md"
+        // size="md"
         id="oceania"
         // variant="outline-info"
-        variant="info"
+        variant="outline-info"
         // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
       >
         <h6>
@@ -136,10 +139,10 @@ const ContinentStats = ({toggleAsia, toggleEurope, toggleOceania, toggleNorthAme
       <Button
         className="global button"
         onClick={toggleGlobal}
-        size="md"
+        // size="md"
         id="global"
         // variant="outline-info"
-        variant="info"
+        variant="outline-info"
         // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
       >
         <h6>
@@ -242,6 +245,7 @@ const ContinentStats = ({toggleAsia, toggleEurope, toggleOceania, toggleNorthAme
         </div>
       </div> */}
     </div>
+ 
   );
 };
 

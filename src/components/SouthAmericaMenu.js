@@ -45,8 +45,8 @@ const SouthAmericaMenu = ({ state, toggleSouthAmerica }) => {
               <Button
                 onClick={toggleSouthAmerica}
                 size="sm"
-                variant="outline-light"
-                className="App-side-close"
+                // variant="outlined"
+                // className="App-side-close"
               >
                 <Animated
                   animationIn="fadeInDown"
