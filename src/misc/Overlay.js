@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button } from 'react-bootstrap';
-import ContinentStats from './ContinentStats'
+import ContinentStats from '../components/ContinentStats'
 import './Overlay.scss'
 
 

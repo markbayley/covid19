@@ -1,34 +1,36 @@
 import React, { Component } from "react";
 import { Pie } from "react-chartjs-2";
 
-class Chart extends Component {
-  render() {
-    const { countries } = this.props;
+const Chart = ({continents, key}) => {
+ 
 
-    if (countries.length === 0) return <div></div>;
+
+    // if (countries.length === 0) return <div></div>;
 
     const data = {
-      labels: countries.map((country) => country.name), //[]strings
+      labels: continents.map((continent) => continent[key]), //[]strings
       datasets: [
         {
-          data: countries.map((country) => country.total),
+          data: continents.map((continent) => (continent.cases/1000000)),
           backgroundColor: colors,
         },
       ],
     };
 
+   
+
     return (
       <div>
         <Pie
           data={data}
-          width={100}
-          height={200}
-          options={{ maintainAspectRatio: false }}
+          // width={200}
+          // height={200}
+          // options={{ maintainAspectRatio: false }}
         ></Pie>
       </div>
     );
   }
-}
+
 
 export default Chart;
 

@@ -4,7 +4,7 @@ import { Button } from "react-bootstrap";
 import { Search } from 'react-bootstrap-icons';
 import ContinentStats from './ContinentStats';
 
-import Covid from './Covid';
+
 
  class Menu4 extends Component {
     render() {
@@ -33,7 +33,7 @@ import Covid from './Covid';
                     Data
                   </div>
                 
-                  <Covid />
+                  {/* <Covid /> */}
                 </div>
               </div>
             </Animated>

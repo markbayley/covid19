@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { Animated } from "react-animated-css";
 import { Button } from "react-bootstrap";
-import ContinentStats from './ContinentStats';
+import ContinentStats from '../components/ContinentStats';
 
-import Covid from './Covid';
-import DataTable from './DataTable';
+
+// import DataTable from '../components/DataTable';
 
 
 class Menu1 extends Component {
@@ -37,7 +37,7 @@ class Menu1 extends Component {
                       <div className="App-side-button">
                         <h4>Info </h4>
                       {/* <Covid /> */}
-                     <DataTable />
+                     {/* <DataTable /> */}
       
 
                       

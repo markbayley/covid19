@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
-import PieChart from "./PieChart";
-import { numberWithCommas } from "../utils/numberWithCommas";
-import { Animated } from "react-animated-css";
-
 import { CONTINENT_URL } from "../api/api";
 import { Button } from "react-bootstrap";
-import AsiaMenu from "./AsiaMenu";
-import SouthAmericaMenu from "./SouthAmericaMenu";
 
 const ContinentStats = ({toggleAsia, toggleEurope, toggleOceania, toggleNorthAmerica, toggleSouthAmerica, toggleAfrica, toggleGlobal}) => {
 
@@ -29,7 +23,7 @@ const ContinentStats = ({toggleAsia, toggleEurope, toggleOceania, toggleNorthAme
   };
   const continentLabels = getData("continent");
   const continentCases = getData("cases");
-  console.log('CC', continentCases);
+  // console.log('CC', continentCases);
 
   const cases = continentCases;
 
@@ -68,7 +62,7 @@ const ContinentStats = ({toggleAsia, toggleEurope, toggleOceania, toggleNorthAme
         // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
       >
         <h6>Asia</h6>
-        {continentCases[1]}
+        {/* {continentCases[1]} */}
       </Button>
 
       <Button
@@ -90,7 +84,7 @@ const ContinentStats = ({toggleAsia, toggleEurope, toggleOceania, toggleNorthAme
         variant="outline-info"
         // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
       >
-        <h6>Nth America</h6>
+        <h6>North America</h6>
         {/* {continentCases[0]} */}
       </Button>
 
@@ -116,7 +110,7 @@ const ContinentStats = ({toggleAsia, toggleEurope, toggleOceania, toggleNorthAme
         // color="info"
         // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
       >
-        <h6>Sth America</h6>
+        <h6>South America</h6>
         {/* {continentCases[0]} */}
       </Button>
 
@@ -152,11 +146,11 @@ const ContinentStats = ({toggleAsia, toggleEurope, toggleOceania, toggleNorthAme
         {/* {continentCases[0]} */}
       </Button>
 
-      <SouthAmericaMenu
+      {/* <SouthAmericaMenu
         labels={continentLabels}
         // colors={colors}
         data={getData("cases")}
-      ></SouthAmericaMenu>
+      ></SouthAmericaMenu> */}
 
       {/* <a className="europe" id="europe" onClick={toggleInfo}>
         <h6> {continentLabels[3]}</h6>

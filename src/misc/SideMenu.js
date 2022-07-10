@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Animated } from "react-animated-css";
 import { Button, Overlay } from "react-bootstrap";
-import ContinentStats from './ContinentStats';
-import './SideMenu.scss'
+import ContinentStats from '../components/ContinentStats';
+
 
   
 

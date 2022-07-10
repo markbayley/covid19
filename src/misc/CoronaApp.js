@@ -107,11 +107,7 @@ class CoronaApp extends Component {
           {" "}
         </ContinentMenus>
 
-        {/* <Overview></Overview>
-          <DataTable></DataTable>
-          <BarGraph></BarGraph>
-         
-          <ScatterGraph></ScatterGraph> */}
+    
       </main>
       // </Layout>
     );

@@ -6,7 +6,7 @@ import { Animated } from "react-animated-css";
 import { CONTINENT_URL } from "../api/api";
 import { Button } from "react-bootstrap";
 
-import SouthAmericaMenu from "./SouthAmericaMenu";
+import SouthAmericaMenu from "../components/SouthAmericaMenu";
 import Menu from "./Menu";
 import "./SideMenu.scss";
 

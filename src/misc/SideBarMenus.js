@@ -4,12 +4,12 @@ import { numberWithCommas } from "../utils/numberWithCommas";
 
 import { CONTINENT_URL } from "../api/api";
 import { Button } from "react-bootstrap";
-import AsiaMenu from "./AsiaMenu";
-import EuropeMenu from "./EuropeMenu";
-import AfricaMenu from "./AfricaMenu";
-import OceaniaMenu from "./OceaniaMenu";
-import NorthAmericaMenu from "./NorthAmericaMenu";
-import SouthAmericaMenu from "./SouthAmericaMenu";
+import AsiaMenu from "../components/AsiaMenu";
+import EuropeMenu from "../components/EuropeMenu";
+import AfricaMenu from "../components/AfricaMenu";
+import OceaniaMenu from "../components/OceaniaMenu";
+import NorthAmericaMenu from "../components/NorthAmericaMenu";
+import SouthAmericaMenu from "../components/SouthAmericaMenu";
 
 const SideBarMenus = ({
   toggleAsia,
