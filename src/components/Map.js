@@ -1,12 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "./Map.css";
-
-
 import { COUNTRY_URL } from "../api/api";
-
 import { numberWithCommas } from "../utils/numberWithCommas";
-
 
 
 mapboxgl.accessToken =
@@ -20,15 +16,22 @@ const Map = ({ toggleInfo }) => {
   const [zoom, setZoom] = useState(1.7);
 
   const [countries, setCountries] = useState([]);
-
+ 
   useEffect(() => {
+    const locations = [];
     async function fetchCountries() {
       try {
         const result = await fetch(COUNTRY_URL);
         const countries = await result.json();
         setCountries([...countries]);
-        // console.log("COUNTRIES", countries);
+     
 
+       
+
+        for (let i = 0; i < countries.length; i++) {
+          locations.push(String(countries[i].countryInfo[3, 4]))
+        }
+     
         countries.forEach((country) => {
           const location = [country.countryInfo.long, country.countryInfo.lat];
           const name = country.country;
@@ -36,8 +39,9 @@ const Map = ({ toggleInfo }) => {
           const active = country.active;
           const deaths = country.deaths;
           const flag = country.countryInfo.flag;
-
-          // console.log(location, country, "FLAG", flag);
+       
+        
+          console.log(location, country, "FLAG", flag);
 
           const popup = new mapboxgl.Popup({
             className: "popup",
@@ -56,9 +60,6 @@ const Map = ({ toggleInfo }) => {
             .setMaxWidth("100px")
             .addTo(map);
 
-
-
-
           // create a HTML element for each feature
           var el = document.createElement("div");
           el.className = "marker";
@@ -69,7 +70,7 @@ const Map = ({ toggleInfo }) => {
           new mapboxgl.Marker(el)
             .setLngLat([location[0], location[1]])
 
-
+          
             .setPopup(popup)
             .addTo(map);
         });
@@ -79,12 +80,19 @@ const Map = ({ toggleInfo }) => {
     }
     fetchCountries();
 
+   
+
     const map = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: "mapbox://styles/mapbox/dark-v10",
       center: [lng, lat],
       zoom: zoom,
     });
+
+
+
+
+    console.log(locations, 'locations')
 
     // filters for classifying earthquakes into five categories based on magnitude
     const mag1 = ['<', ['get', 'mag'], 2];
@@ -95,11 +103,14 @@ const Map = ({ toggleInfo }) => {
 
     // colors to use for the categories
     const colors = [
-      "#F26B38",
-      "#2F9599",
-      "purple",
-      "#A7226E",
-      "#EC2049",
+      "#ffa600",
+      "#ff6e54",
+      "#dd5182",
+      "#955196",
+      "#444e86",
+      "rgb(45, 182, 130)",
+      "rgb(212, 23, 83)",
+
     ];
 
     map.on('load', () => {
@@ -229,7 +240,7 @@ const Map = ({ toggleInfo }) => {
       const w = r * 2;
 
       let html = `<div>
-<svg width="${w}" height="${w}" viewbox="0 0 ${w} ${w}" text-anchor="middle" style="font: ${fontSize}px sans-serif; display: block">`;
+      <svg width="${w}" height="${w}" viewbox="0 0 ${w} ${w}" text-anchor="middle" style="font: ${fontSize}px sans-serif; display: block">`;
 
       for (let i = 0; i < counts.length; i++) {
         html += donutSegment(
@@ -241,11 +252,11 @@ const Map = ({ toggleInfo }) => {
         );
       }
       html += `<circle cx="${r}" cy="${r}" r="${r0}" fill="#212529" />
-<text dominant-baseline="central" transform="translate(${r}, ${r})" fill="grey">
-${total.toLocaleString()}
-</text>
-</svg>
-</div>`;
+      <text dominant-baseline="central" transform="translate(${r}, ${r})" fill="grey">
+      ${total.toLocaleString()}
+      </text>
+      </svg>
+      </div>`;
 
       const el = document.createElement('div');
       el.innerHTML = html;
@@ -353,7 +364,7 @@ ${total.toLocaleString()}
 
 
     // Add navigation control (the +/- zoom buttons)
-    map.addControl(new mapboxgl.NavigationControl(), "top-right");
+    // map.addControl(new mapboxgl.NavigationControl(), "top-right");
 
     map.on("move", () => {
       setLng(map.getCenter().lng.toFixed(4));
@@ -367,6 +378,7 @@ ${total.toLocaleString()}
   const getData = (key) => {
     return countries.map((country) => country[key]);
   };
+  
   const countryLabels = getData("country");
 
   const round = (value, precision) => {

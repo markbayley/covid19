@@ -1,7 +1,14 @@
+body {
+  overflow: hidden; 
+
+}
+
 p {
-  font-size: 16px;
-  padding: 0.5em 2em 0em 1.5em;
-  color: #fff;
+  font-size: 1.5rem;
+  /* padding: 0.5em 2em 0em 1.5em; */
+  color: #F26B38;
+  font-weight: 500;
+  margin: none;
 }
 
 a:hover {
@@ -10,18 +17,36 @@ a:hover {
   cursor: pointer !important;
 }
 
-h4,
-h5 {
-  padding: 1em 0em 0em 1em;
+h3 {
+  margin-bottom: 0.0rem !important;
+ 
 }
 
+.title {
+  font-size: 1.5rem;
+  color: turquoise;
+  /* justify-content: right; */
+  padding-left: 1rem;
+  padding-bottom: none;
+}
 
-svg {
-  display: inline-block;
-  vertical-align: middle;
-  max-height: 400px;
-  width: 100%;
-  padding: 0;
+.subtitle {
+  font-size: 1rem;
+  color: turquoise;
+  /* justify-content: center; */
+  /* border: 3px solid orange; */
+  /* border-radius: 15px;
+  border: 3px solid orange; */
+}
+
+.box {
+  border: 3px solid currentColor;
+  border-radius: 10px;
+  margin: .05rem;
+}
+
+.col {
+  max-width: 49% !important;
 }
 
 .grid {
@@ -33,16 +58,24 @@ svg {
 
 
 
+
+
+.asia:focus,
+.southamerica:focus,
+.europe:focus,
+.northamerica:focus,
+.oceania:focus,
+.africa:focus,
+.global:focus {
+  background: rgb(45, 182, 130) !important;
+  color: black !important;
+}
+
 .asia {
   display: block;
   position: absolute;
   background: #212529 !important;
   bottom: 15%;
-}
-
-.asia:focus, .southamerica:focus, .europe:focus, .northamerica:focus, .oceania:focus, .africa:focus, .global:focus {     
-  background: turquoise!important; 
-  color: black !important;   
 }
 
 .southamerica {
@@ -92,30 +125,28 @@ svg {
 .App-side {
   background-color: #282c34;
   opacity: 0.95;
-  height: 100vh;
-  width: 30vw;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  justify-content: flex-start;
+  height: 100vh; 
+  width: auto;
+
   font-size: calc(20px + 2.5vmin);
   color: rgb(45, 182, 130);
-  border: 1px solid cyan;
+  border: 1px solid turquoise;
   border-radius: 5px;
+
 }
 
 
-.App-side-button {}
 
 
 .button {
+ 
   height: 3.5rem;
   width: 6rem;
   z-index: 1;
 }
 
 .visible {
-  z-index: 110;
+  z-index: 10;
 }
 
 
@@ -124,15 +155,5 @@ svg {
 }
 
 
-.sidebarStyle {
-  display: inline-block;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  margin: 12px;
-  background-color: #404040;
-  color: #ffffff;
-  z-index: 1 !important;
-  padding: 6px;
-  font-size: 12px;
-}
+
+
