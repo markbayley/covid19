@@ -1,15 +1,15 @@
-.map-container {
+/* .map-container {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
 
-}
+} */
 
 
 
-.popup {
+/* .popup {
 
   width: auto;
   min-width: 120px;
@@ -17,18 +17,18 @@
   font-size: 1em;
 
 
-}
+} */
 
 
-.mapboxgl-popup-content {
+/* .mapboxgl-popup-content {
   background: #212529;
   color: grey;
   border: 1px solid cyan;
   
-}
+} */
 
 
-.marker {
+/* .marker {
   background-color: #212529;
   background-size: cover;
   height: 2.5em;
@@ -38,15 +38,15 @@
   border-radius: 50%;
   cursor: pointer;
   transition: .3s ease;
-}
+} */
 
 
-.marker:hover {
+/* .marker:hover {
   background-color: cyan;
   height: 4em;
   width: 4em;
   border: 13px solid rgb(65, 16, 16, 0.8);
-}
+} */
 
 
 

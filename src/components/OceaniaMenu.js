@@ -104,7 +104,7 @@ const OceaniaMenu = ({ state, toggleOceania }) => {
                         onClick={toggleOceania}
                         size="sm"
                        
-                        variant="info"
+                        variant="outline-info"
                         style={{ margin: "5px", padding: "0px 10px 3px 10px"}}
                       >
                         <Animated

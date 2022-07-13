@@ -3,8 +3,9 @@ import mapboxgl from "mapbox-gl";
 import useSWR from "swr";
 import lookup from "country-code-lookup";
 import "./Map2.scss";
-// Need mapbox css for tooltips later in the tutorial
+import "./Map.css";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { numberWithCommas } from "../utils/numberWithCommas";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoidHJib3QiLCJhIjoiY2s3NmFscm1xMTV0MDNmcXFyOWp1dGhieSJ9.tR2IMHDqBPOf_AeGjHOKFA";
@@ -49,7 +50,7 @@ function Map2() {
       const map = new mapboxgl.Map({
         container: mapboxElRef.current,
         style: "mapbox://styles/mapbox/dark-v10",
-        center: [-98, 37], // North America - intial geo location
+        center: [99, 20], // Asia - intial geo location
         zoom: 3 // initial zoom
       });
 
@@ -97,7 +98,8 @@ function Map2() {
             'cases3': ['+', ['case', cases3, 1, 0]],
             'cases4': ['+', ['case', cases4, 1, 0]],
             'cases5': ['+', ['case', cases5, 1, 0]]
-          }
+          },
+    
         });
 
 
@@ -123,6 +125,23 @@ function Map2() {
             ],
             'circle-opacity': 0.6,
             'circle-radius': 12
+            // "circle-radius": [
+            //     "interpolate",
+            //     ["linear"],
+            //     ["get", "cases"],
+            //     1,
+            //     min,
+            //     1000,
+            //     8,
+            //     average / 4,
+            //     10,
+            //     average / 2,
+            //     14,
+            //     average,
+            //     18,
+            //     max,
+            //     50
+            //   ],
           }
         });
         map.addLayer({
@@ -147,25 +166,39 @@ function Map2() {
               'white'
             ],
 
-            'circle-color': [
-                "interpolate",
-                ["linear"],
-                ["get", "cases"],
-                min,
-                "#ffffb2",
-                max / 32,
-                "#fed976",
-                max / 16,
-                "#feb24c",
-                max / 8,
-                "#fd8d3c",
-                max / 4,
-                "#fc4e2a",
-                max / 2,
-                "#e31a1c",
-                max,
-                "#b10026"
-              ]
+           
+
+            // 'circle-color': [
+            //     "interpolate",
+            //     ["linear"],
+            //     ["get", "cases"],
+            //     min,
+            //     "#ffffb2",
+            //     max / 32,
+            //     "#fed976",
+            //     max / 16,
+            //     "#feb24c",
+            //     max / 8,
+            //     "#fd8d3c",
+            //     max / 4,
+            //     "#fc4e2a",
+            //     max / 2,
+            //     "#e31a1c",
+            //     max,
+            //     "#b10026"
+            //   ],
+            //   "circle-opacity": 0.75,
+            //       "circle-stroke-width": [
+            //         "interpolate",
+            //         ["linear"],
+            //         ["get", "cases"],
+            //         1,
+            //         1,
+            //         max,
+            //         1.75
+            //       ],
+
+
           }
         });
   
@@ -233,7 +266,7 @@ function Map2() {
         const w = r * 2;
   
         let html = `<div>
-        <svg width="${w}" height="${w}" viewbox="0 0 ${w} ${w}" text-anchor="middle" style="font: ${fontSize}px sans-serif; display: block">`;
+        <svg class="zoom" width="${w}" height="${w}" viewbox="0 0 ${w} ${w}" text-anchor="middle" style="font: ${fontSize}px sans-serif; display: block">`;
   
         for (let i = 0; i < counts.length; i++) {
           html += donutSegment(
@@ -245,7 +278,7 @@ function Map2() {
           );
         }
         html += `<circle cx="${r}" cy="${r}" r="${r0}" fill="#212529" />
-        <text dominant-baseline="central" transform="translate(${r}, ${r})" fill="grey">
+        <text  dominant-baseline="central" transform="translate(${r}, ${r})" fill="grey">
         ${total.toLocaleString()}
         </text>
         </svg>
@@ -267,7 +300,7 @@ function Map2() {
         const largeArc = end - start > 0.5 ? 1 : 0;
   
         // draw an SVG path
-        return `<path d="M ${r + r0 * x0} ${r + r0 * y0} L ${r + r * x0} ${r + r * y0
+        return `<path  d="M ${r + r0 * x0} ${r + r0 * y0} L ${r + r * x0} ${r + r * y0
           } A ${r} ${r} 0 ${largeArc} 1 ${r + r * x1} ${r + r * y1} L ${r + r0 * x1
           } ${r + r0 * y1} A ${r0} ${r0} 0 ${largeArc} 0 ${r + r0 * x0} ${r + r0 * y0
           }" fill="${color}" />`;
@@ -294,14 +327,14 @@ function Map2() {
 
 
       // Add navigation controls to the top right of the canvas
-      map.addControl(new mapboxgl.NavigationControl());
+    //   map.addControl(new mapboxgl.NavigationControl());
 
-      // Add navigation to center the map on your geo location
-      map.addControl(
-        new mapboxgl.GeolocateControl({
-          fitBoundsOptions: { maxZoom: 6 }
-        })
-      );
+    //   // Add navigation to center the map on your geo location
+    //   map.addControl(
+    //     new mapboxgl.GeolocateControl({
+    //       fitBoundsOptions: { maxZoom: 6 }
+    //     })
+    //   );
 
 
 
@@ -311,38 +344,38 @@ function Map2() {
        
 
         // Add our layer
-        map.addLayer({
-          id: "circles",
-          source: "points", // this should be the id of source
-          type: "circle",
-          paint: {
-            "circle-opacity": 0.75,
-            "circle-stroke-width": [
-              "interpolate",
-              ["linear"],
-              ["get", "cases"],
-              1,
-              1,
-              max,
-              1.75
-            ],
-            "circle-radius": [
-              "interpolate",
-              ["linear"],
-              ["get", "cases"],
-              1,
-              min,
-              1000,
-              8,
-              average / 4,
-              10,
-              average / 2,
-              14,
-              average,
-              18,
-              max,
-              50
-            ],
+        // map.addLayer({
+        //   id: "circles",
+        //   source: "points", // this should be the id of source
+        //   type: "circle",
+        //   paint: {
+        //     "circle-opacity": 0.75,
+        //     "circle-stroke-width": [
+        //       "interpolate",
+        //       ["linear"],
+        //       ["get", "cases"],
+        //       1,
+        //       1,
+        //       max,
+        //       1.75
+        //     ],
+            // "circle-radius": [
+            //   "interpolate",
+            //   ["linear"],
+            //   ["get", "cases"],
+            //   1,
+            //   min,
+            //   1000,
+            //   8,
+            //   average / 4,
+            //   10,
+            //   average / 2,
+            //   14,
+            //   average,
+            //   18,
+            //   max,
+            //   50
+            // ],
             // "circle-color": [
             //     "interpolate",
             //     ["linear"],
@@ -362,8 +395,8 @@ function Map2() {
             //     max,
             //     "#b10026"
             //   ]
-          }
-        });
+        //   }
+        // });
 
 
       
@@ -403,7 +436,7 @@ function Map2() {
             const countryISO =
               lookup.byCountry(country)?.iso2 ||
               lookup.byInternet(country)?.iso2;
-            const countryFlag = `https://raw.githubusercontent.com/stefangabos/world_countries/master/data/flags/64x64/${countryISO}.png`;
+            const countryFlag = `https://raw.githubusercontent.com/stefangabos/world_countries/master/data/flags/64x64/${countryISO?.toLowerCase()}.png`;
             const provinceHTML =
               province !== "null" ? `<p>Province: <b>${province}</b></p>` : "";
             const mortalityRate = ((deaths / cases) * 100).toFixed(2);
@@ -413,8 +446,8 @@ function Map2() {
 
             const HTML = `<p>Country: <b>${country}</b></p>
                 ${provinceHTML}
-                <p>Cases: <b>${cases}</b></p>
-                <p>Deaths: <b>${deaths}</b></p>
+                <p>Cases: <b>${numberWithCommas(cases)}</b></p>
+                <p>Deaths: <b>${numberWithCommas(deaths)}</b></p>
                 <p>Mortality Rate: <b>${mortalityRate}%</b></p>
                 ${countryFlagHTML}`;
 
@@ -435,7 +468,68 @@ function Map2() {
           popup.remove();
         });
 
+        map.doubleClickZoom.enable();
 
+        document.getElementById("africa").addEventListener("click", function () {
+            map.flyTo({
+              zoom: 3,
+              center: [3.2, 1.8],
+              essential: true,
+            });
+          });
+        
+          document.getElementById("europe").addEventListener("click", function () {
+            map.flyTo({
+              zoom: 4,
+              center: [6, 47],
+              essential: true,
+            });
+          });
+        
+          document
+            .getElementById("northamerica")
+            .addEventListener("click", function () {
+              map.flyTo({
+                zoom: 3,
+                center: [-120, 45],
+                essential: true,
+              });
+            });
+        
+          document
+            .getElementById("southamerica")
+            .addEventListener("click", function () {
+              map.flyTo({
+                zoom: 3.5,
+                center: [-74, -4],
+                essential: true,
+              });
+            });
+        
+          document.getElementById("asia").addEventListener("click", function () {
+            map.flyTo({
+              zoom: 3.1,
+              center: [100, 17],
+              essential: true,
+            });
+          });
+        
+          document.getElementById("oceania").addEventListener("click", function () {
+            map.flyTo({
+              zoom: 3.7,
+              center: [131, -28],
+              essential: true,
+            });
+          });
+        
+          document.getElementById("global").addEventListener("click", function () {
+            map.flyTo({
+              zoom: 1.7,
+              center: [0, 20],
+              essential: true,
+            });
+          });
+        
 
 
 
@@ -444,11 +538,19 @@ function Map2() {
   }, [data]);
 
 
+
+
+ 
+
+  
+
+
   return (
     <div className="App">
-      <div className="mapContainer">
+      <div className="mapContainer" >
+       
         {/* Mapbox Container */}
-        <div className="mapBox" ref={mapboxElRef} />
+        <div className="mapBox" ref={mapboxElRef}  />
       </div>
     </div>
   );

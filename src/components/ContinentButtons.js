@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { CONTINENT_URL } from "../api/api";
 import { Button } from "react-bootstrap";
 
-const ContinentStats = ({toggleAsia, toggleEurope, toggleOceania, toggleNorthAmerica, toggleSouthAmerica, toggleAfrica, toggleGlobal}) => {
+const ContinentButtons = ({toggleAsia, toggleEurope, toggleOceania, toggleNorthAmerica, toggleSouthAmerica, toggleAfrica, toggleGlobal}) => {
 
 
   const [continents, setContinents] = useState([]);
@@ -243,5 +243,5 @@ const ContinentStats = ({toggleAsia, toggleEurope, toggleOceania, toggleNorthAme
   );
 };
 
-export default ContinentStats;
+export default ContinentButtons;
 

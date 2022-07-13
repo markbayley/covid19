@@ -1,11 +1,10 @@
-body {
+/* body {
   overflow: hidden; 
 
-}
+} */
 
-p {
+/* p {
   font-size: 1.5rem;
-  /* padding: 0.5em 2em 0em 1.5em; */
   color: #F26B38;
   font-weight: 500;
   margin: none;
@@ -15,17 +14,16 @@ a:hover {
   text-decoration: none !important;
   color: orangered !important;
   cursor: pointer !important;
-}
+} */
+
 
 h3 {
   margin-bottom: 0.0rem !important;
- 
 }
 
 .title {
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   color: turquoise;
-  /* justify-content: right; */
   padding-left: 1rem;
   padding-bottom: none;
 }
@@ -33,17 +31,13 @@ h3 {
 .subtitle {
   font-size: 1rem;
   color: turquoise;
-  /* justify-content: center; */
-  /* border: 3px solid orange; */
-  /* border-radius: 15px;
-  border: 3px solid orange; */
 }
 
 .box {
   border: 3px solid currentColor;
   border-radius: 10px;
   margin: .05rem;
-}
+} 
 
 .col {
   max-width: 49% !important;
@@ -51,11 +45,54 @@ h3 {
 
 .grid {
   width: 100%;
-  height: 100vh;
+  height: 0vh;
   display: flex;
   flex-wrap: wrap;
+ 
 }
 
+
+.App-side {
+  background-color: #282c34;
+  z-index: 11 !important;
+
+  opacity: 0.95;
+  height: 100vh;  
+  width: 100vw; 
+
+  font-size: calc(20px + 2.5vmin);
+  color: rgb(45, 182, 130);
+  border: 1px solid turquoise;
+  border-radius: 5px;
+}
+
+
+@media only screen and (min-width: 900px) {
+  .App-side {
+    width: 25vw;
+   
+    /* height: auto; */
+  }
+}
+
+.button {
+  height: 3.5rem;
+  width: 6rem;
+  z-index: 1;
+}
+
+.button:hover {
+  background-color: rgb(31, 174, 160) !important;
+}
+
+.visible {
+  z-index: 10;
+}
+
+
+.hidden {
+  display: none;
+}
 
 
 
@@ -76,6 +113,7 @@ h3 {
   position: absolute;
   background: #212529 !important;
   bottom: 15%;
+  margin-left: 30px;
 }
 
 .southamerica {
@@ -83,6 +121,7 @@ h3 {
   position: absolute;
   background: #212529 !important;
   bottom: 25%;
+  margin-left: 30px;
 }
 
 .europe {
@@ -90,6 +129,7 @@ h3 {
   position: absolute;
   background: #212529 !important;
   bottom: 35%;
+  margin-left: 30px;
 }
 
 .africa {
@@ -97,6 +137,7 @@ h3 {
   position: absolute;
   background: #212529 !important;
   bottom: 45%;
+  margin-left: 30px;
 }
 
 .oceania {
@@ -104,6 +145,7 @@ h3 {
   position: absolute;
   background: #212529 !important;
   bottom: 55%;
+  margin-left: 30px;
 }
 
 .northamerica {
@@ -111,6 +153,8 @@ h3 {
   position: absolute;
   background: #212529 !important;
   bottom: 65%;
+  margin-left: 30px;
+
 }
 
 .global {
@@ -118,41 +162,11 @@ h3 {
   position: absolute;
   background: #212529 !important;
   bottom: 75%;
+  margin-left: 30px;
 }
 
 
 
-.App-side {
-  background-color: #282c34;
-  opacity: 0.95;
-  height: 100vh; 
-  width: auto;
-
-  font-size: calc(20px + 2.5vmin);
-  color: rgb(45, 182, 130);
-  border: 1px solid turquoise;
-  border-radius: 5px;
-
-}
-
-
-
-
-.button {
- 
-  height: 3.5rem;
-  width: 6rem;
-  z-index: 1;
-}
-
-.visible {
-  z-index: 10;
-}
-
-
-.hidden {
-  display: none;
-}
 
 
 

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import "./App.css";
-import ContinentStats from "./components/ContinentStats";
-import Map from './components/Map';
+
+import ContinentButtons from "./components/ContinentButtons";
+import Map2 from './components/Map2';
 import AsiaMenu from "./components/AsiaMenu";
 import EuropeMenu from "./components/EuropeMenu";
 import AfricaMenu from "./components/AfricaMenu";
@@ -9,12 +9,10 @@ import OceaniaMenu from "./components/OceaniaMenu";
 import NorthAmericaMenu from "./components/NorthAmericaMenu";
 import SouthAmericaMenu from "./components/SouthAmericaMenu";
 import GlobalMenu from "./components/GlobalMenu";
-
+import "./App.css";
 
 let initialState = {
   visible: true,
-  info: false,
-  facts: false,
   asia: false,
   northamerica: false,
   southamerica: false,
@@ -44,26 +42,6 @@ class App extends Component {
     });
   };
 
-  toggleFacts = () => {
-    this.setState({
-      ...initialState,
-      facts: !this.state.facts,
-    });
-  };
-
-  toggleInfo = () => {
-    this.setState({
-      ...initialState,
-      info: !this.state.info,
-    });
-  };
-
-  toggleRegion = () => {
-    this.setState({
-      ...initialState,
-      india: !this.state.india,
-    });
-  };
 
   toggleAsia = () => {
     this.setState({
@@ -119,8 +97,7 @@ class App extends Component {
 
     return (
       <>
-        <Map />
-        <ContinentStats
+                    <ContinentButtons 
           toggleGlobal={this.toggleGlobal}
           toggleAsia={this.toggleAsia}
           toggleOceania={this.toggleOceania}
@@ -129,9 +106,9 @@ class App extends Component {
           toggleNorthAmerica={this.toggleNorthAmerica}
           toggleSouthAmerica={this.toggleSouthAmerica}
         />
-
+     
         <div className="map">
-          <div className="grid">
+         <div className="grid"> 
             <AsiaMenu
               state={this.state.asia}
               toggleAsia={this.toggleAsia}
@@ -161,9 +138,12 @@ class App extends Component {
               state={this.state.global}
               toggleGlobal={this.toggleGlobal}
             />
-
-          </div>
-        </div>
+         </div>
+        </div> 
+ 
+      
+      <Map2 />
+         
       </>
     );
   }

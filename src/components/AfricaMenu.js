@@ -34,9 +34,9 @@ const AfricaMenu = ({ state, toggleAfrica }) => {
   };
 
   const population = getContinents("population");
- 
+
   const casesMillion = getContinents("casesPerOneMillion");
- 
+
   const activeMillion = getContinents("activePerOneMillion");
 
   const criticalMillion = getContinents("criticalPerOneMillion");
@@ -44,7 +44,7 @@ const AfricaMenu = ({ state, toggleAfrica }) => {
   const deathsMillion = getContinents("deathsPerOneMillion");
 
   const testsMillion = getContinents("testsPerOneMillion");
- 
+
   const tests = getContinents("tests");
 
 
@@ -62,7 +62,7 @@ const AfricaMenu = ({ state, toggleAfrica }) => {
 
         const countries = await res.json();
         setCountries([...countries]);
-     
+
 
         for (let i = 0; i < countries.length; i++) {
           countryNames.push(String(countries[i].country))
@@ -88,170 +88,170 @@ const AfricaMenu = ({ state, toggleAfrica }) => {
 
 
   return (
-      <div className={state ? "visible" : "hidden"}>
-        <Animated
-          animationIn="fadeInLeft"
-          animationOut="fadeOut"
-          isVisible={true}
-        >
-          <div className="App-side">
-            <div className={!state ? "hidden" : "visible"}>
-              <Container>
-                <Row className="title" >
-                  <Col className="px-0">Africa</Col>
-                  <Col className="App-side-close px-0">
-                    <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                      <Button
-                        onClick={toggleAfrica}
-                        size="sm"
-                       
-                        variant="info"
-                        style={{ margin: "5px", padding: "0px 10px 3px 10px"}}
+    <div className={state ? "visible" : "hidden"}>
+      <Animated
+        animationIn="fadeInLeft"
+        animationOut="fadeOut"
+        isVisible={true}
+      >
+        <div className="App-side">
+          <div className={!state ? "hidden" : "visible"}>
+            <Container>
+              <Row className="title" >
+                <Col className="px-0">Africa</Col>
+                <Col className="App-side-close px-0">
+                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <Button
+                      onClick={toggleAfrica}
+                      size="sm"
+
+                      variant="outline-info"
+                      style={{ margin: "5px", padding: "0px 10px 3px 10px" }}
+                    >
+                      <Animated
+                        animationIn="fadeInDown"
+                        animationOut="fadeOut"
+                        isVisible={true}
                       >
-                        <Animated
-                          animationIn="fadeInDown"
-                          animationOut="fadeOut"
-                          isVisible={true}
-                        >
-                          <div>x</div>
-                        </Animated>
-                      </Button>
-                      </div>
-                      </Col>
-                </Row>
+                        <div>x</div>
+                      </Animated>
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
 
-                <Row >
-                  <Col className="pr-0">
-                    <HorizontalBar
-                      height={800}
-                      width={200}
-                      options={{
-                        legend: {
-                          display: false,
-                          position: ''
+              <Row >
+                <Col className="pr-0">
+                  <HorizontalBar
+                    height={800}
+                    width={200}
+                    options={{
+                      legend: {
+                        display: false,
+                        position: ''
+                      }
+                    }}
+                    data={{
+                      labels: countryNames,
+                      datasets: [
+                        {
+                          label: "",
+                          data: casesPerOneMillion,
+                          backgroundColor: colors,
                         }
-                      }}
-                      data={{
-                        labels: countryNames,
-                        datasets: [
-                          {
-                            label: "",
-                            data: casesPerOneMillion,
-                            backgroundColor: colors,
-                          }
-                        ]
-                      }}
-                    />
-                  </Col>
+                      ]
+                    }}
+                  />
+                </Col>
 
-                  <Col >
-                    <Row className="subtitle">
-                      <Col className="box" style={{ color: "#ffa600" }}>Pop <h3>{numberWithCommas((population[5] / 1000000000).toFixed(2))}</h3>billion</Col>
-                      <Col className="box" style={{ color: "#ff6e54" }}>Cases<h3>{(casesMillion[5] / 1000).toFixed(2)}</h3><div >/1000</div></Col>
-                    </Row>
-                    <Row className="subtitle">
-                      <Col className="box" style={{ color: "#dd5182" }}>Active<h3>{(activeMillion[5] / 1000).toFixed(1)}</h3><div >/1000</div></Col>
-                      <Col className="box" style={{ color: "#955196" }}>Critical<h3>{(criticalMillion[5] / 1000).toFixed(2)}</h3><div >/1000</div></Col>
+                <Col >
+                  <Row className="subtitle">
+                    <Col className="box" style={{ color: "#ffa600" }}>Pop <h3>{numberWithCommas((population[5] / 1000000000).toFixed(2))}</h3>billion</Col>
+                    <Col className="box" style={{ color: "#ff6e54" }}>Cases<h3>{(casesMillion[5] / 1000).toFixed(2)}</h3><div >/1000</div></Col>
+                  </Row>
+                  <Row className="subtitle">
+                    <Col className="box" style={{ color: "#dd5182" }}>Active<h3>{(activeMillion[5] / 1000).toFixed(1)}</h3><div >/1000</div></Col>
+                    <Col className="box" style={{ color: "#955196" }}>Critical<h3>{(criticalMillion[5] / 1000).toFixed(2)}</h3><div >/1000</div></Col>
 
-                    </Row>
-                    <Row className="subtitle">
-                      <Col className="box" style={{ color: "#444e86" }}>Deaths<h3>{(deathsMillion[5] / 1000).toFixed(2)}</h3><div >/1000</div></Col>
-                      <Col className="box" style={{ color: "rgb(45, 182, 130)"}}>Tests<h3>{(tests[5] / population[5]).toFixed(2)}</h3><div >/person</div></Col>
-                    </Row>
+                  </Row>
+                  <Row className="subtitle">
+                    <Col className="box" style={{ color: "#444e86" }}>Deaths<h3>{(deathsMillion[5] / 1000).toFixed(2)}</h3><div >/1000</div></Col>
+                    <Col className="box" style={{ color: "rgb(45, 182, 130)" }}>Tests<h3>{(tests[5] / population[5]).toFixed(2)}</h3><div >/person</div></Col>
+                  </Row>
 
-                    <Doughnut
-                      width={130}
-                      options={{
-                        // maintainAspectRatio: true,
-                        title: {
-                          display: true,
-                          text: 'Deaths per million',
-                          fontSize: 13
-                        },
-                        elements: {
-                          arc: {
-                            borderWidth: 0
-                          }
-                        },
-                        legend: {
-                          display: false,
-                          position: ''
+                  <Doughnut
+                    width={130}
+                    options={{
+                      // maintainAspectRatio: true,
+                      title: {
+                        display: true,
+                        text: 'Deaths per million',
+                        fontSize: 13
+                      },
+                      elements: {
+                        arc: {
+                          borderWidth: 0
                         }
-                      }}
-                      data={{
-                        labels: ["Population", "Tests", "Cases", "Active", "Critical", "Deaths"],
-                        datasets: [
-                          {
-                            data: deathsMillion,
-                            backgroundColor: colorsPie,
-                          }
-                        ]
-                      }}
-                    />
-
-                    <Doughnut
-                      width={130}
-                      options={{
-                        // maintainAspectRatio: true,
-                        title: {
-                          display: true,
-                          text: 'Deaths per million',
-                          fontSize: 13
-                        },
-                        elements: {
-                          arc: {
-                            borderWidth: 0
-                          }
-                        },
-                        legend: {
-                          display: false,
-                          position: ''
+                      },
+                      legend: {
+                        display: false,
+                        position: ''
+                      }
+                    }}
+                    data={{
+                      labels: ["Population", "Tests", "Cases", "Active", "Critical", "Deaths"],
+                      datasets: [
+                        {
+                          data: deathsMillion,
+                          backgroundColor: colorsPie,
                         }
-                      }}
-                      data={{
-                        labels: ["Population", "Tests", "Cases", "Active", "Critical", "Deaths"],
-                        datasets: [
-                          {
-                            data: deathsMillion,
-                            backgroundColor: colorsPie,
-                          }
-                        ]
-                      }}
-                    />
+                      ]
+                    }}
+                  />
 
-                    <HorizontalBar
-                      width={250}
-                      height={100}
-                      options={{
-
-                        title: {
-                          display: true,
-                          text: 'Deaths per age',
-                          fontSize: 13
-                        },
-                        legend: {
-                          display: false,
-                          position: ''
+                  <Doughnut
+                    width={130}
+                    options={{
+                      // maintainAspectRatio: true,
+                      title: {
+                        display: true,
+                        text: 'Deaths per million',
+                        fontSize: 13
+                      },
+                      elements: {
+                        arc: {
+                          borderWidth: 0
                         }
-                      }}
-                      data={{
-                        labels: ["Pop", "Tests", "Cases"],
-                        datasets: [
-                          {
-                            label: "",
-                            data: [100, 40, 50],
-                            backgroundColor: colorsPie,
-                          }
-                        ]
-                      }}
-                    />
-                  </Col>
-                </Row>
-              </Container>
-            </div>
+                      },
+                      legend: {
+                        display: false,
+                        position: ''
+                      }
+                    }}
+                    data={{
+                      labels: ["Population", "Tests", "Cases", "Active", "Critical", "Deaths"],
+                      datasets: [
+                        {
+                          data: deathsMillion,
+                          backgroundColor: colorsPie,
+                        }
+                      ]
+                    }}
+                  />
+
+                  <HorizontalBar
+                    width={250}
+                    height={100}
+                    options={{
+
+                      title: {
+                        display: true,
+                        text: 'Deaths per age',
+                        fontSize: 13
+                      },
+                      legend: {
+                        display: false,
+                        position: ''
+                      }
+                    }}
+                    data={{
+                      labels: ["Pop", "Tests", "Cases"],
+                      datasets: [
+                        {
+                          label: "",
+                          data: [100, 40, 50],
+                          backgroundColor: colorsPie,
+                        }
+                      ]
+                    }}
+                  />
+                </Col>
+              </Row>
+            </Container>
           </div>
-        </Animated>
-      </div>
+        </div>
+      </Animated>
+    </div>
   );
 };
 

@@ -104,7 +104,7 @@ const NorthAmericaMenu = ({ state, toggleNorthAmerica }) => {
                         onClick={toggleNorthAmerica}
                         size="sm"
                        
-                        variant="info"
+                        variant="outline-info"
                         style={{ margin: "5px", padding: "0px 10px 3px 10px"}}
                       >
                         <Animated
