@@ -9,7 +9,7 @@ import { Pie, Doughnut, Bar, HorizontalBar } from "react-chartjs-2";
 
 
 
-const GlobalMenu = ({ state, toggleGlobal }) => {
+const ContinentSidebar = ({ state, toggleGlobal }) => {
 
   const [continents, setContinents] = useState([]);
 
@@ -158,12 +158,12 @@ const GlobalMenu = ({ state, toggleGlobal }) => {
                     </Row>
 
                     <Doughnut
-                      width={140}
+                      width={130}
                       options={{
                         // maintainAspectRatio: true,
                         title: {
                           display: true,
-                          text: 'Deaths per million',
+                          text: 'Cases per million',
                           fontSize: 13
                         },
                         elements: {
@@ -188,7 +188,7 @@ const GlobalMenu = ({ state, toggleGlobal }) => {
                     />
 
                     <Doughnut
-                      width={140}
+                      width={130}
                       options={{
                         // maintainAspectRatio: true,
                         title: {
@@ -219,7 +219,7 @@ const GlobalMenu = ({ state, toggleGlobal }) => {
 
                     <HorizontalBar
                       width={250}
-                      height={250}
+                      height={100}
                       options={{
 
                         title: {
@@ -254,73 +254,11 @@ const GlobalMenu = ({ state, toggleGlobal }) => {
 };
 
 
-export default GlobalMenu;
+export default ContinentSidebar;
 
 
 let colors = [
-
-  // "#2F9599",
-  // "#2F9599",
-  // "#2F9599",
-  // "#2F9599",
-  // "#2F9599",
   "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-
-
 ];
 
 let colorsPie = [
@@ -329,19 +267,7 @@ let colorsPie = [
   "#dd5182",
   "#955196",
   "#444e86",
-
-
   "rgb(212, 23, 83)",
-
-
-
-  // "#003f5c",
-  // "#A7226E",
-  // "#EC2049",
-  // "#F26B38",
-  // "#F7DB4F",
-  // "#2F9599",
-  // "purple",
 ]
 
 

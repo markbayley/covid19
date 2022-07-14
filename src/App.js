@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import ContinentButtons from "./components/ContinentButtons";
 import Map2 from './components/Map2';
 import AsiaMenu from "./components/AsiaMenu";
@@ -23,68 +22,58 @@ let initialState = {
 };
 
 class App extends Component {
+
   state = {
     ...initialState,
   };
-
-
   // Set state to default state
   setDefaultState = () => {
     this.setState({
       ...initialState,
     });
   };
-
   toggleMap = () => {
     this.setState({
       ...initialState,
       visible: !this.state.visible,
     });
   };
-
-
   toggleAsia = () => {
     this.setState({
       ...initialState,
       asia: !this.state.asia,
     });
   };
-
   toggleOceania = () => {
     this.setState({
       ...initialState,
       oceania: !this.state.oceania,
     });
   };
-
   toggleEurope = () => {
     this.setState({
       ...initialState,
       europe: !this.state.europe,
     });
   };
-
   toggleAfrica = () => {
     this.setState({
       ...initialState,
       africa: !this.state.africa,
     });
   };
-
   toggleSouthAmerica = () => {
     this.setState({
       ...initialState,
       southamerica: !this.state.southamerica,
     });
   };
-
   toggleNorthAmerica = () => {
     this.setState({
       ...initialState,
       northamerica: !this.state.northamerica,
     });
   };
-
   toggleGlobal = () => {
     this.setState({
       ...initialState,
@@ -92,12 +81,17 @@ class App extends Component {
     });
   };
 
+  toggleContinents = () => {
+    this.setState({
+      ...initialState,
+      continents: !this.state.continent,
+    });
+  };
 
   render() {
-
     return (
       <>
-                    <ContinentButtons 
+        <ContinentButtons
           toggleGlobal={this.toggleGlobal}
           toggleAsia={this.toggleAsia}
           toggleOceania={this.toggleOceania}
@@ -106,13 +100,11 @@ class App extends Component {
           toggleNorthAmerica={this.toggleNorthAmerica}
           toggleSouthAmerica={this.toggleSouthAmerica}
         />
-     
         <div className="map">
-         <div className="grid"> 
+          <div className="grid">
             <AsiaMenu
               state={this.state.asia}
               toggleAsia={this.toggleAsia}
-              name="Asia"
             />
             <EuropeMenu
               state={this.state.europe}
@@ -138,12 +130,9 @@ class App extends Component {
               state={this.state.global}
               toggleGlobal={this.toggleGlobal}
             />
-         </div>
-        </div> 
- 
-      
-      <Map2 />
-         
+          </div>
+        </div>
+        <Map2 />
       </>
     );
   }

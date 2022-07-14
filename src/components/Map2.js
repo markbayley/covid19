@@ -59,35 +59,41 @@ function Map2() {
 
 
 
-      
 
-     //DOUGHNUT START     
+
+      //DOUGHNUT START     
       // filters for classifying earthquakes into five categories based on magnitude
       const cases1 = ['<', ['get', 'cases'], 10000];
       const cases2 = ['all', ['>=', ['get', 'cases'], 2], ['<', ['get', 'cases'], 100000]];
       const cases3 = ['all', ['>=', ['get', 'cases'], 3], ['<', ['get', 'cases'], 250000]];
       const cases4 = ['all', ['>=', ['get', 'cases'], 4], ['<', ['get', 'cases'], 500000]];
       const cases5 = ['>=', ['get', 'cases'], 1000000];
-  
+
       // colors to use for the categories
       const colors = [
+      
+        
+       
+       
+        "#444e86",
+        "#955196",
         "#ffa600",
         "#ff6e54",
+      
         "#dd5182",
-        "#955196",
-        "#444e86",
-        "rgb(45, 182, 130)",
         "rgb(212, 23, 83)",
-  
+        "rgb(45, 182, 130)",
+       
+
       ];
-  
+
       map.on('load', () => {
         // add a clustered GeoJSON source for a sample set of earthquakes
         map.addSource('points', {
           'type': 'geojson',
           'data': {
             type: "FeatureCollection",
-              features: data
+            features: data
           },
           'cluster': true,
           'clusterRadius': 50,
@@ -99,11 +105,11 @@ function Map2() {
             'cases4': ['+', ['case', cases4, 1, 0]],
             'cases5': ['+', ['case', cases5, 1, 0]]
           },
-    
+
         });
 
 
-  
+
         // circle and symbol layers for rendering individual earthquakes (unclustered points)
         map.addLayer({
           'id': 'circles',
@@ -166,7 +172,7 @@ function Map2() {
               'white'
             ],
 
-           
+
 
             // 'circle-color': [
             //     "interpolate",
@@ -201,15 +207,15 @@ function Map2() {
 
           }
         });
-  
+
         // objects for caching and keeping track of HTML marker objects (for performance)
         const markers = {};
         let markersOnScreen = {};
-  
+
         function updateMarkers() {
           const newMarkers = {};
           const features = map.querySourceFeatures('points');
-  
+
           // for every cluster on the screen, create an HTML marker for it (if we didn't yet),
           // and add it to the map if it's not there already
           for (const feature of features) {
@@ -217,7 +223,7 @@ function Map2() {
             const props = feature.properties;
             if (!props.cluster) continue;
             const id = props.cluster_id;
-  
+
             let marker = markers[id];
             if (!marker) {
               const el = createDonutChart(props);
@@ -226,7 +232,7 @@ function Map2() {
               }).setLngLat(coords);
             }
             newMarkers[id] = marker;
-  
+
             if (!markersOnScreen[id]) marker.addTo(map);
           }
           // for every marker we've added previously, remove those that are no longer visible
@@ -235,14 +241,14 @@ function Map2() {
           }
           markersOnScreen = newMarkers;
         }
-  
+
         // after the GeoJSON data is loaded, update markers on the screen on every frame
         map.on('render', () => {
           if (!map.isSourceLoaded('points')) return;
           updateMarkers();
         });
       });
-  
+
       // code for creating an SVG donut chart from feature properties
       function createDonutChart(props) {
         const offsets = [];
@@ -264,10 +270,10 @@ function Map2() {
           total >= 1000 ? 50 : total >= 100 ? 32 : total >= 10 ? 24 : 18;
         const r0 = Math.round(r * 0.6);
         const w = r * 2;
-  
+
         let html = `<div>
         <svg class="zoom" width="${w}" height="${w}" viewbox="0 0 ${w} ${w}" text-anchor="middle" style="font: ${fontSize}px sans-serif; display: block">`;
-  
+
         for (let i = 0; i < counts.length; i++) {
           html += donutSegment(
             offsets[i] / total,
@@ -283,12 +289,12 @@ function Map2() {
         </text>
         </svg>
         </div>`;
-  
+
         const el = document.createElement('div');
         el.innerHTML = html;
         return el.firstChild;
       }
-  
+
       function donutSegment(start, end, r, r0, color) {
         if (end - start === 1) end -= 0.00001;
         const a0 = 2 * Math.PI * (start - 0.25);
@@ -298,14 +304,14 @@ function Map2() {
         const x1 = Math.cos(a1),
           y1 = Math.sin(a1);
         const largeArc = end - start > 0.5 ? 1 : 0;
-  
+
         // draw an SVG path
         return `<path  d="M ${r + r0 * x0} ${r + r0 * y0} L ${r + r * x0} ${r + r * y0
           } A ${r} ${r} 0 ${largeArc} 1 ${r + r * x1} ${r + r * y1} L ${r + r0 * x1
           } ${r + r0 * y1} A ${r0} ${r0} 0 ${largeArc} 0 ${r + r0 * x0} ${r + r0 * y0
           }" fill="${color}" />`;
       }
-  
+
       // inspect a cluster on click
       map.on('click', 'clusters', function (e) {
         var features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
@@ -313,35 +319,35 @@ function Map2() {
         map.getSource('points').getClusterExpansionZoom(clusterId, function (err, zoom) {
           if (err)
             return;
-  
+
           map.easeTo({
             center: features[0].geometry.coordinates,
             zoom: zoom
           });
         });
       });
-     // DOUGHNUT END
-  
+      // DOUGHNUT END
+
 
 
 
 
       // Add navigation controls to the top right of the canvas
-    //   map.addControl(new mapboxgl.NavigationControl());
+      //   map.addControl(new mapboxgl.NavigationControl());
 
-    //   // Add navigation to center the map on your geo location
-    //   map.addControl(
-    //     new mapboxgl.GeolocateControl({
-    //       fitBoundsOptions: { maxZoom: 6 }
-    //     })
-    //   );
+      //   // Add navigation to center the map on your geo location
+      //   map.addControl(
+      //     new mapboxgl.GeolocateControl({
+      //       fitBoundsOptions: { maxZoom: 6 }
+      //     })
+      //   );
 
 
 
       //CIRCLES
       map.once("load", function () {
         // Add our SOURCE
-       
+
 
         // Add our layer
         // map.addLayer({
@@ -359,50 +365,50 @@ function Map2() {
         //       max,
         //       1.75
         //     ],
-            // "circle-radius": [
-            //   "interpolate",
-            //   ["linear"],
-            //   ["get", "cases"],
-            //   1,
-            //   min,
-            //   1000,
-            //   8,
-            //   average / 4,
-            //   10,
-            //   average / 2,
-            //   14,
-            //   average,
-            //   18,
-            //   max,
-            //   50
-            // ],
-            // "circle-color": [
-            //     "interpolate",
-            //     ["linear"],
-            //     ["get", "cases"],
-            //     min,
-            //     "#ffffb2",
-            //     max / 32,
-            //     "#fed976",
-            //     max / 16,
-            //     "#feb24c",
-            //     max / 8,
-            //     "#fd8d3c",
-            //     max / 4,
-            //     "#fc4e2a",
-            //     max / 2,
-            //     "#e31a1c",
-            //     max,
-            //     "#b10026"
-            //   ]
+        // "circle-radius": [
+        //   "interpolate",
+        //   ["linear"],
+        //   ["get", "cases"],
+        //   1,
+        //   min,
+        //   1000,
+        //   8,
+        //   average / 4,
+        //   10,
+        //   average / 2,
+        //   14,
+        //   average,
+        //   18,
+        //   max,
+        //   50
+        // ],
+        // "circle-color": [
+        //     "interpolate",
+        //     ["linear"],
+        //     ["get", "cases"],
+        //     min,
+        //     "#ffffb2",
+        //     max / 32,
+        //     "#fed976",
+        //     max / 16,
+        //     "#feb24c",
+        //     max / 8,
+        //     "#fd8d3c",
+        //     max / 4,
+        //     "#fc4e2a",
+        //     max / 2,
+        //     "#e31a1c",
+        //     max,
+        //     "#b10026"
+        //   ]
         //   }
         // });
 
 
-      
 
-       
-    
+
+
+
 
 
 
@@ -471,65 +477,65 @@ function Map2() {
         map.doubleClickZoom.enable();
 
         document.getElementById("africa").addEventListener("click", function () {
+          map.flyTo({
+            zoom: 3,
+            center: [3.2, 1.8],
+            essential: true,
+          });
+        });
+
+        document.getElementById("europe").addEventListener("click", function () {
+          map.flyTo({
+            zoom: 4,
+            center: [6, 47],
+            essential: true,
+          });
+        });
+
+        document
+          .getElementById("northamerica")
+          .addEventListener("click", function () {
             map.flyTo({
               zoom: 3,
-              center: [3.2, 1.8],
+              center: [-120, 45],
               essential: true,
             });
           });
-        
-          document.getElementById("europe").addEventListener("click", function () {
+
+        document
+          .getElementById("southamerica")
+          .addEventListener("click", function () {
             map.flyTo({
-              zoom: 4,
-              center: [6, 47],
+              zoom: 3.5,
+              center: [-74, -4],
               essential: true,
             });
           });
-        
-          document
-            .getElementById("northamerica")
-            .addEventListener("click", function () {
-              map.flyTo({
-                zoom: 3,
-                center: [-120, 45],
-                essential: true,
-              });
-            });
-        
-          document
-            .getElementById("southamerica")
-            .addEventListener("click", function () {
-              map.flyTo({
-                zoom: 3.5,
-                center: [-74, -4],
-                essential: true,
-              });
-            });
-        
-          document.getElementById("asia").addEventListener("click", function () {
-            map.flyTo({
-              zoom: 3.1,
-              center: [100, 17],
-              essential: true,
-            });
+
+        document.getElementById("asia").addEventListener("click", function () {
+          map.flyTo({
+            zoom: 3.1,
+            center: [100, 17],
+            essential: true,
           });
-        
-          document.getElementById("oceania").addEventListener("click", function () {
-            map.flyTo({
-              zoom: 3.7,
-              center: [131, -28],
-              essential: true,
-            });
+        });
+
+        document.getElementById("oceania").addEventListener("click", function () {
+          map.flyTo({
+            zoom: 3.7,
+            center: [131, -28],
+            essential: true,
           });
-        
-          document.getElementById("global").addEventListener("click", function () {
-            map.flyTo({
-              zoom: 1.7,
-              center: [0, 20],
-              essential: true,
-            });
+        });
+
+        document.getElementById("global").addEventListener("click", function () {
+          map.flyTo({
+            zoom: 1.7,
+            center: [0, 20],
+            essential: true,
           });
-        
+        });
+
 
 
 
@@ -540,17 +546,27 @@ function Map2() {
 
 
 
- 
 
-  
+
+
 
 
   return (
     <div className="App">
       <div className="mapContainer" >
-       
         {/* Mapbox Container */}
-        <div className="mapBox" ref={mapboxElRef}  />
+        <div className="mapBox" ref={mapboxElRef} />
+      </div>
+      <div id="state-legend" class="legend">
+        <h6>Covid-19</h6>
+        <div><span style={{ backgroundColor: "#dd5182" }}></span>Highest</div>
+        <div><span style={{ backgroundColor: "#ff6e54" }}></span>Higher</div>
+       
+        <div><span style={{ backgroundColor: "#ffa600" }}></span>Average</div>
+        <div><span style={{ backgroundColor: "#955196" }}></span>Lower</div>
+        <div><span style={{ backgroundColor: "#444e86" }}></span>Lowest</div>
+
+        
       </div>
     </div>
   );

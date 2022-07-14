@@ -122,7 +122,7 @@ const OceaniaMenu = ({ state, toggleOceania }) => {
                 <Row >
                   <Col className="pr-0">
                     <HorizontalBar
-                      height={890}
+                      height={830}
                       width={200}
                       options={{
                         legend: {
@@ -159,7 +159,7 @@ const OceaniaMenu = ({ state, toggleOceania }) => {
                     </Row>
 
                     <Doughnut
-                      width={130}
+                      width={140}
                       options={{
                         // maintainAspectRatio: true,
                         title: {
@@ -189,7 +189,7 @@ const OceaniaMenu = ({ state, toggleOceania }) => {
                     />
 
                     <Doughnut
-                      width={130}
+                      width={140}
                       options={{
                         // maintainAspectRatio: true,
                         title: {
@@ -220,7 +220,7 @@ const OceaniaMenu = ({ state, toggleOceania }) => {
 
                     <HorizontalBar
                       width={250}
-                      height={100}
+                      height={200}
                       options={{
 
                         title: {

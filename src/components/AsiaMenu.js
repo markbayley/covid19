@@ -5,7 +5,7 @@ import { Button, Col, Row, Container } from "react-bootstrap";
 import { numberWithCommas } from "../utils/numberWithCommas";
 import { CONTINENT_URL, COUNTRY_URL } from "../api/api";
 
-import { Pie, Doughnut, Bar, HorizontalBar } from "react-chartjs-2";
+import { Pie, Doughnut, Bar, HorizontalBar, Line } from "react-chartjs-2";
 
 
 
@@ -84,7 +84,11 @@ const AsiaMenu = ({ state, toggleAsia }) => {
  
   const tests = getContinents("tests");
 
+  const cases = getContinents("cases");
 
+  const deaths = getContinents("deaths");
+
+  const mortality = deaths / cases;
 
 
 
@@ -127,13 +131,40 @@ const AsiaMenu = ({ state, toggleAsia }) => {
   // const activeMillion = getData("activePerOneMillion");
 
 
-  const africanCountries = countries.filter(country => country.continent === 'Asia')
 
-  const countryNames = africanCountries.map(africanCountry => africanCountry.country.substring(0, 12))
+  
 
-  const casesPerOneMillion = africanCountries.map(africanCountry => africanCountry.casesPerOneMillion / 1000)
+ 
+
+// Filter Countries in Region
+  const continentCountries = countries.filter(country => country.continent === 'Asia')
+// Map Country Names
+  const countryNames = continentCountries.map(selectedCountry => selectedCountry.country.substring(0, 12))
+//Map mortality rate for those countries
+  const mortalityRate = continentCountries.map(selectedCountry => (((selectedCountry.deathsPerOneMillion / selectedCountry.casesPerOneMillion).toFixed(4))*100) );
+// Create strata for classifting cases for doughnut charts
+  const lowest = continentCountries.filter(selectedCountry => (selectedCountry.cases < 100000));
+  const lower = continentCountries.filter(selectedCountry => ( selectedCountry.cases >= 100000 && selectedCountry.cases < 1000000));
+  const average = continentCountries.filter(selectedCountry => ( selectedCountry.cases >= 1000000 && selectedCountry.cases < 2500000));
+  const higher = continentCountries.filter(selectedCountry => (  selectedCountry.cases >= 2500000 && selectedCountry.cases < 5000000));
+  const highest = continentCountries.filter(selectedCountry => (selectedCountry.cases > 5000000));
+
+  const highnames = continentCountries.map(selectedCountry => (selectedCountry.country));
+
+  console.log(highnames, 'highnames')
+  console.log(lowest, 'lowest')
+  console.log(average, 'average')
 
 
+  const backgroundcolor = [];
+
+   for (let i = 0; i < mortalityRate.length; i++) {
+    if(mortalityRate[i] < 1.0) { backgroundcolor.push("#444e86") }
+    if(mortalityRate[i] >= 1.0 && mortalityRate[i] < 2.0) { backgroundcolor.push("#955196") }
+    if(mortalityRate[i] >= 2.0 && mortalityRate[i] < 3.0) { backgroundcolor.push("#ffa600" ) }
+    if(mortalityRate[i] >= 3.0 && mortalityRate[i] < 6.0) { backgroundcolor.push("#dd5182") }
+    if(mortalityRate[i] >= 6.0) { backgroundcolor.push("rgb(212, 23, 83)") }
+   }
 
 
   return (
@@ -172,21 +203,27 @@ const AsiaMenu = ({ state, toggleAsia }) => {
             <Row >
               <Col className="pr-0">
                 <HorizontalBar
-                  height={890}
+                  height={830}
                   width={200}
                   options={{
                     legend: {
                       display: false,
                       position: ''
-                    }
+                    },
+                    title: {
+                      display: true,
+                      text: 'Mortality in Asia',
+                      fontSize: 13
+                    },
+                    
                   }}
                   data={{
                     labels: countryNames,
                     datasets: [
                       {
-                        label: "",
-                        data: casesPerOneMillion,
-                        backgroundColor: colors,
+                        label: "Mortality Rate",
+                        data: mortalityRate ,
+                        backgroundColor: backgroundcolor,
                       }
                     ]
                   }}
@@ -204,17 +241,18 @@ const AsiaMenu = ({ state, toggleAsia }) => {
 
                 </Row>
                 <Row className="subtitle">
-                  <Col className="box" style={{ color: "#444e86" }}>Deaths<h3>{(deathsMillion[1] / 10000).toFixed(2)}%</h3><div >/100</div></Col>
+                  <Col className="box" style={{ color: "#444e86" }}>Deaths<h3>{(deathsMillion[1] / 1000).toFixed(2)}</h3><div >/1000</div></Col>
                   <Col className="box" style={{ color: "rgb(45, 182, 130)"}}>Tests<h3>{(tests[1] / population[1]).toFixed(2)}</h3><div >/person</div></Col>
                 </Row>
 
                 <Doughnut
-                  width={130}
+                  width={140}
                   options={{
                     // maintainAspectRatio: true,
+            
                     title: {
                       display: true,
-                      text: 'Deaths per million',
+                      text: 'Cases in Asia',
                       fontSize: 13
                     },
                     elements: {
@@ -225,13 +263,13 @@ const AsiaMenu = ({ state, toggleAsia }) => {
                     legend: {
                       display: false,
                       position: ''
-                    }
+                    },
                   }}
                   data={{
-                    labels: ["Population", "Tests", "Cases", "Active", "Critical", "Deaths"],
+                    labels: ["Lowest Cases", "Lower Cases", "Average Cases", "Higher Cases", "Highest Cases"],
                     datasets: [
                       {
-                        data: deathsMillion,
+                        data: [lowest.length, lower.length, average.length, higher.length, highest.length],
                         backgroundColor: colorsPie,
                       }
                     ]
@@ -239,12 +277,12 @@ const AsiaMenu = ({ state, toggleAsia }) => {
                 />
 
                 <Doughnut
-                  width={130}
+                  width={140}
                   options={{
                     // maintainAspectRatio: true,
                     title: {
                       display: true,
-                      text: 'Deaths per million',
+                      text: 'Deaths in Asia',
                       fontSize: 13
                     },
                     elements: {
@@ -258,7 +296,7 @@ const AsiaMenu = ({ state, toggleAsia }) => {
                     }
                   }}
                   data={{
-                    labels: ["Population", "Tests", "Cases", "Active", "Critical", "Deaths"],
+                    labels: ["Lowest", "Lower", "Average", "Higher", "Highest"],
                     datasets: [
                       {
                         data: deathsMillion,
@@ -268,14 +306,14 @@ const AsiaMenu = ({ state, toggleAsia }) => {
                   }}
                 />
 
-                <HorizontalBar
+                <Line
                   width={250}
-                  height={100}
+                  height={270}
                   options={{
 
                     title: {
                       display: true,
-                      text: 'Deaths per age',
+                      text: 'Trends in Asia',
                       fontSize: 13
                     },
                     legend: {
@@ -284,12 +322,12 @@ const AsiaMenu = ({ state, toggleAsia }) => {
                     }
                   }}
                   data={{
-                    labels: ["Pop", "Tests", "Cases"],
+                    labels: ["Jan", "Apr", "Jul", "Oct"],
                     datasets: [
                       {
                         label: "",
-                        data: [100, 40, 50],
-                        backgroundColor: colorsPie,
+                        data: [100, 40, 50, 5],
+                        backgroundColor: "#444e86",
                       }
                     ]
                   }}
@@ -309,83 +347,20 @@ export default AsiaMenu;
 
 
 let colors = [
+  "rgb(212, 23, 83)"
 
-  // "#2F9599",
-  // "#2F9599",
-  // "#2F9599",
-  // "#2F9599",
-  // "#2F9599",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
 
 
 ];
 
 let colorsPie = [
-  "#ffa600",
-  "#ff6e54",
-  "#dd5182",
-  "#955196",
   "#444e86",
-
-
+  "#955196",
+  "#ffa600",
+  "#dd5182",
   "rgb(212, 23, 83)",
-
-
-
+  "#ff6e54",
+  
   // "#003f5c",
   // "#A7226E",
   // "#EC2049",

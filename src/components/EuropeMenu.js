@@ -157,7 +157,7 @@ const EuropeMenu = ({ state, toggleEurope }) => {
                     <Row>
                       <Col >
                         <HorizontalBar
-                          height={1000}
+                          height={900}
                           width={200}
                           options={{  legend: {
                             display: false,

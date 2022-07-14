@@ -122,7 +122,7 @@ const NorthAmericaMenu = ({ state, toggleNorthAmerica }) => {
                 <Row >
                   <Col className="pr-0">
                     <HorizontalBar
-                      height={890}
+                      height={830}
                       width={200}
                       options={{
                         legend: {
@@ -220,7 +220,7 @@ const NorthAmericaMenu = ({ state, toggleNorthAmerica }) => {
 
                     <HorizontalBar
                       width={250}
-                      height={100}
+                      height={200}
                       options={{
 
                         title: {

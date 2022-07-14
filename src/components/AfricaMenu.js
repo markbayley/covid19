@@ -123,7 +123,7 @@ const AfricaMenu = ({ state, toggleAfrica }) => {
               <Row >
                 <Col className="pr-0">
                   <HorizontalBar
-                    height={800}
+                    height={820}
                     width={200}
                     options={{
                       legend: {
@@ -221,7 +221,7 @@ const AfricaMenu = ({ state, toggleAfrica }) => {
 
                   <HorizontalBar
                     width={250}
-                    height={100}
+                    height={200}
                     options={{
 
                       title: {
