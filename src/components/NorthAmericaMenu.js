@@ -102,7 +102,7 @@ const NorthAmericaMenu = ({ state, toggleNorthAmerica }) => {
                     <div style={{ display: "flex", justifyContent: "flex-end" }}>
                       <Button
                         onClick={toggleNorthAmerica}
-                        size="sm"
+                        size="lg"
                        
                         variant="outline-info"
                         style={{ margin: "5px", padding: "0px 10px 3px 10px"}}

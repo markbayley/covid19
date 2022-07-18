@@ -1,335 +1,218 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Animated } from "react-animated-css";
 import { Button, Col, Row, Container } from "react-bootstrap";
-
 import { numberWithCommas } from "../utils/numberWithCommas";
 import { CONTINENT_URL, COUNTRY_URL } from "../api/api";
+import { Doughnut, Bar, HorizontalBar, Line } from "react-chartjs-2";
+import { Fetch, getContinents } from '../api/Fetch'
 
-import { Pie, Doughnut, Bar, HorizontalBar } from "react-chartjs-2";
+const EuropeMenu = ({ state, toggleEurope, region, index, population, casesMillion, 
+  activeMillion, criticalMillion, deathsMillion, testsMillion, tests, countries, populationCountry
+}) => {
 
+    //Filter Countries in Region
+    const continentCountries = countries.filter(country => country.continent === region)
+    //Map Country Names
+    const countryNames = continentCountries.map(selectedCountry => selectedCountry.country.substring(0, 12))
+    //Map Mortality for Countries
+    const mortalityRate = continentCountries.map(selectedCountry => (((selectedCountry.deathsPerOneMillion / selectedCountry.casesPerOneMillion).toFixed(4)) * 100));
 
+    const populationRate = continentCountries.map(selectedCountry => (selectedCountry.population / 1000000).toFixed(2));
 
-const EuropeMenu = ({ state, toggleEurope }) => {
+    const casesPerOneMillion = continentCountries.map(selectedCountry => (((selectedCountry.casesPerOneMillion).toFixed(4) / 1000)));
 
-  const [continents, setContinents] = useState([]);
+    // Create Strata for Cases
+    const lowest = continentCountries.filter(selectedCountry => (selectedCountry.cases < 10000));
+    const lower = continentCountries.filter(selectedCountry => (selectedCountry.cases >= 10000 && selectedCountry.cases < 500000));
+    const average = continentCountries.filter(selectedCountry => (selectedCountry.cases >= 500000 && selectedCountry.cases < 2500000));
+    const higher = continentCountries.filter(selectedCountry => (selectedCountry.cases >= 2500000 && selectedCountry.cases < 5000000));
+    const highest = continentCountries.filter(selectedCountry => (selectedCountry.cases > 5000000));
 
-  useEffect(() => {
-    const continentNames = [];
-    const deathsPerOneMillion = [];
-    const casesPerOneMillion = [];
-    const population = [];
-    const activePerOneMillion = [];
-
-    async function fetchContinents() {
-      try {
-        const result = await fetch(CONTINENT_URL);
-
-        const continents = await result.json();
-        setContinents([...continents]);
-        console.log(continents, 'continents')
-
-        // for (let i = 0; i < continents.length; i++) {
-        //   continentNames.push(String(continents[i].continent))
-        // }
-
-        // for (let i = 0; i < continents.length; i++) {
-        //   deathsPerOneMillion.push(String(continents[i].deathsPerOneMillion))
-        // }
-
-        // for (let i = 0; i < continents.length; i++) {
-        //   casesPerOneMillion.push(String(continents[i].casesPerOneMillion))
-        // }
-
-        // for (let i = 0; i < continents.length; i++) {
-        //   population.push(String(continents[i].population))
-        // }
-
-        // for (let i = 0; i < continents.length; i++) {
-        //   activePerOneMillion.push(String(continents[i].activePerOneMillion))
-        // }
-
-      
-    
-        // setContinentNames(continentsArray)
-        // console.log(continentNames, 'continentNames')
-        // console.log(deathsPerOneMillion, 'deathsPerOneMillion')
-     
-        // setCountryNames(countryNames)
-        // console.log(countryNames, 'countryNames')
-        // const africanCountryNames = countries.filter(country.continent === "Africa");
-        // console.log(africanCountryNames, 'acn')
-
-      } catch (error) {
-        console.log(error);
-      }
+    //Asign Colors to Strata
+    const backgroundcolor = [];
+    for (let i = 0; i < mortalityRate.length; i++) {
+        if (mortalityRate[i] < 1.0) { backgroundcolor.push("#444e86") }
+        if (mortalityRate[i] >= 1.0 && mortalityRate[i] < 2.0) { backgroundcolor.push("#955196") }
+        if (mortalityRate[i] >= 2.0 && mortalityRate[i] < 3.0) { backgroundcolor.push("#ffa600") }
+        if (mortalityRate[i] >= 3.0 && mortalityRate[i] < 6.0) { backgroundcolor.push("#dd5182") }
+        if (mortalityRate[i] >= 6.0) { backgroundcolor.push("rgb(212, 23, 83)") }
     }
-    fetchContinents();
-  }, []);
-
-   const getContinents = (key) => {
-    return continents.map((continent) => continent[key]);
-  };
-
-  const population = getContinents("population");
- 
-  const casesMillion = getContinents("casesPerOneMillion");
- 
-  const activeMillion = getContinents("activePerOneMillion");
-
-  const criticalMillion = getContinents("criticalPerOneMillion");
-
-  const deathsMillion = getContinents("deathsPerOneMillion");
-
-  const testsMillion = getContinents("testsPerOneMillion");
- 
-  const tests = getContinents("tests");
 
 
-
-  const [countries, setCountries] = useState([]);
-
-  useEffect(() => {
-
-    const countries = []
-    const countryNames = [];
-
-    async function fetchCountries() {
-      try {
-        const res = await fetch(COUNTRY_URL);
-
-        const countries = await res.json();
-        setCountries([...countries]);
-     
-
-        for (let i = 0; i < countries.length; i++) {
-          countryNames.push(String(countries[i].country))
-        }
-
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchCountries();
-  }, []);
- 
-  const getData = (key) => {
-    return countries.map((country) => country[key]);
-  };
-
-
-
-
-  const coords = getData("countryInfo");
-
-
-
-  const countryCases = getData("cases");
-  const countryDeaths = getData("deaths");
-  const countryActive = getData("active");
-  // const casesMillion = getData("casesPerOneMillion");
-  // const activeMillion = getData("activePerOneMillion");
-
-
-  const africanCountries = countries.filter(country => country.continent === 'Europe')
-
-  const countryNames = africanCountries.map(africanCountry => africanCountry.country.substring(0, 12))
-
-  const casesPerOneMillion = africanCountries.map(africanCountry => africanCountry.casesPerOneMillion/1000)
-
-
+  console.log(populationCountry[0], 'pop0')
 
   return (
-    <>
-      <div className={state ? "visible" : "hidden"}>
-        <Animated
-          animationIn="fadeInLeft"
-          animationOut="fadeOut"
-          isVisible={true}
-        >
-          <div className="App-side">
-            <div className="App-side-menu">
+    <div className={state ? "visible" : "hidden"}>
+      <Animated
+        animationIn="fadeInLeft"
+        animationOut="fadeOut"
+        isVisible={true}
+      >
+        <div className="App-side">
+          <div className={!state ? "hidden" : "visible"}>
+            <Container>
+              <Row className="title" >
+                <Col className="px-0">{region}</Col>
+                <Col className="App-side-close px-0">
+                  <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <Button
+                      onClick={toggleEurope}
+                      size="lg"
 
-              <div className={!state ? "hidden" : "visible"}>
-                <div className="App-side-button">
+                      variant="outline-info"
+                      style={{ margin: "5px", padding: "0px 10px 3px 10px" }}
+                    >
+                      <Animated
+                        animationIn="fadeInDown"
+                        animationOut="fadeOut"
+                        isVisible={true}
+                      >
+                        <div>x</div>
+                      </Animated>
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
 
-                  <Container>
-                  <Row className="title" >Europe </Row>
-                    <Row>
-                      <Col >
-                        <HorizontalBar
-                          height={900}
-                          width={200}
-                          options={{  legend: {
-                            display: false,
-                            position: ''
-                          } }}
-                          data={{
-                            labels: countryNames,
-                            datasets: [
-                              {
-                                label: "",
-                                data: casesPerOneMillion,
-                                backgroundColor: colors,
-                              }
-                            ]
-                          }}
-                        />
-                      </Col>
+              <Row >
+                <Col className="pr-0">
+                  <HorizontalBar
+                    height={830}
+                    width={200}
+                    options={{
+                      legend: {
+                        display: false,
+                        position: ''
+                      },
+                      title: {
+                        display: true,
+                        text: 'Population in ' + region,
+                        fontSize: 13
+                      },
 
-                      <Col >
-                
-                        <Row className="subtitle"> 
-                          <Col className="box" style={{color: "#ffa600"}}>Pop <h3>{numberWithCommas((population[3]/1000000).toFixed(0))}</h3>million</Col>
-                          <Col className="box" style={{color: "#ff6e54"}}>Cases<h3>{(casesMillion[3]/1000).toFixed(0)}</h3><div >/1000</div></Col>
-                        </Row>
-                        <Row className="subtitle"> 
-                          <Col className="box" style={{color: "#dd5182"}}>Active<h3>{(activeMillion[3]/1000).toFixed(1)}</h3><div >/1000</div></Col>
-                          <Col className="box" style={{color: "#955196"}}>Critical<h3>{(criticalMillion[3]/1000).toFixed(2)}</h3><div >/1000</div></Col>
-                       
-                        </Row>
-                        <Row className="subtitle"> 
-                          <Col className="box" style={{color: "#444e86"}}>Deaths<h3>{(deathsMillion[3]/1000).toFixed(2)}</h3><div >/1000</div></Col>
-                          <Col className="box" style={{color: "rgb(212, 23, 83)"}}>Tests<h3>{(tests[3]/population[3]).toFixed(2)}</h3><div >/person</div></Col>
-                        </Row>
-                        <Doughnut
+                    }}
+                    data={{
+                      labels: countryNames,
+                      datasets: [
+                        {
+                          label: "Population (millions)",
+                          data: casesPerOneMillion,
+                          backgroundColor: backgroundcolor,
+                        }
+                      ]
+                    }}
+                  />
+                </Col>
 
-                          width={120}
-                          options={{
-                            // maintainAspectRatio: true,
-                            title: {
-                              display: true,
-                              text: '% population tested',
-                              fontSize: 13
-                            },
-                            elements: {
-                              arc: {
-                                borderWidth: 0
-                              }
-                            },
-                            legend: {
-                              display: false,
-                              position: ''
-                            }
-                          }}
-                          data={{
-                            labels: [ "Population", "Tests"],
-                            datasets: [
-                              {
-                                data: [ population[3], tests[3] ],
-                               
-                                backgroundColor: colorsDoughnut,
-                              }
-                            ]
-                          }}
-                        />
+                <Col >
+                  <Row className="subtitle">
+                    <Col className="box" style={{ color: "#ffa600" }}>Pop <h3>{numberWithCommas(((population[index]) / 1000000).toFixed(0))}</h3>million</Col>
+                    <Col className="box" style={{ color: "#ff6e54" }}>Cases<h3>{(casesMillion[index] / 1000).toFixed(0)}</h3><div >/1000</div></Col>
+                  </Row>
+                  <Row className="subtitle">
+                    <Col className="box" style={{ color: "#dd5182" }}>Active<h3>{(activeMillion[index] / 1000).toFixed(1)}</h3><div >/1000</div></Col>
+                    <Col className="box" style={{ color: "#955196" }}>Critical<h3>{(criticalMillion[index] / 1000).toFixed(2)}</h3><div >/1000</div></Col>
 
-                        <HorizontalBar
-                          width={250}
-                          height={250}
-                          options={{
-                          
-                            title: {
-                              display: true,
-                              text: 'Deaths per age',
-                              fontSize: 13
-                            },
-                            legend: {
-                              display: false,
-                              position: ''
-                            }
-                          }}
-                          data={{
-                            labels: ["Pop", "Tests", "Cases", "Active", "Critical"],
-                            datasets: [
-                              {
-                                label: "",
-                                data: [30, 40, 50, 60, 34, 30],
-                                backgroundColor: colorsPie,
-                              }
-                            ]
-                          }}
-                        />
+                  </Row>
+                  <Row className="subtitle">
+                    <Col className="box" style={{ color: "#444e86" }}>Deaths<h3>{(deathsMillion[index] / 1000).toFixed(2)}</h3><div >/1000</div></Col>
+                    <Col className="box" style={{ color: "rgb(45, 182, 130)" }}>Tests<h3>{(tests[index] / population[index]).toFixed(2)}</h3><div >/person</div></Col>
+                  </Row>
 
-                        {/* <Bar 
-                            width={100}
-                            height={85}
-                            options={{
-                      
-                              title: {
-                                display: true,
-                                text: 'Deaths Age',
-                                fontSize: 10
-                              },
-                              legend: {
-                                display: false,
-                                position: ''
-                              }
-                            }}
-                            data={{
-                              labels: [30, 80, 20, 60, 3, 10, 30],
-                              datasets: [
-                                {
-                                  label: "continents",
-                                  data: [30, 80, 20, 60, 3, 10, 15],
-                                  backgroundColor: "#2F9599",
-                                }
-                              ]
-                            }}
-                          /> */}
+                  <Doughnut
+                    width={140}
+                    options={{
+                      // maintainAspectRatio: true,
 
-{/* 
-                        <Doughnut
-                          width={150}
-                          options={{
-                            // maintainAspectRatio: true,
-                            title: {
-                              display: true,
-                              text: 'Asia',
-                              fontSize: 10
-                            },
-                            legend: {
-                              display: false,
-                              position: ''
-                            }
-                          }}
-                          data={{
-                            labels: list,
-                            datasets: [
-                              {
-                                label: "continents",
-                                data: [30, 80, 20, 60, 20],
-                                backgroundColor: colorsPie,
-                              }
-                            ]
-                          }}
-                        /> */}
-                      </Col>
+                      title: {
+                        display: true,
+                        text: 'Cases in ' + region,
+                        fontSize: 13
+                      },
+                      elements: {
+                        arc: {
+                          borderWidth: 0
+                        }
+                      },
+                      legend: {
+                        display: false,
+                        position: ''
+                      },
+                    }}
+                    data={{
+                      labels: ["Lowest Cases", "Lower Cases", "Average Cases", "Higher Cases", "Highest Cases"],
+                      datasets: [
+                        {
+                          data: [lowest.length, lower.length, average.length, higher.length, highest.length],
+                          backgroundColor: colorsPie,
+                        }
+                      ]
+                    }}
+                  />
 
-                    </Row>
+                  <Doughnut
+                    width={140}
+                    options={{
+                      // maintainAspectRatio: true,
+                      title: {
+                        display: true,
+                        text: 'Deaths in ' + region,
+                        fontSize: 13
+                      },
+                      elements: {
+                        arc: {
+                          borderWidth: 0
+                        }
+                      },
+                      legend: {
+                        display: false,
+                        position: ''
+                      }
+                    }}
+                    data={{
+                      labels: ["Lowest", "Lower", "Average", "Higher", "Highest"],
+                      datasets: [
+                        {
+                          data: deathsMillion,
+                          backgroundColor: colorsPie,
+                        }
+                      ]
+                    }}
+                  />
 
+                  <Line
+                    width={250}
+                    height={270}
+                    options={{
 
-                  </Container>
-                  {/* <h4 style={{ color: "cyan" }}>Africa
-                  </h4> */}
-
-
-
-
-
-                  {/* 
-                    */}
-
-
-                  {/* <p>
-                    Hover over the chart to view more details.
-                  </p> */}
-                </div>
-              </div>
-            </div>
+                      title: {
+                        display: true,
+                        text: 'Trends in ' + region,
+                        fontSize: 13
+                      },
+                      legend: {
+                        display: false,
+                        position: ''
+                      }
+                    }}
+                    data={{
+                      labels: ["Jan", "Apr", "Jul", "Oct"],
+                      datasets: [
+                        {
+                          label: "",
+                          data: [100, 40, 50, 5],
+                          backgroundColor: "#444e86",
+                        }
+                      ]
+                    }}
+                  />
+                </Col>
+              </Row>
+            </Container>
           </div>
-        </Animated>
-      </div>
-    </>
+        </div>
+      </Animated>
+    </div>
   );
 };
 
@@ -337,90 +220,20 @@ const EuropeMenu = ({ state, toggleEurope }) => {
 export default EuropeMenu;
 
 
-let colors = [
-
-  // "#2F9599",
-  // "#2F9599",
-  // "#2F9599",
-  // "#2F9599",
-  // "#2F9599",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
-  "rgb(212, 23, 83)",
 
 
-];
 
 let colorsPie = [
+  "#444e86",
+  "#955196",
   "#ffa600",
   "#ff6e54",
   "#dd5182",
-  "#955196",
-"#444e86",
 
 
+  "rgb(212, 23, 83)",
 
-]
-
-let colorsDoughnut = [
-
-  "#ffa600",
-"rgb(212, 23, 83)",
-
-
-// "#003f5c",
+  // "#003f5c",
   // "#A7226E",
   // "#EC2049",
   // "#F26B38",

@@ -51,7 +51,7 @@ body {
     border-bottom: 1px solid rgba(black, 0.2);
 
     b {
-      font-size: 1.6rem;
+      font-size: 1.2rem;
       color: #212121;
       padding: 0 5px;
     }
@@ -77,6 +77,10 @@ svg  {
  }
 
 
+  .mapboxgl-ctrl-icon {
+  background: rgb(67, 66, 66);
+
+ }
 
 
 
@@ -86,13 +90,12 @@ svg  {
   background-color: #282c34;
   color: #fff;
   border-radius: 3px;
-  bottom: 30px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   padding: 10px;
   position: absolute;
   right: 8px;
-  bottom: 25px;
+  bottom: 5px;
   height: 140px;
   z-index: 1;
   }
