@@ -80,8 +80,35 @@ const SouthAmericanMenu = ({ state, toggleEurope, region, index,
               </Row>
 
               <Row >
+            
                 <Col className="pr-0">
                 <HorizontalBar
+                      height={830}
+                      width={200}
+                      options={{
+                        legend: {
+                          display: false,
+                          position: ''
+                        },
+                        title: {
+                          display: true,
+                          text: 'Mortality Rate',
+                          fontSize: 13
+                        },
+
+                      }}
+                      data={{
+                        labels: countryNames,
+                        datasets: [
+                          {
+                            label: "Mortality Rate",
+                            data: mortalityRate,
+                            backgroundColor: backgroundcolor,
+                          }
+                        ]
+                      }}
+                    />
+                {/* <HorizontalBar
                           height={800}
                           width={200}
                           options={{
@@ -121,7 +148,7 @@ const SouthAmericanMenu = ({ state, toggleEurope, region, index,
                               }
                             ]
                           }}
-                        />
+                        /> */}
                 </Col>
 
                 <Col >
@@ -200,32 +227,39 @@ const SouthAmericanMenu = ({ state, toggleEurope, region, index,
                     }}
                   />
 
-                  <Line
-                    width={250}
-                    height={270}
-                    options={{
-
-                      title: {
-                        display: true,
-                        text: 'Trends in ' + region,
-                        fontSize: 13
-                      },
-                      legend: {
-                        display: false,
-                        position: ''
-                      }
-                    }}
-                    data={{
-                      labels: ["Jan", "Apr", "Jul", "Oct"],
-                      datasets: [
-                        {
-                          label: "",
-                          data: [100, 40, 50, 5],
-                          backgroundColor: "#444e86",
+<Line
+                      width={250}
+                      height={270}
+                      options={{
+                        title: {
+                          display: true,
+                          text: 'Trends in ' + region,
+                          fontSize: 13
+                        },
+                        legend: {
+                          display: false,
+                          position: ''
                         }
-                      ]
-                    }}
-                  />
+                      }}
+                      data={{
+                        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                        datasets: [
+                          {
+                            label: "First dataset",
+                            data: [33, 53, 85, 41, 44, 65],
+                            fill: true,
+                            backgroundColor: "rgba(75,192,192,0.2)",
+                            borderColor: "rgba(75,192,192,1)"
+                          },
+                          {
+                            label: "Second dataset",
+                            data: [33, 25, 35, 51, 54, 76],
+                            fill: false,
+                            borderColor: "#742774"
+                          }
+                        ]
+                      }}
+                    />
                 </Col>
               </Row>
             </Container>

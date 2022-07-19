@@ -397,7 +397,7 @@ function Map2() {
         const w = r * 2;
 
         let html = `<div>
-        <svg "class="zoom" width="${w}" height="${w}" viewbox="0 0 ${w} ${w}" text-anchor="middle" style="font: ${fontSize}px sans-serif; display: block">`;
+        <svg "class="zoom" width="${w}" height="${w}" viewbox="0 0 ${w} ${w}" text-anchor="middle" style="font: ${fontSize}px ; display: "block"; >`;
 
         for (let i = 0; i < counts.length; i++) {
           html += donutSegment(
@@ -409,7 +409,7 @@ function Map2() {
           );
         }
         html += `<circle cx="${r}" cy="${r}" r="${r0}" fill="#212529" />
-        <text  dominant-baseline="central" transform="translate(${r}, ${r})" fill="grey">
+        <text  dominant-baseline="central" transform="translate(${r}, ${r})" fill="#dfdfdf" >
         ${total.toLocaleString()}
         </text>
         </svg>
@@ -639,12 +639,12 @@ function Map2() {
               ? `<img src="${countryFlag}"></img>`
               : "";
 
-            const HTML = `<p>Country: <b>${country}</b></p>
+            const HTML = `  ${countryFlagHTML}<p>Country: <b>${country}</b></p>
                 ${provinceHTML}
                 <p>Cases: <b>${numberWithCommas(cases)}</b></p>
                 <p>Deaths: <b>${numberWithCommas(deaths)}</b></p>
                 <p>Mortality Rate: <b>${mortalityRate}%</b></p>
-                ${countryFlagHTML}`;
+                `;
 
             // Ensure that if the map is zoomed out such that multiple
             // copies of the feature are visible, the popup appears

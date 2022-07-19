@@ -35,12 +35,18 @@ h3 {
   
   .title {
     font-size: 1.7rem;
-    color: turquoise;
+  
   
      padding-bottom: none; 
-  
-   
-  
+  }
+
+
+  .icon {
+    margin: -3px;
+  }
+
+  div.box.col {
+    padding: 0px 0px;
   }
   
   .subtitle {
@@ -52,10 +58,17 @@ h3 {
     border: 2px solid currentColor;
     border-radius: 10px;
     margin: 0.5rem;
+    text-align: center;
+  } 
+
+  div.box {
+    display: block;
+    justify-content: center;
   } 
   
+  
   .box:hover {
-    background-color: rgb(20, 27, 30);
+    /* background-color: rgb(20, 27, 30); */
     color: #ffffff;
   }
   
@@ -91,14 +104,10 @@ h3 {
     color: rgb(45, 182, 130);
     border: 1px solid turquoise;
     border-radius: 5px;
-    overflow-y: auto;
+    overflow-x: hidden;
   
   }
-  
-  .contain {
-    
-  }
-  
+ 
   
   @media only screen and (min-width: 900px) {
     .App-side {
@@ -218,23 +227,23 @@ h3 {
   
   .wrapper {
   
-    margin: 0px auto;
+    margin: 5px auto;
    
   }
   
   .tabs {
     display: flex;
     justify-content: left;
-    margin-top: 5px;
+    /* margin-top: 5px; */
   }
   
   .tabitem {
     /* border: 4px transparent;  */
     cursor: pointer;
   
-    height: 30px;
+    height: 20px;
     text-align: left;
-    padding: 7px;
+    padding: 5px;
     /* background-color: #280680; */
     display: flex;
     flex-direction: column;
@@ -242,18 +251,15 @@ h3 {
   
   }
   
-  .tabitem--inactive {
-    opacity: 0.3;
-    /* filter: grayscale(100%); */
-  }
+
   
   .tabitem--inactive   {
-    opacity: 1 !important;
-    /* filter: grayscale(100%); */
+    opacity: 0.5;
+    filter: grayscale(100%);
   }
   
   .tabitem--inactive:hover   {
-    background-color: rgb(31, 174, 160) !important;
+   opacity: 1;
   }
   
   
@@ -266,12 +272,13 @@ h3 {
   
   .tabitem__title {
     color: rgba(255, 255, 255, 0.9);
-    font-size: 16px;
-    margin: 10px 0;
+    font-size: 14px;
+    /* margin: 10px 0; */
   }
   
   .content {
     text-align: center; 
+    margin-top: 5px;
    
     /* margin-top: 15px; */
     /* font-size: 22px; */

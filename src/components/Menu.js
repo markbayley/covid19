@@ -6,14 +6,14 @@ import { Doughnut, Bar, HorizontalBar, Line } from "react-chartjs-2";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
-const AsiaMenu = ({ state, toggleAsia, region, index, population, casesMillion, open,
+const Menu = ({ state, region, index, population, casesMillion, open,
   activeMillion, criticalMillion, deathsMillion, tests, countries, handleClose, 
 }) => {
 
   // Filter Countries in Region
   const continentCountries = countries.filter(country => country.continent === region)
   // Map Country Names
-  const countryNames = countries.filter(country => country.continent === region && country.population > 1000000).map(selectedCountry => selectedCountry.country.substring(0, 12))
+  const countryNames = countries.filter(country => country.continent === region && country.population > 1000).map(selectedCountry => selectedCountry.country.substring(0, 12))
   //Map mortality rate for those countries
   const casesPerOneMillion = continentCountries.map(selectedCountry => (((selectedCountry.casesPerOneMillion) / 1000).toFixed(1)));
   const deathsPerOneMillion = continentCountries.map(selectedCountry => (((selectedCountry.deathsPerOneMillion) / 1000).toFixed(2)));
@@ -446,7 +446,7 @@ const AsiaMenu = ({ state, toggleAsia, region, index, population, casesMillion, 
 };
 
 
-export default AsiaMenu;
+export default Menu;
 
 
 let colorsPie = [
@@ -458,5 +458,3 @@ let colorsPie = [
   "rgb(212, 23, 83)",
   "rgb(45, 182, 130)",
 ]
-
-

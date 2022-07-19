@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from "react";
 import ContinentButtons from "./components/ContinentButtons";
 import Map2 from './components/Map2';
-import AsiaMenu from "./components/AsiaMenu";
-import EuropeMenu from "./components/EuropeMenu";
-import AfricaMenu from "./components/AfricaMenu";
-import OceaniaMenu from "./components/OceaniaMenu";
-import NorthAmericaMenu from "./components/NorthAmericaMenu";
-import SouthAmericaMenu from "./components/SouthAmericaMenu";
+
 import GlobalMenu from "./components/GlobalMenu";
+import Menu2 from "./components/Menu2";
+import './App2.css'
 import "./App.css";
+
 
 import { CONTINENT_URL, COUNTRY_URL } from "./api/api";
 
 const initialState = {
-    asia: false,
-    northamerica: false,
-    southamerica: false,
-    europe: false,
-    oceania: false,
-    africa: false,
-    global: false
+    // asia: false,
+    // northamerica: false,
+    // southamerica: false,
+    // europe: false,
+    // oceania: false,
+    // africa: false,
+    global: false,
+    open: false,
+    region: "",
+    index: "",
 };
 
 const App = () => {
@@ -90,116 +91,105 @@ const App = () => {
     const deathsCountry = getCountries("deathsPerOneMillion");
     const testsCountry = getCountries("testsPerOneMillion");
 
+   
 
  
-    // const [visible, setVisible] = useState(initialState);
-
-    // shows the element by given key
-    // const toggleVisible = (event, key) => {
-    //     setState({ ...state, ...{ [key]: ![key] } });
-    // };
+ 
 
 
     const [state, setState] = useState([initialState]);
 
-    const toggleAsia = ({ asia }) => {
+    const toggle = ({region, index}) => {
         setState({
             ...initialState,
-            asia: !asia,
+            open: true, 
+            region: region, 
+            index: index,
         });
     };
-    const toggleOceania = ({ oceania }) => {
+
+    const toggleAsia = () => {
         setState({
             ...initialState,
-            oceania: !oceania,
+            open: true, 
+            region: 'Asia', 
+            index: 1,
         });
     };
-    const toggleEurope = ({ europe }) => {
+    const toggleOceania = () => {
         setState({
             ...initialState,
-            europe: !europe,
+            open: true, 
+            region:'Australia-Oceania', 
+            index: 4,
         });
     };
-    const toggleAfrica = ({ africa }) => {
+    const toggleEurope = () => {
         setState({
             ...initialState,
-            africa: !africa,
+            open: true, 
+            region:'Europe', 
+            index: 3,
         });
     };
-    const toggleSouthAmerica = ({ southamerica }) => {
+    const toggleAfrica = () => {
         setState({
             ...initialState,
-            southamerica: !southamerica,
+            open: true, 
+            region:'Africa', 
+            index: 5,
         });
     };
-    const toggleNorthAmerica = ({ northamerica }) => {
+    const toggleSouthAmerica = () => {
         setState({
             ...initialState,
-            northamerica: !northamerica,
+            open: true, 
+            region:'South America', 
+            index: 2,
         });
     };
-    const toggleGlobal = ({ global }) => {
+    const toggleNorthAmerica = () => {
         setState({
             ...initialState,
-            global: !global,
+            open: true, 
+            region:'North America', 
+            index: 0,
         });
     };
+    const toggleGlobal = () => {
+        setState({
+            ...initialState,
+            open: true,
+            region: 'Global',
+            index: 6
+        });
+    };
+
+    function handleClose() {
+        setState(!state);
+    }
 
     console.log(initialState, 'initialState', state, 'state')
 
     return (
         <>
             <ContinentButtons
-                toggleGlobal={toggleGlobal}
-                toggleAsia={toggleAsia}
-                toggleOceania={toggleOceania}
-                toggleAfrica={toggleAfrica}
-                toggleEurope={toggleEurope}
-                toggleNorthAmerica={toggleNorthAmerica}
-                toggleSouthAmerica={toggleSouthAmerica}
-            // toggleVisible={toggleVisible}
+               toggleAsia={toggleAsia}
+               toggleEurope={toggleEurope}
+               toggle={toggle}
+               toggleGlobal={toggleGlobal}
+               toggleAfrica={toggleAfrica}
+               toggleSouthAmerica={toggleSouthAmerica}
+               toggleNorthAmerica={toggleNorthAmerica}
+               toggleOceania={toggleOceania}
+            
             />
             <div className="sidebar">
-                <AsiaMenu
-                    state={state.asia}
-                    toggleAsia={toggleAsia}
-                    key={state}
-                    index={1}
-                    region='Asia'
-                />
-                <EuropeMenu
-                    state={state.europe}
-                    toggleEurope={toggleEurope}
-                    index={3}
-                    region='Europe'
-                    countries={countries}
-                    continents={continents}
-                    population={population}
-                    casesMillion={casesMillion}
-                    activeMillion={activeMillion}
-                    criticalMillion={criticalMillion}
-                    deathsMillion={deathsMillion}
-                    testsMillion={testsMillion}
-                    tests={tests}
-                    populationCountry={populationCountry}
-                />
-                <AfricaMenu
-                    state={state.africa}
-                    toggleAfrica={toggleAfrica}
-                />
-                <OceaniaMenu
-                    state={state.oceania}
-                    toggleOceania={toggleOceania}
-                />
-                <NorthAmericaMenu
-                    state={state.northamerica}
-                    toggleNorthAmerica={toggleNorthAmerica}
-                />
-                <SouthAmericaMenu
-                    state={state.southamerica}
-                    toggleSouthAmerica={toggleSouthAmerica}
-                    index={2}
-                    region='South America'
+                <Menu2
+                    handleClose={handleClose}
+                    index={state.index}
+                    open={state.open}
+                    region={state.region}
                     countries={countries}
                     continents={continents}
                     population={population}
@@ -215,7 +205,9 @@ const App = () => {
                     criticalCountry={criticalCountry}
                     deathsCountry={deathsCountry}
                     testsCountry={testsCountry}
+                 
                 />
+      
                 <GlobalMenu
                     state={state.global}
                     toggleGlobal={toggleGlobal}

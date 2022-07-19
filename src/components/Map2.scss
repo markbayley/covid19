@@ -3,7 +3,7 @@
 html {
   box-sizing: border-box;
   font-size: 12px;
- 
+
 }
 
 body {
@@ -11,7 +11,7 @@ body {
   height: 100vh;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  // overflow: hidden;
 }
 
 #root,
@@ -26,10 +26,10 @@ body {
 
 .mapboxgl-popup {
   font-family: "Baloo Thambi 2", cursive;
-  font-size: 10px;
+  font-size: 12px;
   padding: 0;
   margin: 0;
-  color: #424242;
+  color: #f18e0c;
   text-rendering: optimizeLegibility;
   
 }
@@ -59,8 +59,9 @@ body {
 
   img {
     display: block;
-    width: 3rem;
-    height: 3rem;
+    width: 10rem;
+    height: auto;
+   
   }
 }
 
@@ -75,6 +76,11 @@ svg  {
     transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
     fill: #fff;
  }
+
+
+//  .zoom {
+//   font-family: Helvetica;
+//  }
 
 
   .mapboxgl-ctrl-icon {
@@ -94,8 +100,8 @@ svg  {
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   padding: 10px;
   position: absolute;
-  right: 8px;
-  bottom: 5px;
+  right: 7px;
+  bottom: 45px;
   height: 140px;
   z-index: 1;
   }

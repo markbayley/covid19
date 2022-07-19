@@ -24,13 +24,13 @@ h3 {
 .title {
   font-size: 1.9rem;
   color: turquoise;
-  padding-left: 1rem;
+  padding-left: 1.5rem;
   padding-bottom: none;
   /* padding-top: 5px; */
 }
 
 .subtitle {
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: turquoise;
 }
 
@@ -75,7 +75,7 @@ h3 {
 
 @media only screen and (min-width: 900px) {
   .App-side {
-    width: 25vw;
+    width: 24vw;
    
     /* height: auto; */
   }
@@ -83,7 +83,7 @@ h3 {
 
 .button {
   height: 3.5rem;
-  width: 6rem;
+  width: 6.3rem;
   z-index: 1;
 }
 
@@ -99,6 +99,8 @@ h3 {
 .hidden {
   display: none;
 }
+
+
 
 
 

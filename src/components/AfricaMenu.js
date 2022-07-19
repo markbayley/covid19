@@ -9,6 +9,7 @@ import { Pie, Doughnut, Bar, HorizontalBar, Line } from "react-chartjs-2";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoffee, faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
+import '../App2.css'
 
 
 const AfricaMenu = ({ state, toggleAfrica }) => {
