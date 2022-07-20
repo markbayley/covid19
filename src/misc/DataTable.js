@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { COUNTRY_URL } from "..//api/api";
 
-// import "./DataTable.css";
+import "./../App.css";
 import { numberWithCommas } from "../utils/numberWithCommas";
 const DataTable = () => {
 
@@ -137,7 +137,7 @@ const DataTable = () => {
   const totalPages = Math.ceil(copyCountriesData.length / numberOfViewRows);
   const next = currentPage !== totalPages;
   return (
-    <div className="" style={{  fontSize: "13px", color: "turquoise"}}>
+    <div className="body" style={{  fontSize: "13px", color: "turquoise"}}>
       <div className="d-flex  flex-column flex-sm-row justify-content-between mb-3">
         <div className="d-inline-flex">
           {/* <span className="mt-1">{"show"}</span> */}

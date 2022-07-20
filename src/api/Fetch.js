@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 export const Fetch = () => {
     //Fetch Continents Data
-    const [continents, setContinents] = useState([]);
+    // const [continents, setContinents] = useState([]);
     useEffect(() => {
         async function fetchContinents() {
             try {
@@ -17,6 +17,8 @@ export const Fetch = () => {
         }
         fetchContinents();
     }, []);
+
+    return continents;
 
 }
 

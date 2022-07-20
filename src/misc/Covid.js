@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Loading from "./Loading";
 import axios from "axios";
 import CountryTable from "./CountryTable";
-import Chart from "../components/Chart";
+import Chart from "../misc/Chart";
 import { Search } from "react-bootstrap-icons";
 import CountUp from "react-countup";
 import { Row, Col } from "react-bootstrap";

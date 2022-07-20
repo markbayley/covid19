@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 
-const ContinentButtons = ({toggleAsia, toggleEurope, toggleOceania, toggleNorthAmerica, toggleSouthAmerica, toggleAfrica, toggleGlobal}) => {
- 
+const ContinentButtons = ({ toggleAsia, toggleEurope, toggleOceania, toggleNorthAmerica, toggleSouthAmerica, toggleAfrica, toggleGlobal }) => {
+
   return (
     <div
       style={{
@@ -41,7 +41,7 @@ const ContinentButtons = ({toggleAsia, toggleEurope, toggleOceania, toggleNorthA
         // size="md"
         id="africa"
         variant="outline-info"
-        // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
+      // className={getData("cases")[1] / 1000000 <= 10 ? "asia" : "asia2"}
       >
         <h6>Africa</h6>
         {/* {continentCases[0]} */}
@@ -71,7 +71,7 @@ const ContinentButtons = ({toggleAsia, toggleEurope, toggleOceania, toggleNorthA
         variant="outline-info"
       >
         <h6>
-        {/* <i className="fa fa-info-circle"></i> */}
+          {/* <i className="fa fa-info-circle"></i> */}
           Global
         </h6>
       </Button>

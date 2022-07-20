@@ -135,7 +135,7 @@ const BarGraph = () => {
       </div>
       <div
   
-        style={{ width: "100%" }}
+        // style={{ width: "100%" }}
       >
         <Bar data={data} height={300} options={options}></Bar>
       </div>
