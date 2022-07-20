@@ -122,7 +122,7 @@ const BarGraph = () => {
     maintainAspectRatio: false,
   };
   return (
-    <div className="" style={{ width: "22vw"}}>
+    <div className="" >
       <div className="">
         {/* <h5>{("timeline")}</h5> */}
         <select
@@ -135,7 +135,7 @@ const BarGraph = () => {
       </div>
       <div
   
-        // style={{ width: "100%" }}
+       
       >
         <Bar data={data} height={300} options={options}></Bar>
       </div>

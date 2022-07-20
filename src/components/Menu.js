@@ -8,7 +8,7 @@ import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import TabsComponent from '../misc/TabsComponent'
 
 const Menu = ({ region, index, population, casesMillion, open,
-    activeMillion, criticalMillion, deathsMillion, tests, countries, handleClose, globalCases
+    activeMillion, criticalMillion, deathsMillion, tests, countries, handleClose,
 }) => {
 
     // Filter Countries in Region

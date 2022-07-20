@@ -34,13 +34,20 @@ const App = () => {
         fetchContinents();
     }, []);
 
-    // //Map Continents Data
-    // const getGlobal = (key) => {
-    //     return globaldata.map((data) => data[key]);
-    // };
+    //Map Continents Data
+    const getGlobal = (key) => {
+        return globaldata.map((data) => data[key]);
+    };
 
-    // const globalCases = getGlobal("casesPerOneMillion");
-    // console.log(globalCases, 'globalCases')
+    const globalCases = getGlobal("casesPerOneMillion");
+    const globalDeaths = getGlobal("deathsPerOneMillion");
+    const globalActive = getGlobal("activePerOneMillion");
+    const globalCritical = getGlobal("criticalPerOneMillion");
+    const globalTests = getGlobal("testsPerOneMillion");
+    console.log(globalCases, 'globalCases')
+    const populationGlobal = getGlobal("population")
+    const testsGlobal = getGlobal("tests")
+
 
 
     //Fetch Continents Data
@@ -75,6 +82,10 @@ const App = () => {
     const critical = getContinents("critical");
     const deaths = getContinents("deaths");
     const tests = getContinents("tests");
+
+    const continentNames = getContinents("continent")
+ 
+    console.log(continentNames, 'continentNames')
 
     const mortality = deaths / cases;
 
@@ -221,13 +232,20 @@ const App = () => {
                     countries={countries}
                     continents={continents}
                     population={population}
+                    continentNames={continentNames}
+                    tests={tests}
+                    globalCases={globalCases}
+                    globalDeaths={globalDeaths}
+                    globalActive={globalActive}
+                    globalCritical={globalCritical}
+                    globalTests={globalTests}
                     casesMillion={casesMillion}
+                    deathsMillion={deathsMillion}
                     activeMillion={activeMillion}
                     criticalMillion={criticalMillion}
-                    deathsMillion={deathsMillion}
                     testsMillion={testsMillion}
-                    tests={tests}
-                    // globalCases={globalCases}
+                    populationGlobal={populationGlobal}
+                    testsG={testsGlobal}
                 />
             </div>
             <Map />
