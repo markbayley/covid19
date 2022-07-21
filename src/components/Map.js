@@ -5,6 +5,7 @@ import lookup from "country-code-lookup";
 import "./Map.scss";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { numberWithCommas } from "../utils/numberWithCommas";
+import { Animated } from "react-animated-css";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoidHJib3QiLCJhIjoiY2s3NmFscm1xMTV0MDNmcXFyOWp1dGhieSJ9.tR2IMHDqBPOf_AeGjHOKFA";
@@ -73,16 +74,16 @@ function Map2() {
       //DOUGHNUT START     
       // filters for classifying earthquakes into five categories based on magnitude
       const cases1 = ['<', ['get', 'cases'], 10000];
-      const cases2 = ['all', ['>=', ['get', 'cases'], 2], ['<', ['get', 'cases'], 100000]];
-      const cases3 = ['all', ['>=', ['get', 'cases'], 3], ['<', ['get', 'cases'], 250000]];
-      const cases4 = ['all', ['>=', ['get', 'cases'], 4], ['<', ['get', 'cases'], 500000]];
+      const cases2 = ['all', ['>=', ['get', 'cases'], 10000], ['<', ['get', 'cases'], 100000]];
+      const cases3 = ['all', ['>=', ['get', 'cases'], 100000], ['<', ['get', 'cases'], 250000]];
+      const cases4 = ['all', ['>=', ['get', 'cases'], 250000], ['<', ['get', 'cases'], 500000]];
       const cases5 = ['>=', ['get', 'cases'], 1000000];
 
       // filters for classifying earthquakes into five categories based on magnitude
       const deaths1 = ['<', ['get', 'deaths'], 100];
-      const deaths2 = ['all', ['>=', ['get', 'deaths'], 2], ['<', ['get', 'deaths'], 1000]];
-      const deaths3 = ['all', ['>=', ['get', 'deaths'], 3], ['<', ['get', 'deaths'], 2500]];
-      const deaths4 = ['all', ['>=', ['get', 'deaths'], 4], ['<', ['get', 'deaths'], 5000]];
+      const deaths2 = ['all', ['>=', ['get', 'deaths'], 100], ['<', ['get', 'deaths'], 1000]];
+      const deaths3 = ['all', ['>=', ['get', 'deaths'], 1000], ['<', ['get', 'deaths'], 2500]];
+      const deaths4 = ['all', ['>=', ['get', 'deaths'], 2500], ['<', ['get', 'deaths'], 5000]];
       const deaths5 = ['>=', ['get', 'deaths'], 10000];
 
 
@@ -286,7 +287,8 @@ function Map2() {
             { 'min-fraction-digits': 1, 'max-fraction-digits': 1 }
           ],
           'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
-          'text-size': 10
+          'text-size': 10,
+          'visibility': 'visible'
         },
         'paint': {
           'text-color': [
@@ -688,7 +690,7 @@ function Map2() {
           .addEventListener("click", function () {
             map.flyTo({
               zoom: 3,
-              center: [-120, 45],
+              center: [-120, 35],
               essential: true,
             });
           });

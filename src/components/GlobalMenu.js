@@ -6,6 +6,7 @@ import { Doughnut, Bar, HorizontalBar, Line } from "react-chartjs-2";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import TabsComponent from '../misc/TabsComponent'
+import Badge from 'react-bootstrap/Badge';
 
 const Menu = ({ region, index, population, global, state,
   tests, countries, handleClose, populationGlobal, testsG,
@@ -64,8 +65,8 @@ const Menu = ({ region, index, population, global, state,
     if (casesPerContinent[i] < 50) { colorCases.push("#444e86") }
     if (casesPerContinent[i] >= 50 && casesPerContinent[i] < 100) { colorCases.push("#955196") }
     if (casesPerContinent[i] >= 100 && casesPerContinent[i] < 150) { colorCases.push("#ffa600") }
-    if (casesPerContinent[i] >= 150 && casesPerContinent[i] < 350) { colorCases.push("#ff6e54") }
-    if (casesPerContinent[i] >= 350) { colorCases.push("#dd5182") }
+    if (casesPerContinent[i] >= 150 && casesPerContinent[i] < 250) { colorCases.push("#ff6e54") }
+    if (casesPerContinent[i] >= 250) { colorCases.push("#dd5182") }
   }
 
   const colorDeaths = [];
@@ -102,10 +103,14 @@ const Menu = ({ region, index, population, global, state,
       content:
         <>
           <Row className={'box p-2 m-1'} style={{ color: "#fff" }}>
-            <h1>{casesGlobal}<FontAwesomeIcon color="green" icon={faArrowUp} /></h1>
+         
+        
+            <h1>{casesGlobal} <FontAwesomeIcon color="green" icon={faArrowUp} /></h1>
             <h5 >Cases / 1000 </h5>
+        
           </Row>
-          <Row>
+          <Row className="p-2 mt-1">
+          
             <Bar
               height={200}
               width={300}
@@ -127,7 +132,16 @@ const Menu = ({ region, index, population, global, state,
               }}
             />
           </Row>
-
+          <div style={{ color: "grey", fontSize: "14px", paddingTop: "10px" }}>Statistics</div>
+          <Row className="subtitle m-1 pt-1" >
+            <Col className="box px-4 py-2 ml-4" >Active <FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /><h3 className="mb-0">{(activeGlobal / casesGlobal * 100).toFixed(2)}%</h3><div>cases</div></Col>
+            <Col className="box px-4 py-2 ml-1">Critical <FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /><h3  className="mb-0">{(criticalGlobal / casesGlobal * 100).toFixed(2)}%</h3><div>cases</div></Col>
+          </Row>
+          <Row className="subtitle m-1" >
+            <Col className="box px-4 py-2 ml-4" > Deaths<h3 className="mb-0">{(deathsGlobal / casesGlobal * 100).toFixed(2)}%</h3><div >cases</div></Col>
+            <Col className="box px-4 py-2 ml-1"  > Tests <FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /><h3  className="mb-0">{(testsG / populationGlobal).toFixed(2)}</h3><div >/person</div></Col>
+          </Row>
+          <div className="py-3" style={{ color: "grey", fontSize: "14px" }}>Countries in {region}</div>
 
           <Row className="subtitle px-3 pt-2">
             <Line
@@ -153,16 +167,7 @@ const Menu = ({ region, index, population, global, state,
               }}
             />
           </Row>
-          <div style={{ color: "grey", fontSize: "14px", paddingTop: "10px" }}>Statistics</div>
-          <Row className="subtitle m-1 pt-1" >
-            <Col className="box" >Active<div className="icon"><FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /></div><h3>{(activeGlobal / casesGlobal * 100).toFixed(2)}%</h3><div>/cases</div></Col>
-            <Col className="box">Critical<div className="icon"><FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /></div><h3>{(criticalGlobal / casesGlobal * 100).toFixed(2)}%</h3><div>/cases</div></Col>
-          </Row>
-          <Row className="subtitle m-1" >
-            <Col className="box" > Deaths<div className="icon"><FontAwesomeIcon color="green" icon={faArrowUp} /></div> <h3>{(deathsGlobal / casesGlobal * 100).toFixed(2)}%</h3><div >/cases</div></Col>
-            <Col className="box" > Tests <div className="icon"><FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /></div><h3>{(testsG / populationGlobal).toFixed(2)}</h3><div >/person</div></Col>
-          </Row>
-          <div className="py-3" style={{ color: "grey", fontSize: "14px" }}>Countries in {region}</div>
+         
           <Doughnut
             width={170}
             options={{

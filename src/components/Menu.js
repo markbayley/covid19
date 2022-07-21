@@ -4,8 +4,9 @@ import { Button, Col, Row, Container } from "react-bootstrap";
 import { numberWithCommas } from "../utils/numberWithCommas";
 import { Doughnut, Bar, HorizontalBar, Line } from "react-chartjs-2";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUp, faArrowDown, faCircleUp, faCircleDown } from '@fortawesome/free-solid-svg-icons';
 import TabsComponent from '../misc/TabsComponent'
+import Badge from 'react-bootstrap/Badge';
 
 const Menu = ({ region, index, population, casesMillion, open,
     activeMillion, criticalMillion, deathsMillion, tests, countries, handleClose,
@@ -14,7 +15,7 @@ const Menu = ({ region, index, population, casesMillion, open,
     // Filter Countries in Region
     const continentCountries = countries.filter(country => country.continent === region)
     // Map Country Names && country.population > 1000000
-    const countryNames = countries.filter(country => country.continent === region && country.population > 100000).map(selectedCountry => selectedCountry.country.substring(0, 12))
+    const countryNames = countries.filter(country => country.continent === region).map(selectedCountry => selectedCountry.country)
     //Map mortality rate for those countries
     const casesPerOneMillion = continentCountries.map(selectedCountry => (((selectedCountry.casesPerOneMillion) / 1000).toFixed(1)));
     const deathsPerOneMillion = continentCountries.map(selectedCountry => (((selectedCountry.deathsPerOneMillion) / 1000).toFixed(2)));
@@ -84,31 +85,51 @@ const Menu = ({ region, index, population, casesMillion, open,
             id: 1,
             title: 'Cases',
             content:
-                <Row>
-                    <Col className="pr-0">
-                        <HorizontalBar
-                            height={800}
-                            width={200}
-                            options={{
-                                legend: {
-                                    display: false,
-                                    position: ''
-                                },
-                            }}
-                            data={{
-                                labels: countryNames,
-                                datasets: [
-                                    {
-                                        label: "Cases/1000",
-                                        data: casesPerOneMillion,
-                                        backgroundColor: colorCases,
-                                    }
-                                ]
-                            }}
-                        />
-                    </Col>
-                    <Col className="px-0">
-                        <Row className={'box p-2 m-1'} style={{color: "#fff"}}>
+                <>
+                    <Row className={'box py-2 m-1'} style={{ color: "#fff" }}>
+                        <h1>{(casesMillion[index] / 1000).toFixed(1)} </h1>
+                        <h5 >Cases / 1,000
+                            {/* {casesMillion[index] / 1000 <= 100 ?
+                                <Badge variant="success" text="dark" className="badge" style={{ position: "fixed", right: "40px", top: "20px" }}>
+                                    LOW
+                                </Badge> :
+                                casesMillion[index] / 1000 >= 250 ?
+                                    <Badge variant="danger" text="dark" className="badge" style={{ position: "fixed", left: "40px", top: "40px" }}>
+                                        HIGH
+                                    </Badge> : " "
+                            } */}
+                        </h5>
+                    </Row>
+
+                    <Row >
+                        <Col className="pl-0 mt-1 ml-4">
+                            <div style={{ color: "grey", fontSize: "14px" }} className="pt-2">Per Country</div>
+                            <HorizontalBar
+
+                                height={countryNames.length * 50}
+                                // width={200}
+                                options={{
+                                    // maintainAspectRatio: true,
+                                    legend: {
+                                        display: false,
+                                        position: ''
+                                    },
+                                }}
+                                data={{
+                                    labels: countryNames,
+                                    datasets: [
+                                        {
+                                            label: "Cases/1000",
+                                            data: casesPerOneMillion,
+                                            backgroundColor: colorCases,
+                                        }
+                                    ]
+                                }}
+                            />
+
+                        </Col>
+                        <Col className="px-0 mt-1 mr-3">
+                            {/* <Row className={'box p-2 m-1'} style={{color: "#fff"}}>
                           
                               
 
@@ -116,66 +137,127 @@ const Menu = ({ region, index, population, casesMillion, open,
 
                             <h1>{(casesMillion[index] / 1000).toFixed(1)}  <FontAwesomeIcon color="green" icon={faArrowUp} /></h1>
                             <h5 >/1000 Cases</h5>
-                        </Row>
-                        <Row className="subtitle px-3 pt-2">
-                            <Line
-                                width={160}
-                                height={100}
-                                options={{
-                                    legend: {
-                                        display: false,
-                                        position: 'bottom'
-                                    }
-                                }}
-                                data={{
-                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-                                    datasets: [
-                                        {
-                                            label: "First dataset",
-                                            data: casesPerOneMillion,
-                                            fill: true,
-                                            backgroundColor: "rgba(75,192,192,0.2)",
-                                            borderColor: "rgba(75,192,192,1)"
+                        </Row> */}
+                            <div style={{ color: "grey", fontSize: "14px", paddingTop: "7px" }}>Trend</div>
+                        
+                            <Row className="subtitle pt-1" >
+                              
+                                <Line
+                                    width={160}
+                                    height={100}
+                                    options={{
+                                        legend: {
+                                            display: false,
+                                            position: 'bottom',
+
                                         },
-                                    ]
-                                }}
-                            />
-                        </Row>
-                        <div style={{ color: "grey", fontSize: "14px", paddingTop: "10px" }}>Statistics</div>
-                        <Row className="subtitle m-1 pt-1" >
-                            <Col className="box" >Active<div className="icon"><FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /></div><h3>{(activeMillion[index] / casesMillion[index] * 100).toFixed(2)}%</h3><div>/cases</div></Col>
-                            <Col className="box">Critical<div className="icon"><FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /></div><h3>{(criticalMillion[index] / casesMillion[index] * 100).toFixed(2)}%</h3><div>/cases</div></Col>
-                        </Row>
-                        <Row className="subtitle m-1" >
-                            <Col className="box" > Deaths<div className="icon"><FontAwesomeIcon color="green" icon={faArrowUp} /></div> <h3>{(deathsMillion[index] / casesMillion[index] * 100).toFixed(2)}%</h3><div >/cases</div></Col>
-                            <Col className="box" > Tests <div className="icon"><FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /></div><h3>{(tests[index] / population[index]).toFixed(2)}</h3><div >/person</div></Col>
-                        </Row>
-                        <div className="py-3" style={{ color: "grey", fontSize: "14px" }}>Countries in {region}</div>
-                        <Doughnut
-                            width={170}
-                            options={{
-                                elements: {
-                                    arc: {
-                                        borderWidth: 0
+                                        // title: {
+                                        //     display: true,
+                                        //     text: 'Mortality in ' + region,
+                                        //     fontSize: 13,
+
+                                        // },
+                                    }}
+                                    data={{
+                                        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                                        datasets: [
+                                            {
+                                                label: "Cases / 1000",
+                                                data: casesPerOneMillion,
+                                                fill: true,
+                                                backgroundColor: "rgba(75,192,192,0.2)",
+                                                borderColor: "rgba(75,192,192,1)"
+                                            },
+                                        ]
+                                    }}
+                                />
+                                <div style={{position: "absolute", right: "47px", top: "6px"}}>
+                                    {casesPerOneMillion[0] > casesPerOneMillion[6] ?
+                                  <FontAwesomeIcon icon={faCircleDown} color='rgb(212, 23, 83)'/>:
+                                   <FontAwesomeIcon icon={faCircleUp} text="light" color='green'/>
+                                 
+                                }
+                                   </div>
+                            </Row>
+                            <div style={{ color: "grey", fontSize: "14px", paddingTop: "10px", paddingBottom: "5px" }}>Statistics</div>
+                            <Row className="subtitle pt-2" >
+                                <Col className="box p-2 mr-1" >
+                                    Active
+                                    {activeMillion[index] / casesMillion[index] * 100 <= 2.5 ?
+                                        <Badge variant="success" text="dark" className="badge">LOW</Badge> :
+                                        activeMillion[index] / casesMillion[index] * 100 >= 4.5 ?
+                                            <Badge variant="danger" text="dark" className="badge"  >HIGH</Badge> : " "
+
                                     }
-                                },
-                                legend: {
-                                    display: false,
-                                    position: ''
-                                },
-                            }}
-                            data={{
-                                labels: ["Lowest Cases", "Lower Cases", "Average Cases", "Higher Cases", "Highest Cases"],
-                                datasets: [
-                                    {
-                                        data: [lowest.length, lower.length, average.length, higher.length, highest.length],
-                                        backgroundColor: colorsPie,
+                                    <h3 className="mb-0">{(activeMillion[index] / casesMillion[index] * 100).toFixed(2)}%</h3>
+                                    <div>of cases</div>
+                                </Col>
+                                <Col className="box p-2 ml-1">
+                                Critical
+                                    {criticalMillion[index] / casesMillion[index] * 100 <= 0.005 ?
+                                        <Badge variant="success" text="dark" className="badge">LOW</Badge> :
+                                        criticalMillion[index] / casesMillion[index] * 100 >= 0.015 ?
+                                            <Badge variant="danger" text="dark" className="badge"  >HIGH</Badge> : " "
                                     }
-                                ]
-                            }}
-                        />
-                    </Col>
-                </Row>
+                                    {/* <FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /> */}
+                                    <h3 className="mb-0">{(criticalMillion[index] / casesMillion[index] * 100).toFixed(2)}%</h3>
+                                    <div>of cases</div>
+                                </Col>
+                            </Row>
+                            <Row className="subtitle " >
+                                <Col className="box p-2 mr-1 mt-3" >
+                                    Deaths
+                                    {deathsMillion[index] / casesMillion[index] * 100 <= 1.0 ?
+                                        <Badge variant="success" text="dark" className="badge">LOW</Badge> :
+                                        deathsMillion[index] / casesMillion[index] * 100 >= 2.0 ?
+                                            <Badge variant="danger" text="dark" className="badge"  >HIGH</Badge> : " "
+                                    }
+                                    {/* <FontAwesomeIcon color="green" icon={faArrowUp} /> */}
+                                    <h3 className="mb-0">{(deathsMillion[index] / casesMillion[index] * 100).toFixed(2)}%</h3>
+                                    <div>of cases</div></Col>
+                                <Col className="box p-2 ml-1 mt-3" >
+                                    Tested
+                                    {tests[index] / population[index] * 100 <= 100 ?
+                                        <Badge variant="danger" text="dark" className="badge">POOR</Badge> :
+                                        tests[index] / population[index] * 100 >= 250 ?
+                                            <Badge variant="success" text="dark" className="badge">GOOD</Badge> : " "
+                                    }
+                                    {/* <FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /> */}
+                                    <h3 className="mb-0">{(tests[index] / population[index]).toFixed(2) * 100}%</h3>
+                                    <div >of people</div></Col>
+                            </Row>
+                            <div className="py-3 mr-3" style={{ color: "grey", fontSize: "14px" }}>Analysis</div>
+                            <Row className="mr-1">
+                         
+                                <Doughnut
+                                    width={180}
+                                    options={{
+                                        elements: {
+                                            arc: {
+                                                borderWidth: 0
+                                            }
+                                        },
+                                        legend: {
+                                            display: false,
+                                            position: ''
+                                        },
+                                    }}
+                                    data={{
+                                        labels: ["Lowest Cases", "Lower Cases", "Average Cases", "Higher Cases", "Highest Cases"],
+                                        datasets: [
+                                            {
+                                                data: [lowest.length, lower.length, average.length, higher.length, highest.length],
+                                                backgroundColor: colorsPie,
+                                            }
+                                        ]
+                                    }}
+                                >   
+                          
+                            </Doughnut>
+                            </Row>
+                        </Col>
+                    </Row>
+                </>
         },
         {
             id: 2,
@@ -302,7 +384,8 @@ const Menu = ({ region, index, population, casesMillion, open,
                                         }
                                     ]
                                 }}
-                            />
+                               />        
+                                     
 
 
 
@@ -399,14 +482,14 @@ const Menu = ({ region, index, population, casesMillion, open,
                             <div style={{ color: "grey", fontSize: "14px" }}>Statistics</div>
                             <Row className="subtitle m-1 pt-1" >
 
-                                <Col className="box" style={{ color: "teal" }}>Active<div className="icon"><FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /></div><h3>{(casesMillion[index] / activeMillion[index] * 100).toFixed(0)}%</h3><div>/active</div></Col>
-                                <Col className="box" style={{ color: "teal" }}>Critical<div className="icon"><FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /></div><h3>{(criticalMillion[index] / activeMillion[index] * 100).toFixed(2)}%</h3><div>/active</div></Col>
+                                <Col className="box" style={{ color: "teal" }}>Active<FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /><h3 className="mb-0">{(casesMillion[index] / activeMillion[index] * 100).toFixed(0)}%</h3><div>/active</div></Col>
+                                <Col className="box" style={{ color: "teal" }}>Critical<FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /><h3 className="mb-0">{(criticalMillion[index] / activeMillion[index] * 100).toFixed(2)}%</h3><div>/active</div></Col>
 
                             </Row>
 
                             <Row className="subtitle m-1" >
-                                <Col className="box" style={{ color: "teal" }}> Deaths<div className="icon"><FontAwesomeIcon color="green" icon={faArrowUp} /></div> <h3>{(deathsMillion[index] / activeMillion[index] * 100).toFixed(2)}%</h3><div >/active</div></Col>
-                                <Col className="box" style={{ color: "teal" }}> Tests <div className="icon"><FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /></div><h3>{(tests[index] / population[index]).toFixed(2)}</h3><div >/person</div></Col>
+                                <Col className="box" style={{ color: "teal" }}> Deaths<FontAwesomeIcon color="green" icon={faArrowUp} /><h3 className="mb-0">{(deathsMillion[index] / activeMillion[index] * 100).toFixed(2)}%</h3 ><div className="mt-0">/active</div></Col>
+                                <Col className="box" style={{ color: "teal" }}> Tests <FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /><h3 className="mb-0">{(tests[index] / population[index]).toFixed(2)}</h3><div >/person</div></Col>
                             </Row>
                             <div className="py-2" style={{ color: "grey", fontSize: "14px" }}>Countries in {region}</div>
                             <Doughnut
@@ -779,9 +862,9 @@ const Menu = ({ region, index, population, casesMillion, open,
                                                 // style={{ margin: "10px", padding: "0px 10px 3px 10px" }}
                                                 className="close button"
                                             >
-                                             
-                                                    <h6>x</h6>
-                                             
+
+                                                <h6>x</h6>
+
                                             </Button>
                                         </div>
                                     </Col>

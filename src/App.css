@@ -32,8 +32,14 @@
   margin: -3px;
 }
 
+.badge {
+  position: absolute;
+  top: -7px;
+  right: -5px;
+}
+
 .col {
-  max-width: 49% !important;
+  max-width: 45% !important;
 }
 
 .box {
@@ -83,7 +89,7 @@ div.box {
 
 @media only screen and (min-width: 900px) {
   .side {
-    width: 24vw;
+    width: 25vw;
   }
 }
 
@@ -100,7 +106,8 @@ div.box {
 .close {
   height: 2rem;
   width: 2rem;
-  margin: 10px;
+  margin-right: 19px;
+  margin-top: 10px;
   padding: 0px 10px 3px 10px;
   color: rgb(31, 174, 160) !important;
   outline: 2px solid rgb(31, 174, 160) !important;
@@ -190,6 +197,7 @@ div.box {
 .tabs {
   display: flex;
   justify-content: left;
+  padding-top: 0.7rem;
 }
 
 .tabitem {
