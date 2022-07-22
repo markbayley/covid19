@@ -4,7 +4,7 @@ import Map from './components/Map';
 import GlobalMenu from "./components/GlobalMenu";
 import Menu from "./components/Menu";
 import './App.css'
-
+import Form from 'react-bootstrap/Form';
 
 import { CONTINENT_URL, COUNTRY_URL, GLOBAL_URL } from "./api/api";
 
@@ -84,7 +84,7 @@ const App = () => {
     const tests = getContinents("tests");
 
     const continentNames = getContinents("continent")
- 
+
     console.log(continentNames, 'continentNames')
 
     const mortality = deaths / cases;
@@ -178,10 +178,10 @@ const App = () => {
     const toggleGlobal = () => {
         setState({
             ...initialState,
-           global: true,
-           region: 'Global',
-           index: 6,
-          
+            global: true,
+            region: 'Global',
+            index: 6,
+
         });
     };
 
@@ -193,6 +193,7 @@ const App = () => {
 
     return (
         <>
+       
             <ContinentButtons
                 toggleAsia={toggleAsia}
                 toggleEurope={toggleEurope}
@@ -219,7 +220,7 @@ const App = () => {
                     deathsMillion={deathsMillion}
                     testsMillion={testsMillion}
                     tests={tests}
-                    // globalCases={globalCases}
+                // globalCases={globalCases}
                 />
 
                 <GlobalMenu
@@ -247,8 +248,11 @@ const App = () => {
                     populationGlobal={populationGlobal}
                     testsG={testsGlobal}
                 />
+              
+              <nav id="menu"></nav>
             </div>
-            <Map />
+            
+            <Map casesMillion={casesMillion} population={population} />
         </>
     );
 }

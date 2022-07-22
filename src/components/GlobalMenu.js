@@ -167,6 +167,7 @@ const Menu = ({ region, index, population, global, state,
               }}
             />
           </Row>
+          
          
           <Doughnut
             width={170}

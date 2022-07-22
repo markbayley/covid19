@@ -16,10 +16,9 @@ body {
 #root,
 .App,
 .mapContainer,
-.mapBox
-  {
+.mapBox {
   width: 100%;
-  height: 100%; 
+  height: 100%;
 }
 
 .mapboxgl-popup {
@@ -35,7 +34,7 @@ body {
   padding: 1rem;
   margin: 0;
 
-  > * {
+  >* {
     margin: 0 0 0.5rem;
     padding: 0;
 
@@ -58,26 +57,28 @@ body {
     display: block;
     width: 5rem;
     height: auto;
-   
+
   }
 }
 
-svg  {
-    transition: transform .5s; /* Animation */
+svg {
+  transition: transform .5s;
+  /* Animation */
 }
 
- svg:hover {
-    transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-    fill: #fff;
- }
+svg:hover {
+  transform: scale(1.5);
+  /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+  fill: #fff;
+}
 
-  .mapboxgl-ctrl-icon {
+.mapboxgl-ctrl-icon {
   background: rgb(67, 66, 66);
 
- }
+}
 
 
- .legend {
+.legend {
   background-color: #282c34;
   color: #fff;
   border-radius: 3px;
@@ -89,20 +90,60 @@ svg  {
   bottom: 45px;
   height: 140px;
   z-index: 1;
-  }
-   
-  .legend h4 {
+}
+
+.legend h4 {
   margin: 0 0 10px;
-  }
-   
-  .legend div span {
+}
+
+.legend div span {
   border-radius: 50%;
   display: inline-block;
   height: 10px;
   margin-right: 5px;
   width: 10px;
-  }
+}
 
 
 
 
+
+#menu {
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  z-index: 10;
+  // height: 5rem;
+  width: 6rem;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+#menu a {
+  border: 2px solid rgb(31, 174, 160);
+  color: rgb(31, 174, 160);
+  border-radius: 3px;
+  text-decoration: none;
+  margin-bottom: 5px;
+  background-color: #212529;
+}
+
+a:hover {
+  color: #212529;
+}
+
+a.active:hover {
+  color: #f18e0c;
+}
+
+a:focus {
+   color: #212529;
+   
+}
+
+#menu a.active {
+  background-color: #f18e0c;
+  color: #fff;
+ 
+}

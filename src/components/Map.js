@@ -6,11 +6,12 @@ import "./Map.scss";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { numberWithCommas } from "../utils/numberWithCommas";
 import { Animated } from "react-animated-css";
+import { Button, Col, Row, Container } from "react-bootstrap";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoidHJib3QiLCJhIjoiY2s3NmFscm1xMTV0MDNmcXFyOWp1dGhieSJ9.tR2IMHDqBPOf_AeGjHOKFA";
 
-function Map2() {
+const Map2 = ({casesMillion, population}) => {
   const mapboxElRef = useRef(null); // DOM element to render map
 
   const fetcher = (url) =>
@@ -32,6 +33,7 @@ function Map2() {
             province: point.province,
             cases: point.stats.confirmed,
             deaths: point.stats.deaths,
+      
 
           }
         }))
@@ -54,8 +56,6 @@ function Map2() {
       const minD = Math.min(...data.map((item) => item.properties.deaths));
       const maxD = Math.max(...data.map((item) => item.properties.deaths));
 
-
-
       console.log(average, min, max, 'stats')
       console.log(averageD, minD, maxD, 'statsD')
 
@@ -71,7 +71,10 @@ function Map2() {
         zoom: 3 // initial zoom
       });
 
-      //DOUGHNUT START     
+
+     
+
+//DOUGHNUT      
       // filters for classifying earthquakes into five categories based on magnitude
       const cases1 = ['<', ['get', 'cases'], 10000];
       const cases2 = ['all', ['>=', ['get', 'cases'], 10000], ['<', ['get', 'cases'], 100000]];
@@ -80,12 +83,11 @@ function Map2() {
       const cases5 = ['>=', ['get', 'cases'], 1000000];
 
       // filters for classifying earthquakes into five categories based on magnitude
-      const deaths1 = ['<', ['get', 'deaths'], 100];
+      const deaths1 = ['<', ['get', 'deaths'], 10];
       const deaths2 = ['all', ['>=', ['get', 'deaths'], 100], ['<', ['get', 'deaths'], 1000]];
-      const deaths3 = ['all', ['>=', ['get', 'deaths'], 1000], ['<', ['get', 'deaths'], 2500]];
-      const deaths4 = ['all', ['>=', ['get', 'deaths'], 2500], ['<', ['get', 'deaths'], 5000]];
-      const deaths5 = ['>=', ['get', 'deaths'], 10000];
-
+      const deaths3 = ['all', ['>=', ['get', 'deaths'], 1000], ['<', ['get', 'deaths'], 5000]];
+      const deaths4 = ['all', ['>=', ['get', 'deaths'], 5000], ['<', ['get', 'deaths'], 20000]];
+      const deaths5 = ['>=', ['get', 'deaths'], 20000];
 
       const mr1 = deaths1 / cases1;
       const mr2 = deaths2 / cases2;
@@ -104,15 +106,18 @@ function Map2() {
         "rgb(45, 182, 130)",
       ];
 
+      const colors2 = [
+        "#444e86",
+        "#955196",
+        "#ffa600",
+        "#ff6e54",
+        "#dd5182",
+        "rgb(212, 23, 83)",
+        "rgb(45, 182, 130)",
+      ];
 
-
-
-
-
-
-
+//DOT
       const size = 150;
-
       // This implements `StyleImageInterface`
       // to draw a pulsing dot icon on the map.
       const pulsingDot = {
@@ -183,11 +188,8 @@ function Map2() {
         }
       };
 
+//LAYERS
       map.on('load', () => {
-
-
-
-
         // add a clustered GeoJSON source for a sample set of earthquakes
         map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
 
@@ -207,13 +209,6 @@ function Map2() {
           }
         });
 
-
-
-
-
-
-
-
         map.addSource('points', {
           'type': 'geojson',
           'data': {
@@ -228,34 +223,38 @@ function Map2() {
             'deaths2': ['+', ['case', deaths2, 1, 0]],
             'deaths3': ['+', ['case', deaths3, 1, 0]],
             'deaths4': ['+', ['case', deaths4, 1, 0]],
-            'deaths5': ['+', ['case', deaths5, 1, 0]]
+            'deaths5': ['+', ['case', deaths5, 1, 0]],
+            'cases1': ['+', ['case', cases1, 1, 0]],
+            'cases2': ['+', ['case', cases2, 1, 0]],
+            'cases3': ['+', ['case', cases3, 1, 0]],
+            'cases4': ['+', ['case', cases4, 1, 0]],
+            'cases5': ['+', ['case', cases5, 1, 0]]
           },
 
         });
 
         // circle and symbol layers for rendering individual earthquakes (unclustered points)
         map.addLayer({
-          'id': 'circles',
+          'id': 'Deaths',
           'type': 'circle',
           'source': 'points',
-       
+
           'filter': ['!=', 'cluster', true],
           'paint': {
             'circle-color': [
               'case',
               deaths1,
-              colors[0],
+              colors2[0],
               deaths2,
-              colors[1],
+              colors2[1],
               deaths3,
-              colors[2],
+              colors2[2],
               deaths4,
-              colors[3],
-              colors[4]
+              colors2[3],
+              colors2[4]
             ],
-            'circle-opacity': 0.6,
-            'circle-radius': 12,
-
+            'circle-opacity': 0.9,
+            'circle-radius': 6,
             // "circle-radius": [
             //     "interpolate",
             //     ["linear"],
@@ -275,61 +274,106 @@ function Map2() {
             //   ],
           }
         });
+              // circle and symbol layers for rendering individual earthquakes (unclustered points)
+              map.addLayer({
+                'id': 'Cases',
+                'type': 'circle',
+                'source': 'points',
+                'filter': ['!=', 'cluster', true],
+                'paint': {
+                  'circle-color': [
+                    'case',
+                    cases1,
+                    colors[0],
+                    cases2,
+                    colors[1],
+                    cases3,
+                    colors[2],
+                    cases4,
+                    colors[3],
+                    colors[4]
+                  ],
+                  'circle-opacity': 0.6,
+                  'circle-radius': 12,
+                }
+              });
+
         map.addLayer({
-        'id': 'clusters',
-        'type': 'symbol',
-        'source': 'points',
-        // 'filter': ['!=', 'cluster', true],
-        'layout': {
-          'text-field': [
-            'number-format',
-            ['get', 'points'],
-            { 'min-fraction-digits': 1, 'max-fraction-digits': 1 }
-          ],
-          'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
-          'text-size': 10,
-          'visibility': 'visible'
-        },
-        'paint': {
-          'text-color': [
-            'case',
-            ['<', ['get', 'cases'], 3],
-            'black',
-            'white'
-          ],
+          'id': 'clusters',
+          'type': 'symbol',
+          'source': 'points',
+          'filter': ['!=', 'cluster', true],
+          'layout': {
+            'text-field': [
+              'number-format',
+              ['get', 'points'],
+              { 'min-fraction-digits': 1, 'max-fraction-digits': 1 }
+            ],
+            'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+            'text-size': 10,
+            'visibility': 'visible'
+          },
+          'paint': {
+            'text-color': [
+              'case',
+              ['<', ['get', 'cases'], 3],
+              'black',
+              'white'
+            ],
+            // 'circle-color': [
+            //     "interpolate",
+            //     ["linear"],
+            //     ["get", "cases"],
+            //     min,
+            //     "#ffffb2",
+            //     max / 32,
+            //     "#fed976",
+            //     max / 16,
+            //     "#feb24c",
+            //     max / 8,
+            //     "#fd8d3c",
+            //     max / 4,
+            //     "#fc4e2a",
+            //     max / 2,
+            //     "#e31a1c",
+            //     max,
+            //     "#b10026"
+            //   ],
+            //   "circle-opacity": 0.75,
+            //       "circle-stroke-width": [
+            //         "interpolate",
+            //         ["linear"],
+            //         ["get", "cases"],
+            //         1,
+            //         1,
+            //         max,
+            //         1.75
+            //       ],
+          }
+        });
 
-
-
-        // 'circle-color': [
-        //     "interpolate",
-        //     ["linear"],
-        //     ["get", "cases"],
-        //     min,
-        //     "#ffffb2",
-        //     max / 32,
-        //     "#fed976",
-        //     max / 16,
-        //     "#feb24c",
-        //     max / 8,
-        //     "#fd8d3c",
-        //     max / 4,
-        //     "#fc4e2a",
-        //     max / 2,
-        //     "#e31a1c",
-        //     max,
-        //     "#b10026"
-        //   ],
-        //   "circle-opacity": 0.75,
-        //       "circle-stroke-width": [
-        //         "interpolate",
-        //         ["linear"],
-        //         ["get", "cases"],
-        //         1,
-        //         1,
-        //         max,
-        //         1.75
-        //       ],
-
+        map.addLayer({
+          'id': 'clusters2',
+          'type': 'symbol',
+          'source': 'points',
+          'filter': ['!=', 'cluster', true],
+          'layout': {
+            'text-field': [
+              'number-format',
+              ['get', 'points'],
+              { 'min-fraction-digits': 1, 'max-fraction-digits': 1 }
+            ],
+            'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+            'text-size': 10,
+            'visibility': 'visible'
+          },
+          'paint': {
+            'text-color': [
+              'case',
+              ['<', ['get', 'deaths'], 3],
+              'black',
+              'white'
+            ],
 
           }
         });
@@ -341,7 +385,7 @@ function Map2() {
         function updateMarkers() {
           const newMarkers = {};
           const features = map.querySourceFeatures('points');
-       
+
           // for every cluster on the screen, create an HTML marker for it (if we didn't yet),
           // and add it to the map if it's not there already
           for (const feature of features) {
@@ -442,11 +486,11 @@ function Map2() {
       map.on('click', 'clusters', function (e) {
         var features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
         var clusterId = features[0].properties.cluster_id;
-       console.log('hi')
+        console.log('hi')
         map.getSource('points').getClusterExpansionZoom(clusterId, function (err, zoom) {
           if (err)
             return;
-           
+
           map.easeTo({
             center: features[0].geometry.coordinates,
             zoom: zoom
@@ -454,11 +498,60 @@ function Map2() {
           // console.log(clusterId, 'clusterID', features, 'features', features[0].properties.cluster_id)
         });
       });
-      // DOUGHNUT END
+    
+//TOGGLE
+      // After the last frame rendered before the map enters an "idle" state.
+      map.on('idle', () => {
+        // If these two layers were not added to the map, abort
+        if (!map.getLayer('Cases') || !map.getLayer('Deaths')) {
+          return;
+        }
 
+        // Enumerate ids of the layers.
+        const toggleableLayerIds = ['Cases', 'Deaths'];
+  
+        // Set up the corresponding toggle button for each layer.
+        for (const id of toggleableLayerIds) {
+          // Skip layers that already have a button set up.
+          if (document.getElementById(id)) {
+            continue;
+          }
 
-      
+          // Create a link.
+          const link = document.createElement('a');
+          link.id = id;
+          link.href = '#';
+          link.textContent = id;
+          link.className = 'active';
 
+          // Show or hide layer when the toggle is clicked.
+          link.onclick = function (e) {
+            const clickedLayer = this.textContent;
+            e.preventDefault();
+            e.stopPropagation();
+
+            const visibility = map.getLayoutProperty(
+              clickedLayer,
+              'visibility'
+            );
+
+            // Toggle layer visibility by changing the layout object's visibility property.
+            if (visibility === 'visible') {
+              map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+              this.className = '';
+            } else {
+              this.className = 'active';
+              map.setLayoutProperty(
+                clickedLayer,
+                'visibility',
+                'visible'
+              );
+            }
+          };
+          const layers = document.getElementById('menu');
+          layers.appendChild(link);
+        }
+      });
 
       //Add navigation controls to the top right of the canvas
       map.addControl(new mapboxgl.NavigationControl());
@@ -470,70 +563,10 @@ function Map2() {
         })
       );
 
-
-
       //CIRCLES
       map.once("load", function () {
-        // Add our SOURCE
 
-
-        // Add our layer
-        // map.addLayer({
-        //   id: "circles",
-        //   source: "points", // this should be the id of source
-        //   type: "circle",
-        //   paint: {
-        //     "circle-opacity": 0.75,
-        //     "circle-stroke-width": [
-        //       "interpolate",
-        //       ["linear"],
-        //       ["get", "cases"],
-        //       1,
-        //       1,
-        //       max,
-        //       1.75
-        //     ],
-        // "circle-radius": [
-        //   "interpolate",
-        //   ["linear"],
-        //   ["get", "cases"],
-        //   1,
-        //   min,
-        //   1000,
-        //   8,
-        //   average / 4,
-        //   10,
-        //   average / 2,
-        //   14,
-        //   average,
-        //   18,
-        //   max,
-        //   50
-        // ],
-        // "circle-color": [
-        //     "interpolate",
-        //     ["linear"],
-        //     ["get", "cases"],
-        //     min,
-        //     "#ffffb2",
-        //     max / 32,
-        //     "#fed976",
-        //     max / 16,
-        //     "#feb24c",
-        //     max / 8,
-        //     "#fd8d3c",
-        //     max / 4,
-        //     "#fc4e2a",
-        //     max / 2,
-        //     "#e31a1c",
-        //     max,
-        //     "#b10026"
-        //   ]
-        //   }
-        // });
-
-
-        
+//POPUP
         const popup2 = new mapboxgl.Popup({
           closeButton: false,
           closeOnClick: false
@@ -543,48 +576,10 @@ function Map2() {
 
         map.on("click", "clusters", (e) => {
           // const id = e.features[0].properties.id;
-
-          // if (id !== lastId2) {
-          //   lastId2 = id;
-          //   const {
-          //     cases,
-          //     deaths,
-          //     country,
-          //     province
-          //   } = e.features[0].properties;
-
-            // Change the pointer type on mouseenter
-            map.getCanvas().style.cursor = "pointer";
-
-            const coordinates = e.geometry.coordinates.slice();
-
-            // const countryISO =
-            //   lookup.byCountry(country)?.iso2 ||
-            //   lookup.byInternet(country)?.iso2;
-            // const countryFlag = `https://raw.githubusercontent.com/stefangabos/world_countries/master/data/flags/64x64/${countryISO?.toLowerCase()}.png`;
-            // const provinceHTML =
-            //   province !== "null" ? `<p>Province: <b>${province}</b></p>` : "";
-            // const mortalityRate = ((deaths / cases) * 100).toFixed(2);
-            // const countryFlagHTML = Boolean(countryISO)
-            //   ? `<img src="${countryFlag}"></img>`
-            //   : "";
-
-            // const HTML = `<p>Country: <b>${country}</b></p>
-            //     ${provinceHTML}
-            //     <p>Cases: <b>${numberWithCommas(cases)}</b></p>
-            //     <p>Deaths: <b>${numberWithCommas(deaths)}</b></p>
-            //     <p>Mortality Rate: <b>${mortalityRate}%</b></p>
-            //     ${countryFlagHTML}`;
-
-            // Ensure that if the map is zoomed out such that multiple
-            // copies of the feature are visible, the popup appears
-            // over the copy being pointed to.
-            // while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-            //   coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-            // }
-
-            popup2.setLngLat([0, 20]).addTo(map);
-          // }
+          // Change the pointer type on mouseenter
+          map.getCanvas().style.cursor = "pointer";
+          const coordinates = e.geometry.coordinates.slice();
+          popup2.setLngLat([0, 20]).addTo(map);
         });
 
         map.on("mouseleave", "clusters", function () {
@@ -594,17 +589,6 @@ function Map2() {
         });
 
 
-
-
-
-
-
-
-
-
-
-
-
         const popup = new mapboxgl.Popup({
           closeButton: false,
           closeOnClick: false
@@ -612,7 +596,7 @@ function Map2() {
 
         let lastId;
 
-        map.on("mousemove", "circles", (e) => {
+        map.on("mousemove", "Cases" && "Deaths", (e) => {
           const id = e.features[0].properties.id;
 
           if (id !== lastId) {
@@ -628,7 +612,7 @@ function Map2() {
             map.getCanvas().style.cursor = "pointer";
 
             const coordinates = e.features[0].geometry.coordinates.slice();
-
+           
             const countryISO =
               lookup.byCountry(country)?.iso2 ||
               lookup.byInternet(country)?.iso2;
@@ -637,14 +621,17 @@ function Map2() {
               province !== "null" ? `<p>Province: <b>${province}</b></p>` : "";
             const mortalityRate = ((deaths / cases) * 100).toFixed(2);
             const countryFlagHTML = Boolean(countryISO)
+            
               ? `<img src="${countryFlag}"></img>`
               : "";
+            
 
             const HTML = `  ${countryFlagHTML}<p>Country: <b>${country}</b></p>
                 ${provinceHTML}
                 <p>Cases: <b>${numberWithCommas(cases)}</b></p>
                 <p>Deaths: <b>${numberWithCommas(deaths)}</b></p>
                 <p>Mortality Rate: <b>${mortalityRate}%</b></p>
+                <p>Population: <b>${population}</b></p>
                 `;
 
             // Ensure that if the map is zoomed out such that multiple
@@ -658,17 +645,14 @@ function Map2() {
           }
         });
 
-        map.on("mouseleave", "circles", function () {
+        map.on("mouseleave", "Cases" && "Deaths", function () {
           lastId = undefined;
           map.getCanvas().style.cursor = "";
           popup.remove();
         });
 
         // map.doubleClickZoom.enable();
-
-
-
-
+//IDS
         document.getElementById("africa").addEventListener("click", function () {
           map.flyTo({
             zoom: 3,
@@ -676,7 +660,6 @@ function Map2() {
             essential: true,
           });
         });
-
         document.getElementById("europe").addEventListener("click", function () {
           map.flyTo({
             zoom: 4,
@@ -684,7 +667,6 @@ function Map2() {
             essential: true,
           });
         });
-
         document
           .getElementById("northamerica")
           .addEventListener("click", function () {
@@ -694,7 +676,6 @@ function Map2() {
               essential: true,
             });
           });
-
         document
           .getElementById("southamerica")
           .addEventListener("click", function () {
@@ -704,7 +685,6 @@ function Map2() {
               essential: true,
             });
           });
-
         document.getElementById("asia").addEventListener("click", function () {
           map.flyTo({
             zoom: 3.1,
@@ -712,7 +692,6 @@ function Map2() {
             essential: true,
           });
         });
-
         document.getElementById("oceania").addEventListener("click", function () {
           map.flyTo({
             zoom: 3.7,
@@ -728,20 +707,9 @@ function Map2() {
             essential: true,
           });
         });
-
-
-
-
       });
     }
   }, [data]);
-
-
-
-
-
-
-
 
 
   return (
@@ -754,12 +722,9 @@ function Map2() {
         <h6>Covid-19</h6>
         <div><span style={{ backgroundColor: "#dd5182" }}></span>Highest</div>
         <div><span style={{ backgroundColor: "#ff6e54" }}></span>Higher</div>
-
         <div><span style={{ backgroundColor: "#ffa600" }}></span>Average</div>
         <div><span style={{ backgroundColor: "#955196" }}></span>Lower</div>
         <div><span style={{ backgroundColor: "#444e86" }}></span>Lowest</div>
-
-
       </div>
     </div>
   );

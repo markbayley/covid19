@@ -208,6 +208,7 @@ div.box {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  /* margin-right: 30px; */
 }
 
 .tabitem--inactive {
@@ -221,7 +222,7 @@ div.box {
 
 .tabitem__icon {
   color: rgba(255, 255, 255, 0.9);
-  font-size: 22px;
+  font-size: 8px;
 }
 
 .tabitem__title {
@@ -233,6 +234,20 @@ div.box {
   text-align: center;
   margin-top: 5px;
 }
+
+/* #check1 {
+  border: 1px solid turquoise;
+  width: 20px;
+  height: 20px;
+  margin-left: 3px;
+  border-radius: 3px;
+  margin-right: 30px;
+} */
+
+a.active:hover {
+  color: #f18e0c;
+}
+
 
 
 /* Scroll */
@@ -255,3 +270,10 @@ div.box {
   border-radius: 5px;
   border: 1px solid rgb(31, 174, 160);
 }
+
+
+
+
+
+
+
