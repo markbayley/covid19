@@ -16,7 +16,7 @@ const Menu = ({ region, index, population, casesMillion, open,
     // Filter Countries in Region
     const continentCountries = countries.filter(country => country.continent === region)
     // Map Country Names && country.population > 1000000
-    const countryNames = countries.filter(country => country.continent === region).map(selectedCountry => selectedCountry.country)
+    const countryNames = countries.filter(country => country.continent === region && country.country.length <= 12).map(selectedCountry => selectedCountry.country)
     //Map mortality rate for those countries
     const casesPerOneMillion = continentCountries.map(selectedCountry => (((selectedCountry.casesPerOneMillion) / 1000).toFixed(1)));
     const deathsPerOneMillion = continentCountries.map(selectedCountry => (((selectedCountry.deathsPerOneMillion) / 1000).toFixed(2)));
@@ -106,34 +106,10 @@ const Menu = ({ region, index, population, casesMillion, open,
                         </h5>
 
                     </Row>
-                    <Row >
-                        <Col className="pl-0 mt-1 ml-4">
-                            <div style={{ color: "grey", fontSize: "14px" }} className="pt-2">Per Country</div>
-                            <HorizontalBar
+                    <Row style={{ height: "78vh" }}>
 
-                                height={countryNames.length * 50}
-                                // width={200}
-                                options={{
-                                    // maintainAspectRatio: true,
-                                    legend: {
-                                        display: false,
-                                        position: ''
-                                    },
-                                }}
-                                data={{
-                                    labels: countryNames,
-                                    datasets: [
-                                        {
-                                            label: "Cases/1000",
-                                            data: casesPerOneMillion,
-                                            backgroundColor: colorCases,
-                                        }
-                                    ]
-                                }}
-                            />
 
-                        </Col>
-                        <Col className="px-0 mt-1 mr-3">
+                        <Col className="mr-3">
                             {/* <Row className={'box p-2 m-1'} style={{color: "#fff"}}>
                           
                               
@@ -143,13 +119,13 @@ const Menu = ({ region, index, population, casesMillion, open,
                             <h1>{(casesMillion[index] / 1000).toFixed(1)}  <FontAwesomeIcon color="green" icon={faArrowUp} /></h1>
                             <h5 >/1000 Cases</h5>
                         </Row> */}
-                            <div style={{ color: "grey", fontSize: "14px", paddingTop: "7px" }}>Trend</div>
+                            <div className="py-2 ml-4" style={{ color: "grey", fontSize: "14px" }}>Trend</div>
 
-                            <Row className="subtitle pt-1" >
+                            <Row className="subtitle pt-1 ml-0" >
 
                                 <Line
                                     width={160}
-                                    height={100}
+                                    height={120}
                                     options={{
                                         legend: {
                                             display: false,
@@ -176,7 +152,7 @@ const Menu = ({ region, index, population, casesMillion, open,
                                         ]
                                     }}
                                 />
-                                <div style={{ position: "absolute", right: "47px", top: "6px" }}>
+                                <div style={{ position: "absolute", right: "45px", top: "6px" }}>
                                     {casesPerOneMillion[0] > casesPerOneMillion[6] ?
                                         <FontAwesomeIcon icon={faCircleDown} color='rgb(212, 23, 83)' /> :
                                         <FontAwesomeIcon icon={faCircleUp} text="light" color='green' />
@@ -184,9 +160,9 @@ const Menu = ({ region, index, population, casesMillion, open,
                                     }
                                 </div>
                             </Row>
-                            <div style={{ color: "grey", fontSize: "14px", paddingTop: "10px", paddingBottom: "5px" }}>Statistics</div>
-                            <Row className="subtitle pt-2" >
-                                <Col className="box p-2 mr-1" >
+                            <div className="py-3 ml-4" style={{ color: "grey", fontSize: "14px" }}>Statistics</div>
+                            <Row className="subtitle ml-0" >
+                                <Col className="box p-2 py-4 mr-1" >
                                     Active
                                     {activeMillion[index] / casesMillion[index] * 100 <= 2.5 ?
                                         <Badge variant="success" text="dark" className="badge">LOW</Badge> :
@@ -194,10 +170,10 @@ const Menu = ({ region, index, population, casesMillion, open,
                                             <Badge variant="danger" text="dark" className="badge"  >HIGH</Badge> : " "
 
                                     }
-                                    <h3 className="mb-0">{(activeMillion[index] / casesMillion[index] * 100).toFixed(2)}%</h3>
-                                    <div>of cases</div>
+                                    <div className="mb-0">{(activeMillion[index] / casesMillion[index] * 100).toFixed(2)}%</div>
+                                    {/* <div>of cases</div> */}
                                 </Col>
-                                <Col className="box p-2 ml-1">
+                                <Col className="box p-2 py-4 ml-1">
                                     Critical
                                     {criticalMillion[index] / casesMillion[index] * 100 <= 0.005 ?
                                         <Badge variant="success" text="dark" className="badge">LOW</Badge> :
@@ -205,22 +181,23 @@ const Menu = ({ region, index, population, casesMillion, open,
                                             <Badge variant="danger" text="dark" className="badge"  >HIGH</Badge> : " "
                                     }
                                     {/* <FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /> */}
-                                    <h3 className="mb-0">{(criticalMillion[index] / casesMillion[index] * 100).toFixed(2)}%</h3>
-                                    <div>of cases</div>
+                                    <div className="mb-0">{(criticalMillion[index] / casesMillion[index] * 100).toFixed(2)}%</div>
+                                    {/* <div>of cases</div> */}
                                 </Col>
                             </Row>
-                            <Row className="subtitle " >
-                                <Col className="box p-2 mr-1 mt-3" >
+                            <Row className="subtitle ml-0" >
+                                <Col className="box p-2 py-4 mr-1 mt-3" >
                                     Deaths
                                     {deathsMillion[index] / casesMillion[index] * 100 <= 1.0 ?
                                         <Badge variant="success" text="dark" className="badge">LOW</Badge> :
                                         deathsMillion[index] / casesMillion[index] * 100 >= 2.0 ?
-                                            <Badge variant="danger" text="dark" className="badge"  >HIGH</Badge> : " "
+                                            <Badge variant="danger" text="dark" className="badge">HIGH</Badge> : " "
                                     }
                                     {/* <FontAwesomeIcon color="green" icon={faArrowUp} /> */}
-                                    <h3 className="mb-0">{(deathsMillion[index] / casesMillion[index] * 100).toFixed(2)}%</h3>
-                                    <div>of cases</div></Col>
-                                <Col className="box p-2 ml-1 mt-3" >
+                                    <div className="mb-0">{(deathsMillion[index] / casesMillion[index] * 100).toFixed(2)}%</div>
+                                    {/* <div>of cases</div> */}
+                                </Col>
+                                <Col className="box p-2 py-4 ml-1 mt-3" >
                                     Tested
                                     {tests[index] / population[index] * 100 <= 100 ?
                                         <Badge variant="danger" text="dark" className="badge">POOR</Badge> :
@@ -228,14 +205,15 @@ const Menu = ({ region, index, population, casesMillion, open,
                                             <Badge variant="success" text="dark" className="badge">GOOD</Badge> : " "
                                     }
                                     {/* <FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /> */}
-                                    <h3 className="mb-0">{(tests[index] / population[index]).toFixed(2) * 100}%</h3>
-                                    <div >of people</div></Col>
+                                    <div className="mb-0">{(tests[index] / population[index]).toFixed(1) * 100}%</div>
+                                    {/* <div >of people</div> */}
+                                </Col>
                             </Row>
-                            <div className="py-3 mr-3" style={{ color: "grey", fontSize: "14px" }}>Analysis</div>
-                            <Row className="mr-1">
+                            <div className="py-3 ml-3" style={{ color: "grey", fontSize: "14px" }}>Analysis</div>
+                            <Row className=" ml-0">
 
                                 <Doughnut
-                                    width={180}
+                                    width={170}
                                     options={{
                                         elements: {
                                             arc: {
@@ -261,6 +239,89 @@ const Menu = ({ region, index, population, casesMillion, open,
                                 </Doughnut>
                             </Row>
                         </Col>
+
+                        <Col className="" style={{ height: "100%", overflowY: "scroll" }}>
+                            <div style={{ color: "grey", fontSize: "14px" }} className="pt-2">Per Country</div>
+
+                            <HorizontalBar
+                                height={countryNames.length * 50}
+                                // width={200}
+                                options={{
+                                    maintainAspectRatio: true,
+                                    legend: {
+                                        display: false,
+                                        position: ''
+                                    },
+                                    layout: {
+                                        // margin: {
+                                        //     right: 20,
+                                        //     left: 20,
+                                        // },
+                                        padding: {
+                                            left: 20,
+                                            right: 0,
+                                            top: 0,
+                                            bottom: 0
+                                        }
+                                    }
+                                }}
+                                data={{
+
+                                    labels: countryNames,
+                                    datasets: [
+                                        {
+                                            label: "Cases/1000",
+                                            data: casesPerOneMillion,
+                                            backgroundColor: colorCases,
+                                        }
+                                    ]
+                                }}
+                            />
+
+                            {countryNames.length < 15 &&
+                                <>
+                                    <div style={{ color: "grey", fontSize: "14px" }} className="pt-4">Mortality</div>
+
+                                    <HorizontalBar
+                                        height={countryNames.length * 50}
+                                        // width={200}
+                                        options={{
+                                            maintainAspectRatio: true,
+                                            legend: {
+                                                display: false,
+                                                position: ''
+                                            },
+                                            layout: {
+                                                // margin: {
+                                                //     right: 20,
+                                                //     left: 20,
+                                                // },
+                                                padding: {
+                                                    left: 20,
+                                                    right: 0,
+                                                    top: 0,
+                                                    bottom: 0
+                                                }
+                                            }
+                                        }}
+                                        data={{
+
+                                            labels: countryNames,
+                                            datasets: [
+                                                {
+                                                    label: "Cases/1000",
+                                                    data: mortalityRate,
+                                                    backgroundColor: colorDeaths,
+                                                }
+                                            ]
+                                        }}
+                                    />
+                                </>
+                            }
+
+                        </Col>
+
+
                     </Row>
                 </>
         },
@@ -270,10 +331,13 @@ const Menu = ({ region, index, population, casesMillion, open,
             // icon: <a id='check1'></a>,
             content:
                 <>
-                    <Row>
-                        <Col className="pr-0">
+                    <Row style={{ height: "100%", overflowY: "scroll" }}>
+
+                        <Col className="pr-0 pb-10" style={{ height: "90vh" }}>
+                            <div style={{ color: "grey", fontSize: "14px" }} className="pt-2">Per Country</div>
                             <HorizontalBar
-                                height={830}
+
+                                height={countryNames.length * 40}
                                 width={200}
                                 options={{
                                     legend: {
@@ -312,6 +376,7 @@ const Menu = ({ region, index, population, casesMillion, open,
                             </Row>
 
                             {/* </Row> */}
+                            <div style={{ color: "grey", fontSize: "14px" }} className="pt-2">Trend</div>
                             <Row className="subtitle px-3 pt-2">
                                 <Line
                                     width={160}
@@ -348,7 +413,7 @@ const Menu = ({ region, index, population, casesMillion, open,
                                     }}
                                 />
                             </Row>
-                            <div style={{ color: "grey", fontSize: "14px" }}>Statistics</div>
+                            <div style={{ color: "grey", fontSize: "14px" }} className="pt-2">Statistics</div>
                             <Row className="subtitle m-1 pt-1" >
 
                                 <Col className="box" style={{ color: "#4BC0C0" }}>Active<div className="icon"><FontAwesomeIcon color="rgb(212, 23, 83)" icon={faArrowDown} /></div><h3>{(activeMillion[index] / deathsMillion[index] * 100).toFixed(0)}%</h3><div>/deaths</div></Col>
@@ -824,13 +889,13 @@ const Menu = ({ region, index, population, casesMillion, open,
     const TabItemComponent = ({
         icon = '',
         title = '',
-        
+
         onItemClicked = () => console.error('You passed no action to the component'),
         isActive = false,
     }) => {
         return (
             <div className={isActive ? 'tabitem' : 'tabitem tabitem--inactive'} onClick={onItemClicked}>
-                <p  style={{display: "flex"}} className="tabitem__title">{title}{icon} </p>
+                <p style={{ display: "flex" }} className="tabitem__title">{title}{icon} </p>
             </div>
         )
     };
@@ -849,7 +914,7 @@ const Menu = ({ region, index, population, casesMillion, open,
                         <div className={!open ? "hidden" : "visible"}>
                             <Container>
                                 <Row className="title" >
-                                    <Col xs={10} className="px-0 pt-2">{region}</Col>
+                                    <Col xs={9} className="px-0 pt-2">{region}</Col>
                                     <Col className="px-0">
                                         <div style={{ display: "flex", justifyContent: "flex-end" }}>
                                             <Button

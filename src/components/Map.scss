@@ -79,17 +79,18 @@ svg:hover {
 
 
 .legend {
-  background-color: #282c34;
+  // background-color: #282c34;
   color: #fff;
   border-radius: 3px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
   padding: 10px;
-  position: absolute;
-  right: 7px;
-  bottom: 45px;
-  height: 140px;
-  z-index: 1;
+  // position: absolute;
+  // right: 7px;
+  // top: 55px;
+  height: auto;
+  z-index: 2;
+  margin: 5px;
 }
 
 .legend h4 {
@@ -109,15 +110,16 @@ svg:hover {
 
 
 #menu {
-  position: absolute;
-  right: 12px;
-  top: 10px;
-  z-index: 10;
+  // position: absolute;
+  // right: 12px;
+  // top: 10px;
+  z-index: 2;
   // height: 5rem;
   width: 6rem;
   display: flex;
   flex-direction: column;
   text-align: center;
+
 }
 
 #menu a {
@@ -146,4 +148,18 @@ a:focus {
   background-color: #f18e0c;
   color: #fff;
  
+}
+
+
+
+.geocoder {
+  position: absolute;
+  z-index: 2;
+  right: 45px;
+  // margin-left: -25%;
+  top: 10px;
+
+}
+.mapboxgl-ctrl-geocoder {
+  min-width: 50%;
 }

@@ -108,6 +108,15 @@ const App = () => {
         }
         fetchCountries();
     }, []);
+    //Map Country Data
+    const getCountries = (key) => {
+        return countries.map((country) => country[key]);
+    };
+
+    const populationCountries = getCountries("population");
+
+
+
 
     const [state, setState] = useState([initialState]);
 
@@ -193,7 +202,6 @@ const App = () => {
 
     return (
         <>
-       
             <ContinentButtons
                 toggleAsia={toggleAsia}
                 toggleEurope={toggleEurope}
@@ -203,7 +211,6 @@ const App = () => {
                 toggleSouthAmerica={toggleSouthAmerica}
                 toggleNorthAmerica={toggleNorthAmerica}
                 toggleOceania={toggleOceania}
-
             />
             <div className="sidebar">
                 <Menu
@@ -220,9 +227,7 @@ const App = () => {
                     deathsMillion={deathsMillion}
                     testsMillion={testsMillion}
                     tests={tests}
-                // globalCases={globalCases}
                 />
-
                 <GlobalMenu
                     state={state.global}
                     toggleGlobal={toggleGlobal}
@@ -248,11 +253,8 @@ const App = () => {
                     populationGlobal={populationGlobal}
                     testsG={testsGlobal}
                 />
-              
-              <nav id="menu"></nav>
             </div>
-            
-            <Map casesMillion={casesMillion} population={population} />
+            <Map countries={countries} />
         </>
     );
 }

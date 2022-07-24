@@ -39,8 +39,13 @@
 }
 
 .col {
-  max-width: 45% !important;
+  max-width: 49% !important;
+  /* border: 1px solid grey; */
 }
+
+/* .HorizontalBar {
+  margin-left: 10px !important;
+} */
 
 .box {
   /* border: 2px solid currentColor; */
@@ -74,9 +79,9 @@ div.box {
   width: 100vw;
   font-size: calc(20px + 2.5vmin);
   /* color: rgb(45, 182, 130); */
-  border: 1px solid turquoise;
+  /* border: 1px solid turquoise; */
   border-radius: 5px;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .visible {
@@ -98,9 +103,10 @@ div.box {
 .button {
   height: 3.5rem;
   width: 6rem;
-  z-index: 1;
+  z-index: 2;
   color: rgb(31, 174, 160) !important;
   outline: 1px solid rgb(31, 174, 160) !important;
+  margin: 5px;
 }
 
 .close {
@@ -111,6 +117,7 @@ div.box {
   padding: 0px 10px 3px 10px;
   color: rgb(31, 174, 160) !important;
   outline: 2px solid rgb(31, 174, 160) !important;
+  z-index: 2;
 }
 
 .button:hover {
@@ -121,72 +128,13 @@ div.box {
 
 
 
-.asia:focus,
-.southamerica:focus,
-.europe:focus,
-.northamerica:focus,
-.oceania:focus,
-.africa:focus,
-.global:focus {
+
+.button:focus {
   background-color: rgb(31, 174, 160) !important;
   color: #fff !important;
 }
 
-.asia {
-  display: block;
-  position: absolute;
-  background: #212529 !important;
-  bottom: 28%;
-  margin-left: 27px;
-}
 
-.southamerica {
-  display: block;
-  position: absolute;
-  background: #212529 !important;
-  bottom: 35%;
-  margin-left: 27px;
-}
-
-.europe {
-  display: block;
-  position: absolute;
-  background: #212529 !important;
-  bottom: 42%;
-  margin-left: 27px;
-}
-
-.africa {
-  display: block;
-  position: absolute;
-  background: #212529 !important;
-  bottom: 49%;
-  margin-left: 27px;
-}
-
-.oceania {
-  display: block;
-  position: absolute;
-  background: #212529 !important;
-  bottom: 56%;
-  margin-left: 27px;
-}
-
-.northamerica {
-  display: block;
-  position: absolute;
-  background: #212529 !important;
-  bottom: 63%;
-  margin-left: 27px;
-}
-
-.global {
-  display: block;
-  position: absolute;
-  background: #212529 !important;
-  bottom: 70%;
-  margin-left: 27px;
-}
 
 /* Tabs */
 
@@ -258,7 +206,7 @@ a.active:hover {
 }
 
 *::-webkit-scrollbar {
-  width: 12px;
+  width: 10px;
 }
 
 *::-webkit-scrollbar-track {
@@ -270,6 +218,9 @@ a.active:hover {
   border-radius: 5px;
   border: 1px solid rgb(31, 174, 160);
 }
+
+
+
 
 
 

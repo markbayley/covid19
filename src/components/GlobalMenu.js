@@ -787,6 +787,7 @@ const Menu = ({ region, index, population, global, state,
             <div className={!global ? "hidden" : "visible"}>
               <Container>
                 <Row className="title" >
+              
                   <Col xs={10} className="px-0 pt-2">{region}</Col>
                   <Col className="px-0">
                     <div style={{ display: "flex", justifyContent: "flex-end" }}>

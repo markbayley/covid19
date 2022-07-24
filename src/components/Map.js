@@ -11,9 +11,9 @@ import { Button, Col, Row, Container } from "react-bootstrap";
 mapboxgl.accessToken =
   "pk.eyJ1IjoidHJib3QiLCJhIjoiY2s3NmFscm1xMTV0MDNmcXFyOWp1dGhieSJ9.tR2IMHDqBPOf_AeGjHOKFA";
 
-const Map2 = ({casesMillion, population}) => {
+const Map2 = ({ countries}) => {
   const mapboxElRef = useRef(null); // DOM element to render map
-
+  
   const fetcher = (url) =>
     fetch(url)
       .then((r) => r.json())
@@ -41,6 +41,8 @@ const Map2 = ({casesMillion, population}) => {
 
   const { data } = useSWR("https://disease.sh/v3/covid-19/jhucsse", fetcher);
 
+  
+ 
   // Initialize our map
   useEffect(() => {
     if (data) {
@@ -64,6 +66,13 @@ const Map2 = ({casesMillion, population}) => {
       const maxmr = maxD / max;
       console.log(amr, minmr, maxmr, 'amr')
 
+    
+      // const countryname = data.map((item) => item.properties.country);
+      // console.log(countryname, 'countryname')
+    
+
+
+
       const map = new mapboxgl.Map({
         container: mapboxElRef.current,
         style: "mapbox://styles/mapbox/dark-v10",
@@ -72,7 +81,8 @@ const Map2 = ({casesMillion, population}) => {
       });
 
 
-     
+ 
+
 
 //DOUGHNUT      
       // filters for classifying earthquakes into five categories based on magnitude
@@ -83,7 +93,7 @@ const Map2 = ({casesMillion, population}) => {
       const cases5 = ['>=', ['get', 'cases'], 1000000];
 
       // filters for classifying earthquakes into five categories based on magnitude
-      const deaths1 = ['<', ['get', 'deaths'], 10];
+      const deaths1 = ['<', ['get', 'deaths'], 100];
       const deaths2 = ['all', ['>=', ['get', 'deaths'], 100], ['<', ['get', 'deaths'], 1000]];
       const deaths3 = ['all', ['>=', ['get', 'deaths'], 1000], ['<', ['get', 'deaths'], 5000]];
       const deaths4 = ['all', ['>=', ['get', 'deaths'], 5000], ['<', ['get', 'deaths'], 20000]];
@@ -228,7 +238,8 @@ const Map2 = ({casesMillion, population}) => {
             'cases2': ['+', ['case', cases2, 1, 0]],
             'cases3': ['+', ['case', cases3, 1, 0]],
             'cases4': ['+', ['case', cases4, 1, 0]],
-            'cases5': ['+', ['case', cases5, 1, 0]]
+            'cases5': ['+', ['case', cases5, 1, 0]],
+         
           },
 
         });
@@ -554,7 +565,7 @@ const Map2 = ({casesMillion, population}) => {
       });
 
       //Add navigation controls to the top right of the canvas
-      map.addControl(new mapboxgl.NavigationControl());
+      // map.addControl(new mapboxgl.NavigationControl());
 
       // Add navigation to center the map on your geo location
       map.addControl(
@@ -562,6 +573,11 @@ const Map2 = ({casesMillion, population}) => {
           fitBoundsOptions: { maxZoom: 6 }
         })
       );
+
+      console.log(countries, 'countries')
+      const populationCountry = countries.map(country => [country.population, country.country]);
+      console.log(populationCountry, 'pC')
+    
 
       //CIRCLES
       map.once("load", function () {
@@ -631,9 +647,9 @@ const Map2 = ({casesMillion, population}) => {
                 <p>Cases: <b>${numberWithCommas(cases)}</b></p>
                 <p>Deaths: <b>${numberWithCommas(deaths)}</b></p>
                 <p>Mortality Rate: <b>${mortalityRate}%</b></p>
-                <p>Population: <b>${population}</b></p>
+                <p>Population: <b>${""}</b></p>
                 `;
-
+  // 
             // Ensure that if the map is zoomed out such that multiple
             // copies of the feature are visible, the popup appears
             // over the copy being pointed to.
@@ -718,14 +734,7 @@ const Map2 = ({casesMillion, population}) => {
         {/* Mapbox Container */}
         <div className="mapBox" ref={mapboxElRef} />
       </div>
-      <div id="state-legend" className="legend">
-        <h6>Covid-19</h6>
-        <div><span style={{ backgroundColor: "#dd5182" }}></span>Highest</div>
-        <div><span style={{ backgroundColor: "#ff6e54" }}></span>Higher</div>
-        <div><span style={{ backgroundColor: "#ffa600" }}></span>Average</div>
-        <div><span style={{ backgroundColor: "#955196" }}></span>Lower</div>
-        <div><span style={{ backgroundColor: "#444e86" }}></span>Lowest</div>
-      </div>
+
     </div>
   );
 }
