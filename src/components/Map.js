@@ -13,7 +13,15 @@ mapboxgl.accessToken =
 
 const Map2 = ({ countries}) => {
   const mapboxElRef = useRef(null); // DOM element to render map
-  
+
+  console.log(countries, 'countries')
+  const populationCountry = countries.map(country => [country.population, country.country]);
+  console.log(populationCountry, 'pC')
+  const mort = countries.map(selectedCountry => (((selectedCountry.deathsPerOneMillion / selectedCountry.casesPerOneMillion)) * 100).toFixed(2));
+  console.log(mort, 'mort')
+  const casesPerOneMillion = countries.map(selectedCountry => (((selectedCountry.casesPerOneMillion) / 1000).toFixed(1)));
+  console.log(casesPerOneMillion, 'cPOM')
+
   const fetcher = (url) =>
     fetch(url)
       .then((r) => r.json())
@@ -33,6 +41,8 @@ const Map2 = ({ countries}) => {
             province: point.province,
             cases: point.stats.confirmed,
             deaths: point.stats.deaths,
+            mort: point.stats.deaths / point.stats.confirmed,
+            // casesM: countries.country.casesPerOneMillion,
       
 
           }
@@ -62,9 +72,9 @@ const Map2 = ({ countries}) => {
       console.log(averageD, minD, maxD, 'statsD')
 
       const amr = averageD / average;
-      const minmr = minD / min;
-      const maxmr = maxD / max;
-      console.log(amr, minmr, maxmr, 'amr')
+      // const minmr = 1 / max;
+      // const maxmr = maxD / 1;
+      // console.log(amr, minmr, maxmr, 'amr')
 
     
       // const countryname = data.map((item) => item.properties.country);
@@ -88,23 +98,25 @@ const Map2 = ({ countries}) => {
       // filters for classifying earthquakes into five categories based on magnitude
       const cases1 = ['<', ['get', 'cases'], 10000];
       const cases2 = ['all', ['>=', ['get', 'cases'], 10000], ['<', ['get', 'cases'], 100000]];
-      const cases3 = ['all', ['>=', ['get', 'cases'], 100000], ['<', ['get', 'cases'], 250000]];
-      const cases4 = ['all', ['>=', ['get', 'cases'], 250000], ['<', ['get', 'cases'], 500000]];
-      const cases5 = ['>=', ['get', 'cases'], 1000000];
+      const cases3 = ['all', ['>=', ['get', 'cases'], 100000], ['<', ['get', 'cases'], 250000]];  //720,000
+      const cases4 = ['all', ['>=', ['get', 'cases'], 250000], ['<', ['get', 'cases'], 500000]];   //32,000,000
+      const cases5 = ['>=', ['get', 'cases'], 500000];
 
       // filters for classifying earthquakes into five categories based on magnitude
       const deaths1 = ['<', ['get', 'deaths'], 100];
       const deaths2 = ['all', ['>=', ['get', 'deaths'], 100], ['<', ['get', 'deaths'], 1000]];
-      const deaths3 = ['all', ['>=', ['get', 'deaths'], 1000], ['<', ['get', 'deaths'], 5000]];
-      const deaths4 = ['all', ['>=', ['get', 'deaths'], 5000], ['<', ['get', 'deaths'], 20000]];
+      const deaths3 = ['all', ['>=', ['get', 'deaths'], 1000], ['<', ['get', 'deaths'], 5000]];    //8,000
+      const deaths4 = ['all', ['>=', ['get', 'deaths'], 5000], ['<', ['get', 'deaths'], 20000]];   // 172,000
       const deaths5 = ['>=', ['get', 'deaths'], 20000];
 
-      const mr1 = deaths1 / cases1;
-      const mr2 = deaths2 / cases2;
-      const mr3 = deaths3 / cases3;
-      const mr4 = deaths4 / cases4;
-      const mr5 = deaths5 / cases5;
+      const mr1 =  ['<', ['get', 'mort'], .003];
+      const mr2 =  ['all', ['>=', ['get', 'mort'], .003], ['<', ['get', 'mort'], .005]];
+      const mr3 =  ['all', ['>=', ['get', 'mort'], .005], ['<', ['get', 'mort'], .02]];   //.011 amr
+      const mr4 =  ['all', ['>=', ['get', 'mort'], .02], ['<', ['get', 'mort'], .05]];   //.18
+      const mr5 =  ['>=', ['get', 'mort'], .05];
 
+     console.log(mr1, mr2, mr3, mr4, mr5, 'MR')
+     console.log(deaths1, 'd/c')
       // colors to use for the categories
       const colors = [
         "#444e86",
@@ -239,11 +251,36 @@ const Map2 = ({ countries}) => {
             'cases3': ['+', ['case', cases3, 1, 0]],
             'cases4': ['+', ['case', cases4, 1, 0]],
             'cases5': ['+', ['case', cases5, 1, 0]],
+            'mr1': ['+', ['case', mr1, 1, 0]],
+            'mr2': ['+', ['case', mr2, 1, 0]],
+            'mr3': ['+', ['case', mr3, 1, 0]],
+            'mr4': ['+', ['case', mr4, 1, 0]],
+            'mr5': ['+', ['case', mr5, 1, 0]],
+        
          
           },
 
         });
-
+      
+        // map.addLayer({
+        
+        //   "id": "clusters-label",
+        //   "type": "symbol",
+        //   "source": "points",
+        //   "layout": {
+        //     "text-anchor": "top-left",
+        //     "text-field": "{country}",
+        //     "text-font": [
+        //       "DIN Offc Pro Medium",
+        //       "Arial Unicode MS Bold"
+        //     ],
+        //     "text-size": 12,
+        //   },
+        //    'paint': {
+        //        'text-color': 'white'}
+        //    });
+                  
+          
         // circle and symbol layers for rendering individual earthquakes (unclustered points)
         map.addLayer({
           'id': 'Deaths',
@@ -264,25 +301,17 @@ const Map2 = ({ countries}) => {
               colors2[3],
               colors2[4]
             ],
-            'circle-opacity': 0.9,
-            'circle-radius': 6,
-            // "circle-radius": [
-            //     "interpolate",
-            //     ["linear"],
-            //     ["get", "cases"],
-            //     1,
-            //     min,
-            //     1000,
-            //     8,
-            //     average / 4,
-            //     10,
-            //     average / 2,
-            //     14,
-            //     average,
-            //     18,
-            //     max,
-            //     50
-            //   ],
+            'circle-opacity': 0.5,
+            // 'circle-radius': 6,
+            "circle-radius": [
+                "interpolate",
+                ["linear"],
+                ["get", "deaths"], 
+                minD,
+                10,
+                maxD,
+                36
+              ],
           }
         });
               // circle and symbol layers for rendering individual earthquakes (unclustered points)
@@ -291,6 +320,18 @@ const Map2 = ({ countries}) => {
                 'type': 'circle',
                 'source': 'points',
                 'filter': ['!=', 'cluster', true],
+              
+                // 'layout': {
+                //   'text-field': [
+                //     'number-format',
+                //     ['get', 'points'],
+                //     { 'min-fraction-digits': 1, 'max-fraction-digits': 1 }
+                //   ],
+                //   'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+                //   'text-size': 10,
+                //   'visibility': 'visible'
+                // },
+           
                 'paint': {
                   'circle-color': [
                     'case',
@@ -304,10 +345,59 @@ const Map2 = ({ countries}) => {
                     colors[3],
                     colors[4]
                   ],
-                  'circle-opacity': 0.6,
-                  'circle-radius': 12,
+                  'circle-opacity': 0.5,
+                  // 'circle-radius': 12,
+                  "circle-radius": [
+                    "interpolate",
+                    ["linear"],
+                    ["get", "cases"],
+                  
+                    min,
+                    10,
+              
+                    max,
+                    36
+                  ],
                 }
               });
+
+
+              map.addLayer({
+                'id': 'Mortality',
+                'type': 'circle',
+                'source': 'points',
+                'filter': ['!=', 'cluster', true],
+                
+                'paint': {
+
+                  'circle-color': [
+                    'case',
+                    mr1,
+                    colors[0],
+                    mr2,
+                    colors[1],
+                    mr3,
+                    colors[2],
+                    mr4,
+                    colors[3],
+                    colors[4]
+                  ],
+                  'circle-opacity': 0.5,
+                  // 'circle-radius': 18,
+                  "circle-radius": [
+                    "interpolate",
+                    ["linear"],
+                    ["get", "mort"],
+                  
+                    0.0001,
+                    12,
+              
+                    0.20,
+                    36
+                  ],
+                }
+              });
+
 
         map.addLayer({
           'id': 'clusters',
@@ -438,12 +528,25 @@ const Map2 = ({ countries}) => {
           props.deaths2,
           props.deaths3,
           props.deaths4,
-          props.deaths5
+          props.deaths5,
         ];
+        const counts2 = [
+          props.cases1,
+          props.cases2,
+          props.cases3,
+          props.cases4,
+          props.cases5,
+        ];
+
         let total = 0;
         for (const count of counts) {
           offsets.push(total);
           total += count;
+        }
+        let total2 = 0;
+        for (const count2 of counts2) {
+          offsets.push(total2);
+          total2 += count2;
         }
         const fontSize =
           total >= 1000 ? 22 : total >= 100 ? 20 : total >= 10 ? 18 : 16;
@@ -452,13 +555,33 @@ const Map2 = ({ countries}) => {
         const r0 = Math.round(r * 0.6);
         const w = r * 2;
 
+        const fontSize2 =
+        total2 >= 1000 ? 22 : total2 >= 100 ? 20 : total2 >= 10 ? 18 : 16;
+      const r2 =
+        total2 >= 1000 ? 50 : total2 >= 100 ? 32 : total2 >= 10 ? 24 : 18;
+      const r02 = Math.round(r2 * 0.6);
+      const w2 = r2 * 2;
+
         let html = `<div>
         <svg "class="zoom" width="${w}" height="${w}" viewbox="0 0 ${w} ${w}" text-anchor="middle" style="font: ${fontSize}px ; display: "block"; >`;
+
+        let html2 = `<div>
+        <svg "class="zoom" width="${w2}" height="${w2}" viewbox="0 0 ${w2} ${w2}" text-anchor="middle" style="font: ${fontSize2}px ; display: "block"; >`;
 
         for (let i = 0; i < counts.length; i++) {
           html += donutSegment(
             offsets[i] / total,
             (offsets[i] + counts[i]) / total,
+            r,
+            r0,
+            colors[i]
+          );
+        }
+
+        for (let i = 0; i < counts2.length; i++) {
+          html += donutSegment(
+            offsets[i] / total2,
+            (offsets[i] + counts2[i]) / total2,
             r,
             r0,
             colors[i]
@@ -471,9 +594,18 @@ const Map2 = ({ countries}) => {
         </svg>
         </div>`;
 
+        // html2 += `<circle cx="${r2}" cy="${r2}" r="${r02}" fill="#212529" />
+        // <text  dominant-baseline="central" transform="translate(${r2}, ${r2})" fill="#dfdfdf" >
+        // ${total2.toLocaleString()}
+        // </text>
+        // </svg>
+        // </div>`;
+
         const el = document.createElement('div');
         el.innerHTML = html;
         return el.firstChild;
+
+       
       }
 
       function donutSegment(start, end, r, r0, color) {
@@ -514,12 +646,12 @@ const Map2 = ({ countries}) => {
       // After the last frame rendered before the map enters an "idle" state.
       map.on('idle', () => {
         // If these two layers were not added to the map, abort
-        if (!map.getLayer('Cases') || !map.getLayer('Deaths')) {
+        if (!map.getLayer('Cases') || !map.getLayer('Deaths') || !map.getLayer('Mortality') ) {
           return;
         }
 
         // Enumerate ids of the layers.
-        const toggleableLayerIds = ['Cases', 'Deaths'];
+        const toggleableLayerIds = ['Cases', 'Deaths', 'Mortality'];
   
         // Set up the corresponding toggle button for each layer.
         for (const id of toggleableLayerIds) {
@@ -574,54 +706,33 @@ const Map2 = ({ countries}) => {
         })
       );
 
-      console.log(countries, 'countries')
-      const populationCountry = countries.map(country => [country.population, country.country]);
-      console.log(populationCountry, 'pC')
     
-
       //CIRCLES
       map.once("load", function () {
 
-//POPUP
+
+        //POPUP
         const popup2 = new mapboxgl.Popup({
           closeButton: false,
-          closeOnClick: false
+          closeOnClick: false,
+          className: "popup",
+       
         });
 
         let lastId2;
 
-        map.on("click", "clusters", (e) => {
-          // const id = e.features[0].properties.id;
-          // Change the pointer type on mouseenter
-          map.getCanvas().style.cursor = "pointer";
-          const coordinates = e.geometry.coordinates.slice();
-          popup2.setLngLat([0, 20]).addTo(map);
-        });
-
-        map.on("mouseleave", "clusters", function () {
-          lastId2 = undefined;
-          map.getCanvas().style.cursor = "";
-          popup2.remove();
-        });
-
-
-        const popup = new mapboxgl.Popup({
-          closeButton: false,
-          closeOnClick: false
-        });
-
-        let lastId;
-
-        map.on("mousemove", "Cases" && "Deaths", (e) => {
+        map.on("mousemove", "Deaths", (e) => {
           const id = e.features[0].properties.id;
 
-          if (id !== lastId) {
+          if (id !== lastId2) {
             lastId = id;
             const {
               cases,
               deaths,
               country,
-              province
+              province,
+              mort,
+
             } = e.features[0].properties;
 
             // Change the pointer type on mouseenter
@@ -647,9 +758,81 @@ const Map2 = ({ countries}) => {
                 <p>Cases: <b>${numberWithCommas(cases)}</b></p>
                 <p>Deaths: <b>${numberWithCommas(deaths)}</b></p>
                 <p>Mortality Rate: <b>${mortalityRate}%</b></p>
-                <p>Population: <b>${""}</b></p>
+             
                 `;
   // 
+            // Ensure that if the map is zoomed out such that multiple
+            // copies of the feature are visible, the popup appears
+            // over the copy being pointed to.
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+              coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
+
+            popup2.setLngLat(coordinates).setHTML(HTML).addTo(map);
+          }
+        });
+
+        map.on("mouseleave", "Deaths", function () {
+          lastId = undefined;
+          map.getCanvas().style.cursor = "";
+          popup2.remove();
+        });
+
+//POPUP
+    
+
+        const popup = new mapboxgl.Popup({
+          closeButton: false,
+          closeOnClick: false,
+          className: "popup",
+       
+        });
+
+        let lastId;
+
+        map.on("mousemove", "Cases", (e) => {
+          const id = e.features[0].properties.id;
+
+          if (id !== lastId) {
+            lastId = id;
+            const {
+              cases,
+              deaths,
+              country,
+              province,
+              mort,
+
+            } = e.features[0].properties;
+
+            // Change the pointer type on mouseenter
+            map.getCanvas().style.cursor = "pointer";
+
+            const coordinates = e.features[0].geometry.coordinates.slice();
+
+        
+      
+           
+            const countryISO =
+              lookup.byCountry(country)?.iso2 ||
+              lookup.byInternet(country)?.iso2;
+            const countryFlag = `https://raw.githubusercontent.com/stefangabos/world_countries/master/data/flags/64x64/${countryISO?.toLowerCase()}.png`;
+            const provinceHTML =
+              province !== "null" ? `<p>Province: <b>${province}</b></p>` : "";
+            const mortalityRate = ((deaths / cases) * 100).toFixed(2);
+            const countryFlagHTML = Boolean(countryISO)
+            
+              ? `<img src="${countryFlag}"></img>`
+              : "";
+            
+
+            const HTML = `  ${countryFlagHTML}<p>Country: <b>${country}</b></p>
+                ${provinceHTML}
+                <p>Cases: <b>${numberWithCommas(cases)}</b></p>
+                <p>Deaths: <b>${numberWithCommas(deaths)}</b></p>
+                <p>Mortality Rate: <b>${mortalityRate}%</b></p>
+             
+                `;
+             
             // Ensure that if the map is zoomed out such that multiple
             // copies of the feature are visible, the popup appears
             // over the copy being pointed to.
@@ -661,7 +844,7 @@ const Map2 = ({ countries}) => {
           }
         });
 
-        map.on("mouseleave", "Cases" && "Deaths", function () {
+        map.on("mouseleave", "Cases", function () {
           lastId = undefined;
           map.getCanvas().style.cursor = "";
           popup.remove();
@@ -723,14 +906,19 @@ const Map2 = ({ countries}) => {
             essential: true,
           });
         });
+
+    
+
+    
       });
     }
   }, [data]);
 
-
+ 
   return (
     <div className="App">
       <div className="mapContainer" >
+
         {/* Mapbox Container */}
         <div className="mapBox" ref={mapboxElRef} />
       </div>

@@ -28,11 +28,18 @@ body {
   margin: 0;
   color: #f18e0c;
   text-rendering: optimizeLegibility;
+ 
+}
+
+.mapboxgl-popup-tip {
+  background-color: #212529;
+  
 }
 
 .mapboxgl-popup-content {
   padding: 1rem;
   margin: 0;
+
 
   >* {
     margin: 0 0 0.5rem;
@@ -48,7 +55,7 @@ body {
 
     b {
       font-size: 1.2rem;
-      color: #212121;
+      color: #fff;
       padding: 0 5px;
     }
   }
@@ -59,6 +66,17 @@ body {
     height: auto;
 
   }
+}
+
+
+.popup .mapboxgl-popup-content {
+  background-color: #212529;
+  border: 1px solid turquoise;
+
+}
+.popup .mapboxgl-popup-tip {
+  background-color: #212529;
+  border-top-color: green;
 }
 
 svg {
@@ -136,16 +154,19 @@ a:hover {
 }
 
 a.active:hover {
-  color: #f18e0c;
+  color: rgb(223, 237, 235) !important;
+
 }
 
 a:focus {
    color: #212529;
+   outline: 1px solid rgb(31, 174, 160) !important;
    
 }
 
 #menu a.active {
-  background-color: #f18e0c;
+  background-color: rgb(31, 174, 160);
+  outline: 1px solid rgb(31, 174, 160) !important;
   color: #fff;
  
 }

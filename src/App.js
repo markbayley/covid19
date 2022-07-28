@@ -4,9 +4,10 @@ import Map from './components/Map';
 import GlobalMenu from "./components/GlobalMenu";
 import Menu from "./components/Menu";
 import './App.css'
-import Form from 'react-bootstrap/Form';
+import { Button } from 'react-bootstrap';
 
 import { CONTINENT_URL, COUNTRY_URL, GLOBAL_URL } from "./api/api";
+
 
 const initialState = {
     global: false,
@@ -71,11 +72,16 @@ const App = () => {
     };
 
     const population = getContinents("population");
+    const todayCases = getContinents("todayCases");
+    const todayDeaths = getContinents("todayDeaths");
+    const todayRecovered = getContinents("todayRecovered");
+
     const casesMillion = getContinents("casesPerOneMillion");
     const activeMillion = getContinents("activePerOneMillion");
     const criticalMillion = getContinents("criticalPerOneMillion");
     const deathsMillion = getContinents("deathsPerOneMillion");
     const testsMillion = getContinents("testsPerOneMillion");
+    const recoveredMillion = getContinents("recoveredPerOneMillion");
 
     const cases = getContinents("cases");
     const active = getContinents("active");
@@ -116,7 +122,7 @@ const App = () => {
     const populationCountries = getCountries("population");
 
 
-
+   
 
     const [state, setState] = useState([initialState]);
 
@@ -212,7 +218,11 @@ const App = () => {
                 toggleNorthAmerica={toggleNorthAmerica}
                 toggleOceania={toggleOceania}
             />
+            
+           
+
             <div className="sidebar">
+         
                 <Menu
                     handleClose={handleClose}
                     index={state.index}
@@ -226,7 +236,12 @@ const App = () => {
                     criticalMillion={criticalMillion}
                     deathsMillion={deathsMillion}
                     testsMillion={testsMillion}
+                    recoveredMillion={recoveredMillion}
                     tests={tests}
+                    deaths={deaths}
+                    todayCases={todayCases}
+                    todayDeaths={todayDeaths}
+                    todayRecovered={todayRecovered}
                 />
                 <GlobalMenu
                     state={state.global}
@@ -254,6 +269,7 @@ const App = () => {
                     testsG={testsGlobal}
                 />
             </div>
+          
             <Map countries={countries} />
         </>
     );

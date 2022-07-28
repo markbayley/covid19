@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Bar } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 
 import { HISTORY_URL } from "../api/api";
 import { numberWithCommas } from "../utils/numberWithCommas";
@@ -72,17 +72,25 @@ const BarGraph = () => {
         {
           label: ("confirmed"),
           data: convertData(countryData["timeline"]["cases"]),
-          backgroundColor: "#00BFFF",
+          fill: true,
+          backgroundColor: "rgba(75,192,192,0.2)",
+          borderColor: "rgba(75,192,192,1)",
         },
         {
           label: ("deaths"),
           data: convertData(countryData["timeline"]["deaths"]),
           backgroundColor: "#FF6347",
+          fill: true,
+          backgroundColor: "rgba(75,192,192,0.2)",
+          borderColor: "rgba(75,192,192,1)",
         },
         {
           label: ("recovered"),
           data: convertData(countryData["timeline"]["recovered"]),
           backgroundColor: "#00FF00",
+          fill: true,
+          backgroundColor: "rgba(75,192,192,0.2)",
+          borderColor: "rgba(75,192,192,1)",
         },
       ],
     };
@@ -111,6 +119,7 @@ const BarGraph = () => {
         },
       ],
       yAxes: [
+        // {type: 'logarithmic'},
         {
         //   ticks: {
         //     fontColor: style.color,
@@ -137,7 +146,7 @@ const BarGraph = () => {
   
        
       >
-        <Bar data={data} height={300} options={options}></Bar>
+        <Line data={data} height={300} options={options}></Line>
       </div>
     </div>
   );
