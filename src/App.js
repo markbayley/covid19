@@ -88,6 +88,7 @@ const App = () => {
     const critical = getContinents("critical");
     const deaths = getContinents("deaths");
     const tests = getContinents("tests");
+    const recovered = getContinents("recovered");
 
     const continentNames = getContinents("continent")
 
@@ -239,6 +240,9 @@ const App = () => {
                     recoveredMillion={recoveredMillion}
                     tests={tests}
                     deaths={deaths}
+                    critical={critical}
+                    active={active}
+                    recovered={recovered}
                     todayCases={todayCases}
                     todayDeaths={todayDeaths}
                     todayRecovered={todayRecovered}

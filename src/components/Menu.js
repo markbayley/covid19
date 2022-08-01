@@ -31,6 +31,9 @@ const Menu = ({
   recoveredMillion,
   tests,
   deaths,
+  critical,
+  active,
+  recovered,
   population,
   todayCases,
   todayDeaths,
@@ -71,6 +74,9 @@ const Menu = ({
   const testsPerOneMillion = continentCountries.map((selectedCountry) =>
     (selectedCountry.testsPerOneMillion / 1000).toFixed(2)
   );
+  const recoveredPerOneMillion = continentCountries.map((selectedCountry) =>
+  (selectedCountry.recoveredPerOneMillion / 1000).toFixed(2)
+);
   // Create strata for classifting cases for doughnut charts
   const lowest = continentCountries.filter(
     (selectedCountry) => selectedCountry.casesPerOneMillion / 1000 < 50
@@ -218,6 +224,8 @@ const Menu = ({
 
   const chartRef = useRef(null);
 
+  console.log(mortalityRate[index], 'mrindex')
+
   const tabItems = [
     {
       id: 1,
@@ -226,15 +234,16 @@ const Menu = ({
         <>
           <Row style={{ height: "86vh" }}>
             <Col className="mr-3 mt-2">
-              <Row className="box p-2 ml-1 mb-0" style={{ color: "#ccc" }}>
+              <Row className="box px-4 py-2 ml-1 mb-0" style={{ color: "#ccc" }}>
                 <h1 className="mb-0">
-                  <CountUp
+                  {/* <CountUp
                     start={(casesMillion[index] / 1000).toFixed(1) - 5}
                     end={(casesMillion[index] / 1000).toFixed(1)}
                     duration={0.2}
                     separator=","
                     decimals={1}
-                  />
+                  /> */}
+                  {(casesMillion[index] / 1000).toFixed(1)}
                   {casesPerOneMillion[0] / 1000 <=
                   casesPerOneMillion[5] / 1000 ? (
                     <i style={{fontSize: "0.7em", color: "green"}} className="fa fa-arrow-up"></i>
@@ -357,7 +366,7 @@ const Menu = ({
                 className="pt-3 pb-3 ml-4"
                 style={{ color: "grey", fontSize: "14px" }}
               >
-                Statistics
+                Cases Statistics
               </div>
               <Row className="subtitle ml-1">
                 <Col className="box px-2 py-3 mr-1">
@@ -687,12 +696,12 @@ const Menu = ({
                 className="pt-3 pb-3 ml-4"
                 style={{ color: "grey", fontSize: "14px" }}
               >
-                Statistics
+                Death Statistics
               </div>
               <Row className="subtitle ml-1">
                 <Col className="box p-2 py-4 mr-1">
-                  Active
-                  {(activeMillion[index] / deathsMillion[index]) * 100 <=
+                  Critical
+                  {(criticalMillion[index] / deathsMillion[index]) * 100 <=
                   2.5 ? (
                     <Badge variant="success" text="dark" className="badge">
                       LOW
@@ -705,13 +714,13 @@ const Menu = ({
                   ) : (
                     " "
                   )}
-                  <div className="mb-0">
+                  <strong className="mb-0">
                     {(
-                      (activeMillion[index] / deathsMillion[index]) *
+                      (criticalMillion[index] / casesMillion[index]) *
                       100
                     ).toFixed(2)}
                     %
-                  </div>
+                  </strong>
                 </Col>
                 <Col className="box px-4 py-4 ml-1">
                   Today
@@ -744,7 +753,7 @@ const Menu = ({
               </Row>
               <Row className="subtitle ml-0">
                 <Col className="box p-2 py-4 mr-1 mt-3">
-                  per Case
+                  p/Case
                   {(deathsMillion[index] / casesMillion[index]) * 100 <= 1.0 ? (
                     <Badge variant="success" text="dark" className="badge">
                       LOW
@@ -757,16 +766,16 @@ const Menu = ({
                   ) : (
                     " "
                   )}
-                  <div className="mb-0">
+                  <strong className="mb-0">
                     {(
                       (deathsMillion[index] / casesMillion[index]) *
                       100
                     ).toFixed(2)}
                     %
-                  </div>
+                  </strong>
                 </Col>
                 <Col className="box p-3 py-4 ml-1 mt-3">
-                  per Pers.
+                  p/Pop
                   {(tests[index] / population[index]) * 100 <= 100 ? (
                     <Badge variant="danger" text="dark" className="badge">
                       POOR
@@ -778,9 +787,9 @@ const Menu = ({
                   ) : (
                     " "
                   )}
-                  <div className="mb-0">
-                    {(deaths[index] / population[index]).toFixed(4) * 100}%
-                  </div>
+                  <strong className="mb-0">
+                    {((deaths[index] / population[index]) * 100).toFixed(2)}%
+                  </strong>
                 </Col>
               </Row>
               <Row className=" ml-0"></Row>
@@ -918,7 +927,7 @@ const Menu = ({
                   )}
                 </h1>
 
-                <h5>Mortality %</h5>
+                <h5>Deaths / Cases</h5>
               </Row>
 
               <Row
@@ -940,17 +949,17 @@ const Menu = ({
                     color: "#ccc",
                   }}
                 >
-                  {mortalityRate[index] / 1000 < 25 ? (
+                  {deathsMillion[index]/casesMillion[index] < 0.005 ? (
                     <h6>Mild</h6>
-                  ) : mortalityRate[index] / 1000 < 100 ? (
+                  ) : deathsMillion[index]/casesMillion[index] < 0.001 ? (
                     <h6>Contained</h6>
-                  ) : mortalityRate[index] / 1000 < 200 ? (
+                  ) : deathsMillion[index]/casesMillion[index]  < 0.015 ? (
                     <h6>Moderate</h6>
-                  ) : mortalityRate[index] / 1000 < 300 ? (
+                  ) : deathsMillion[index]/casesMillion[index]  < 0.02 ? (
                     <h6>Serious</h6>
                   ) : (
                     <h6>Extreme</h6>
-                  )}
+                  ) }
                 </div>
 
                 <div
@@ -1032,11 +1041,11 @@ const Menu = ({
                 className="pt-3 pb-3 ml-4"
                 style={{ color: "grey", fontSize: "14px" }}
               >
-                Statistics
+                Mortality Statistics
               </div>
-              <Row className="subtitle ml-1">
-                <Col className="box px-2 py-3 mr-1">
-                  Active
+              <Row className="subtitle ml-1" style={{border: "1px solid #2a3d3d", borderRadius: "5px"}}>
+                <Col className="px-2 pt-3 pb-4 mr-1">
+                  Recovery
                   {(activeMillion[index] / casesMillion[index]) * 100 <= 2.5 ? (
                     <Badge variant="success" text="dark" className="badge">
                       LOW
@@ -1049,41 +1058,16 @@ const Menu = ({
                   ) : (
                     " "
                   )}
-                  <div className="mb-0">
+                  <strong className="mb-0">
                     {(
-                      (activeMillion[index] / casesMillion[index]) *
+                      (recoveredMillion[index] / casesMillion[index]) *
                       100
                     ).toFixed(2)}
                     %
-                  </div>
+                  </strong>
                 </Col>
-                <Col className="box px-3 pt-3 pb-1 ml-1">
-                  {/* <Doughnut
-                    width={170}
-                    options={{
-                      elements: {
-                        arc: {
-                          borderWidth: 0,
-                        },
-                      },
-                      legend: {
-                        display: false,
-                        position: "",
-                      },
-                    }}
-                    data={{
-                      labels: ["Tested", "Untested"],
-                      datasets: [
-                        {
-                          data: [
-                            activeMillion[index] / casesMillion[index],
-                            1 - activeMillion[index] / casesMillion[index],
-                          ],
-                          backgroundColor: colorsPie,
-                        },
-                      ],
-                    }}
-                  ></Doughnut> */}
+                <Col className="px-3 pt-3 pb-1 ml-1">
+      
                   Today
                   {(criticalMillion[index] / casesMillion[index]) * 100 <=
                   0.005 ? (
@@ -1154,22 +1138,22 @@ const Menu = ({
                     }}
                   ></Doughnut>
                 </Col>
-                <Col className="box px-2 py-3 ml-1 mt-3">
-                  Tested
+                <Col className="box px-4 py-3 ml-1 mt-3">
+                  Vac'd
                   {(tests[index] / population[index]) * 100 <= 100 ? (
                     <Badge variant="danger" text="dark" className="badge">
-                      POOR
+                      LOW
                     </Badge>
                   ) : (tests[index] / population[index]) * 100 >= 250 ? (
                     <Badge variant="success" text="dark" className="badge">
-                      GOOD
+                      HIGH
                     </Badge>
                   ) : (
                     " "
                   )}
-                  <div className="mb-0">
-                    {(tests[index] / population[index]).toFixed(1) * 100}%
-                  </div>
+                  <strong className="mb-0">
+                    {(tests[index] / population[index]).toFixed(2) * 100}%
+                  </strong>
                 </Col>
               </Row>
               <Row className=" ml-0"></Row>
@@ -1243,7 +1227,7 @@ const Menu = ({
                       style={{ color: "grey", fontSize: "14px" }}
                       className="pt-2 pb-3"
                     >
-                      Active Cases
+                      Recovered Per Country
                     </div>
                     <div className="pt-2 pb-2"></div>
                     <HorizontalBar
@@ -1268,7 +1252,7 @@ const Menu = ({
                         datasets: [
                           {
                             label: "Active/1000",
-                            data: activePerOneMillion,
+                            data: recoveredPerOneMillion,
                             backgroundColor: colorActive,
                           },
                         ],
