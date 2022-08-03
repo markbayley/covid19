@@ -1,22 +1,12 @@
-import React, { useState, useRef, MouseEvent, useEffect } from "react";
-import { InteractionItem } from "chart.js";
+import React, { useState } from "react";
 import { Animated } from "react-animated-css";
 import { Button, Col, Row, Container } from "react-bootstrap";
 import { numberWithCommas } from "../utils/numberWithCommas";
-import { Doughnut, Bar, HorizontalBar, Line, Polar } from "react-chartjs-2";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowUp,
-  faArrowDown,
-  faCircleUp,
-  faCircleDown,
-} from "@fortawesome/free-solid-svg-icons";
-import TabsComponent from "../misc/TabsComponent";
+import { HorizontalBar, Line } from "react-chartjs-2";
 import Badge from "react-bootstrap/Badge";
-import Form from "react-bootstrap/Form";
-import CountUp from "react-countup";
-import { getElementAtEvent } from "react-chartjs-2";
-import usePrevious from "./../utils/usePrevious,js";
+import DoughnutCases from "./DoughnutCases";
+import DoughnutDeaths from "./DoughnutDeaths";
+import HorizontalChart from "./HorizontalChart";
 
 const Menu = ({
   countries,
@@ -29,6 +19,7 @@ const Menu = ({
   deathsMillion,
   testsMillion,
   recoveredMillion,
+  cases,
   tests,
   deaths,
   critical,
@@ -40,30 +31,135 @@ const Menu = ({
   todayRecovered,
   handleClose,
 }) => {
-  //    let active = (activeMillion[index] /1000).toFixed(2);
+
+   
+
   // Filter Countries in Region
-  const continentCountries = countries.filter(
+  const continentCountries = countries.sort((a, b) =>
+   (a.casesPerOneMillion )
+    < (b.casesPerOneMillion ) ? 1 : -1)
+  
+  .filter(
     (country) => country.continent === region
   );
   // Map Country Names && country.population > 1000000
   const countryNames = countries
     .filter(
-      (country) => country.continent === region && country.country.length <= 12
+      (country) => country.continent === region
+      //   && country.country.length <= 12
+    )
+
+    .map((selectedCountry) => selectedCountry.country);
+
+  // .filter((country) => country.country.length <= 12)
+//   console.log(continentCountries);
+
+  //Max Stats
+  const max = Math.max(
+    ...continentCountries
+    //   .filter((country) => country.country.length <= 12)
+      .map((item) => item.casesPerOneMillion)
+  );
+  console.log(continentCountries);
+  console.log(max, "MAX");
+
+  const maxName = countries
+    .filter(
+      (country) =>
+        country.continent === region &&
+        // country.country.length <= 12 &&
+        country.casesPerOneMillion === max
     )
     .map((selectedCountry) => selectedCountry.country);
-  //Map mortality rate for those countries
-  const casesPerOneMillion = continentCountries.map((selectedCountry) =>
-    (selectedCountry.casesPerOneMillion / 1000).toFixed(1)
+
+  const maxActive = Math.max(
+    ...continentCountries
+    //   .filter((country) => country.country.length <= 12)
+      .map((item) => item.activePerOneMillion)
   );
-  const deathsPerOneMillion = continentCountries.map((selectedCountry) =>
-    (selectedCountry.deathsPerOneMillion / 1000).toFixed(2)
+  console.log(continentCountries);
+
+  const maxActiveName = countries
+    .filter(
+      (country) =>
+        country.continent === region &&
+        // country.country.length <= 12 &&
+        country.activePerOneMillion === maxActive
+    )
+    .map((selectedCountry) => selectedCountry.country);
+
+  const maxTests = Math.max(
+    ...continentCountries.map((item) => item.testsPerOneMillion)
   );
+
+  const maxTestsName = continentCountries
+    .filter(
+      (country) =>
+        //   country.country.length <= 12 &&
+        country.testsPerOneMillion === maxTests
+    )
+    .map((selectedCountry) => selectedCountry.country);
+
+  const maxCritical = Math.max(
+    ...continentCountries
+    //   .filter((country) => country.country.length <= 12)
+      .map((item) => item.criticalPerOneMillion)
+  );
+  const maxCriticalName = countries
+    .filter(
+      (country) =>
+        country.continent === region &&
+        // country.country.length <= 12 &&
+        country.criticalPerOneMillion === maxCritical
+    )
+    .map((selectedCountry) => selectedCountry.country);
+
+  const maxDeaths = Math.max(
+    ...continentCountries
+      //   .filter((country) => country.country.length <= 12)
+      .map((item) => item.deathsPerOneMillion)
+  );
+  const maxDeathsName = countries
+    .filter(
+      (country) =>
+        country.continent === region &&
+        // country.country.length <= 12 &&
+        country.deathsPerOneMillion === maxDeaths
+    )
+    .map((selectedCountry) => selectedCountry.country);
+
+  const maxRecovered = Math.max(
+    ...continentCountries
+      //   .filter((country) => country.country.length <= 12)
+      .map((item) => item.recoveredPerOneMillion)
+  );
+  const maxRecoveredName = countries
+    .filter(
+      (country) =>
+        country.continent === region &&
+        // country.country.length <= 12 &&
+        country.recoveredPerOneMillion === maxRecovered
+    )
+    .map((selectedCountry) => selectedCountry.country);
+
+  
+  
+  
+    //   console.log(deathsPerOneMillion, "deathsPerOneMillion");
   const mortalityRate = continentCountries.map((selectedCountry) =>
     (
       (selectedCountry.deathsPerOneMillion /
         selectedCountry.casesPerOneMillion) *
       100
     ).toFixed(2)
+  );
+
+  //Map mortality rate for those countries
+  const casesPerOneMillion = continentCountries.map((selectedCountry) =>
+    (selectedCountry.casesPerOneMillion / 1000).toFixed(1)
+  );
+  const deathsPerOneMillion = continentCountries.map((selectedCountry) =>
+    (selectedCountry.deathsPerOneMillion / 1000).toFixed(2)
   );
   const activePerOneMillion = continentCountries.map((selectedCountry) =>
     (selectedCountry.activePerOneMillion / 1000).toFixed(2)
@@ -72,79 +168,31 @@ const Menu = ({
     (selectedCountry.criticalPerOneMillion / 1000).toFixed(2)
   );
   const testsPerOneMillion = continentCountries.map((selectedCountry) =>
-    (selectedCountry.testsPerOneMillion / 1000).toFixed(2)
+    (selectedCountry.testsPerOneMillion / 1000).toFixed(0)
   );
   const recoveredPerOneMillion = continentCountries.map((selectedCountry) =>
-  (selectedCountry.recoveredPerOneMillion / 1000).toFixed(2)
-);
-  // Create strata for classifting cases for doughnut charts
-  const lowest = continentCountries.filter(
-    (selectedCountry) => selectedCountry.casesPerOneMillion / 1000 < 50
-  );
-  const lower = continentCountries.filter(
-    (selectedCountry) =>
-      selectedCountry.casesPerOneMillion / 1000 >= 50 &&
-      selectedCountry.casesPerOneMillion / 1000 < 100
-  );
-  const average = continentCountries.filter(
-    (selectedCountry) =>
-      selectedCountry.casesPerOneMillion / 1000 >= 100 &&
-      selectedCountry.casesPerOneMillion / 1000 < 150
-  );
-  const higher = continentCountries.filter(
-    (selectedCountry) =>
-      selectedCountry.casesPerOneMillion / 1000 >= 150 &&
-      selectedCountry.casesPerOneMillion / 1000 < 350
-  );
-  const highest = continentCountries.filter(
-    (selectedCountry) => selectedCountry.casesPerOneMillion / 1000 > 350
+    (selectedCountry.recoveredPerOneMillion / 1000).toFixed(0)
   );
 
-  // Create Strata for Deaths
-  const mild = continentCountries.filter(
-    (selectedCountry) => selectedCountry.deathsPerOneMillion / 1000 < 0.5
-  );
-  const contained = continentCountries.filter(
-    (selectedCountry) =>
-      selectedCountry.deathsPerOneMillion / 1000 >= 0.5 &&
-      selectedCountry.deathsPerOneMillion / 1000 < 1
-  );
-  const moderate = continentCountries.filter(
-    (selectedCountry) =>
-      selectedCountry.deathsPerOneMillion / 1000 >= 1 &&
-      selectedCountry.deathsPerOneMillion / 1000 < 1.5
-  );
-  const serious = continentCountries.filter(
-    (selectedCountry) =>
-      selectedCountry.deathsPerOneMillion / 1000 >= 1.5 &&
-      selectedCountry.deathsPerOneMillion / 1000 < 2.5
-  );
-  const extreme = continentCountries.filter(
-    (selectedCountry) => selectedCountry.deathsPerOneMillion / 1000 > 2.5
-  );
-
-  // Create Strata for Active
-  const active1 = continentCountries.filter(
-    (selectedCountry) => selectedCountry.activePerOneMillion / 1000 < 5
-  );
-  const active2 = continentCountries.filter(
-    (selectedCountry) =>
-      selectedCountry.activePerOneMillion / 1000 >= 5 &&
-      selectedCountry.activePerOneMillion / 1000 < 10
-  );
-  const active3 = continentCountries.filter(
-    (selectedCountry) =>
-      selectedCountry.activePerOneMillion / 1000 >= 10 &&
-      selectedCountry.activePerOneMillion / 1000 < 15
-  );
-  const active4 = continentCountries.filter(
-    (selectedCountry) =>
-      selectedCountry.activePerOneMillion / 1000 >= 15 &&
-      selectedCountry.activePerOneMillion / 1000 < 25
-  );
-  const active5 = continentCountries.filter(
-    (selectedCountry) => selectedCountry.activePerOneMillion / 1000 > 25
-  );
+  //Color Schemes
+  const backgroundcolor = [];
+  for (let i = 0; i < mortalityRate.length; i++) {
+    if (mortalityRate[i] < 1.0) {
+      backgroundcolor.push("#444e86");
+    }
+    if (mortalityRate[i] >= 1.0 && mortalityRate[i] < 2.0) {
+      backgroundcolor.push("#955196");
+    }
+    if (mortalityRate[i] >= 2.0 && mortalityRate[i] < 3.5) {
+      backgroundcolor.push("#ffa600");
+    }
+    if (mortalityRate[i] >= 3.5 && mortalityRate[i] < 6.0) {
+      backgroundcolor.push("#ff6e54");
+    }
+    if (mortalityRate[i] >= 6.0) {
+      backgroundcolor.push("#dd5182");
+    }
+  }
 
   const colorCases = [];
   for (let i = 0; i < casesPerOneMillion.length; i++) {
@@ -155,7 +203,7 @@ const Menu = ({
       colorCases.push("#955196");
     }
     if (casesPerOneMillion[i] >= 100 && casesPerOneMillion[i] < 150) {
-      colorCases.push("#ffa600");
+      colorCases.push("#ef9b00");
     }
     if (casesPerOneMillion[i] >= 150 && casesPerOneMillion[i] < 350) {
       colorCases.push("#ff6e54");
@@ -176,55 +224,93 @@ const Menu = ({
     if (deathsPerOneMillion[i] >= 1 && deathsPerOneMillion[i] < 1.5) {
       colorDeaths.push("#ffa600");
     }
-    if (deathsPerOneMillion[i] >= 1.5 && deathsPerOneMillion[i] < 2.5) {
+    if (deathsPerOneMillion[i] >= 1.5 && deathsPerOneMillion[i] < 3.5) {
       colorDeaths.push("#ff6e54");
     }
-    if (deathsPerOneMillion[i] >= 2.5) {
+    if (deathsPerOneMillion[i] >= 3.5) {
       colorDeaths.push("#dd5182");
     }
   }
 
-  const colorActive = [];
-  for (let i = 0; i < activePerOneMillion.length; i++) {
-    if (activePerOneMillion[i] < 5) {
-      colorActive.push("#444e86");
+  const colorCase = [];
+  for (let i = 0; i < casesMillion.length; i++) {
+    if (casesMillion[i] / 1000 < 50) {
+      colorCase.push("#5d67a1");
+      //   blue
     }
-    if (activePerOneMillion[i] >= 5 && activePerOneMillion[i] < 10) {
+    if (casesMillion[i] / 1000 >= 50 && casesMillion[i] / 1000 < 100) {
+      colorCase.push("#955196");
+    }
+    if (casesMillion[i] / 1000 >= 100 && casesMillion[i] / 1000 < 150) {
+      colorCase.push("#cf8c11");
+    }
+    if (casesMillion[i] / 1000 >= 150 && casesMillion[i] / 1000 < 350) {
+      colorCase.push("#ff6e54");
+    }
+    if (casesMillion[i] / 1000 >= 350) {
+      colorCase.push("#dd5182");
+      //   pink
+    }
+  }
+
+  const colorDeath = [];
+  for (let i = 0; i < deathsMillion.length; i++) {
+    if (deathsMillion[i] / 1000 < 0.5) {
+      colorDeath.push("#5d67a1");
+    }
+    if (deathsMillion[i] / 1000 >= 0.5 && deathsMillion[i] / 1000 < 1.0) {
+      colorDeath.push("#955196");
+    }
+    if (deathsMillion[i] / 1000 >= 1.0 && deathsMillion[i] / 1000 < 1.5) {
+      colorDeath.push("#ffa600");
+    }
+    if (deathsMillion[i] / 1000 >= 1.5 && deathsMillion[i] / 1000 < 3.5) {
+      colorDeath.push("#cf8c11");
+    }
+    if (deathsMillion[i] / 1000 >= 3.5) {
+      colorDeath.push("#dd5182");
+    }
+  }
+
+  const colorActivity = [];
+  for (let i = 0; i < casesPerOneMillion.length; i++) {
+    if (casesPerOneMillion[i]  < 50) {
+      colorActivity.push("#00a5f1");
+      //   blue
+    }
+    if (casesPerOneMillion[i]  >= 50 && casesPerOneMillion[i] < 100) {
+      colorActivity.push("#ad93f9");
+    }
+    if (casesPerOneMillion[i] >= 100 && casesPerOneMillion[i]  < 150) {
+      colorActivity.push("#ffa600");
+    }
+    if (casesPerOneMillion[i]  >= 150 && casesPerOneMillion[i] < 350) {
+      colorActivity.push("#ff7972");
+    }
+    if (casesPerOneMillion[i]  >= 350) {
+      colorActivity.push("#ff76c8");
+      //   pink
+    }
+  }
+
+  const colorActive = [];
+  for (let i = 0; i < activeMillion.length; i++) {
+    if (activeMillion[i] / 1000 < 5) {
+      colorActive.push("#5d67a1");
+    }
+    if (activeMillion[i] / 1000 >= 5 && activeMillion[i] / 1000 < 10) {
       colorActive.push("#955196");
     }
-    if (activePerOneMillion[i] >= 10 && activePerOneMillion[i] < 15) {
-      colorActive.push("#ffa600");
+    if (activeMillion[i] / 1000 >= 10 && activeMillion[i] / 1000 < 15) {
+      colorActive.push("#cf8c11");
     }
-    if (activePerOneMillion[i] >= 15 && activePerOneMillion[i] < 25) {
+    if (activeMillion[i] / 1000 >= 15 && activeMillion[i] / 1000 < 35) {
       colorActive.push("#ff6e54");
     }
-    if (activePerOneMillion[i] >= 25) {
+    if (activeMillion[i] / 1000 >= 35) {
       colorActive.push("#dd5182");
     }
   }
-
-  const backgroundcolor = [];
-  for (let i = 0; i < mortalityRate.length; i++) {
-    if (mortalityRate[i] < 1.0) {
-      backgroundcolor.push("#444e86");
-    }
-    if (mortalityRate[i] >= 1.0 && mortalityRate[i] < 2.0) {
-      backgroundcolor.push("#955196");
-    }
-    if (mortalityRate[i] >= 2.0 && mortalityRate[i] < 3.5) {
-      backgroundcolor.push("#ffa600");
-    }
-    if (mortalityRate[i] >= 3.5 && mortalityRate[i] < 6.0) {
-      backgroundcolor.push("#ff6e54");
-    }
-    if (mortalityRate[i] >= 6.0) {
-      backgroundcolor.push("#dd5182");
-    }
-  }
-
-  const chartRef = useRef(null);
-
-  console.log(mortalityRate[index], 'mrindex')
 
   const tabItems = [
     {
@@ -232,157 +318,182 @@ const Menu = ({
       title: "Cases",
       content: (
         <>
-          <Row style={{ height: "86vh" }}>
-            <Col className="mr-3 mt-2">
-              <Row className="box px-4 py-2 ml-1 mb-0" style={{ color: "#ccc" }}>
-                <h1 className="mb-0">
-                  {/* <CountUp
-                    start={(casesMillion[index] / 1000).toFixed(1) - 5}
-                    end={(casesMillion[index] / 1000).toFixed(1)}
-                    duration={0.2}
-                    separator=","
-                    decimals={1}
-                  /> */}
-                  {(casesMillion[index] / 1000).toFixed(1)}
-                  {casesPerOneMillion[0] / 1000 <=
-                  casesPerOneMillion[5] / 1000 ? (
-                    <i style={{fontSize: "0.7em", color: "green"}} className="fa fa-arrow-up"></i>
-                  ) : (
-                    <i style={{fontSize: "0.7em", color: "red"}} className="fa fa-arrow-down"></i>
-                  )}
-                </h1>
-
-                <h5>Cases / 1000</h5>
-              </Row>
-
+          <Row style={{ height: "90vh", border: "" }} className="px-3">
+            {/* COLUMN ONE */}
+            <Col className="subtitle">
               <Row
-                className={"box ml-1 mt-3 pb-2"}
+                className="box mb-2 py-2"
                 style={{
                   color: "#ccc",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  //   border: "2px solid",
+                  //   borderColor: colorCase[index],
+                  //   borderRadius: "5px",
                 }}
               >
-                <div
-                  className="pt-5"
-                  style={{
-                    position: "absolute",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    color: "#ccc",
-                  }}
-                >
-                  {casesMillion[index] / 1000 < 25 ? (
-                    <h6>Mild</h6>
-                  ) : casesMillion[index] / 1000 < 100 ? (
-                    <h6>Limited</h6>
-                  ) : casesMillion[index] / 1000 < 200 ? (
-                    <h6>Moderate</h6>
-                  ) : casesMillion[index] / 1000 < 300 ? (
-                    <h6>Serious</h6>
-                  ) : (
-                    <h6>Extreme</h6>
-                  )}
+                <div className=" px-3" style={{}}>
+                  <h1 className="mb-0">
+                    {(casesMillion[index] / 1000).toFixed(1)}
+                    {casesPerOneMillion[0] / 1000 <=
+                    casesPerOneMillion[5] / 1000 ? (
+                      <i
+                        style={{ fontSize: "0.7em", color: colorCase[index] }}
+                        className="fa fa-arrow-up"
+                      ></i>
+                    ) : (
+                      <i
+                        style={{ fontSize: "0.7em", color: colorCase[index] }}
+                        className="fa fa-arrow-down"
+                      ></i>
+                    )}
+                  </h1>
+                  <h6 style={{ color: colorCase[index] }}>Cases/1k</h6>
                 </div>
-
-                <div
-                  className="py-2 "
-                  style={{ color: "grey", fontSize: "14px" }}
-                >
-                  Country Analysis
-                </div>
-
-                <Doughnut
-                  width={170}
-                  options={{
-                    elements: {
-                      arc: {
-                        borderWidth: 0,
-                      },
-                    },
-                    legend: {
-                      display: false,
-                      position: "",
-                    },
-                  }}
-                  data={{
-                    labels: [
-                      "Lowest Cases",
-                      "Lower Cases",
-                      "Average Cases",
-                      "Higher Cases",
-                      "Highest Cases",
-                    ],
-                    datasets: [
-                      {
-                        data: [
-                          lowest.length,
-                          lower.length,
-                          average.length,
-                          higher.length,
-                          highest.length,
-                        ],
-                        backgroundColor: colorsPie,
-                      },
-                    ],
-                  }}
-                ></Doughnut>
+                {casesMillion[index] / 1000 <= 50 ? (
+                  <Badge
+                    variant="success"
+                    text="dark"
+                    className="badge"
+                    style={{ zIndex: 1, backgroundColor: colorCase[index] }}
+                  >
+                    MILD
+                  </Badge>
+                ) : casesMillion[index] / 1000 <= 100 ? (
+                  <Badge
+                    text="dark"
+                    className="badge"
+                    style={{ zIndex: 1, backgroundColor: colorCase[index] }}
+                  >
+                    LIMITED
+                  </Badge>
+                ) : casesMillion[index] / 1000 <= 150 ? (
+                  <Badge
+                    text="dark"
+                    className="badge"
+                    style={{ zIndex: 1, backgroundColor: colorCase[index] }}
+                  >
+                    MODERATE
+                  </Badge>
+                ) : casesMillion[index] / 1000 <= 350 ? (
+                  <Badge
+                    text="dark"
+                    className="badge"
+                    style={{ zIndex: 1, backgroundColor: colorCase[index] }}
+                  >
+                    SERIOUS
+                  </Badge>
+                ) : (
+                  <Badge
+                    text="dark"
+                    className="badge"
+                    style={{ zIndex: 1, backgroundColor: colorCase[index] }}
+                  >
+                    EXTREME
+                  </Badge>
+                )}
               </Row>
-
-              <Row className="subtitle box pt-1 ml-1 mt-3">
-                <div
-                  className="pt-1 pb-1 ml-0"
-                  style={{ color: "grey", fontSize: "14px" }}
-                >
-                  Cases Trend
-                </div>
-                <Line
-                  width={160}
-                  height={110}
+              <Row
+                style={{
+                  color: "#ccc",
+                  border: "1px solid",
+                  borderColor: "#2a3d3d",
+                  borderRadius: "5px",
+                  paddingLeft: "10px",
+                }}
+              >
+                <HorizontalBar
+                  height={13}
+                  width={100}
                   options={{
+                    tooltips: {
+                      yPadding: 10,
+                      xPadding: 10,
+                      xAlign: "left",
+                      cornerRadius: 2,
+                      backgroundColor: "#212529",
+                      borderColor: "turquoise",
+                      borderWidth: 1,
+                      displayColors: true,
+                      bodyFontSize: 12,
+                      labels: {
+                        usePointStyle: true,
+                      },
+                    },
+
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    hover: {
+                      mode: "index",
+                      intersect: false,
+                    },
                     legend: {
                       display: false,
                       position: "bottom",
+                      labels: {
+                        usePointStyle: true,
+                        fontSize: 12,
+                      },
+                    },
+                    layout: {
+                      padding: {
+                        left: 0,
+                        right: 10,
+                        top: 0,
+                        bottom: 0,
+                      },
+                    },
+                    scales: {
+                      xAxes: [
+                        {
+                          display: false,
+                          stacked: true,
+                          type: "logarithmic",
+                        },
+                      ],
+                      yAxes: [
+                        {
+                          display: false,
+                        },
+                      ],
                     },
                   }}
                   data={{
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                    labels: [region],
                     datasets: [
                       {
-                        label: "Cases / 1000",
-                        data: casesPerOneMillion,
-                        fill: true,
-                        backgroundColor: "rgba(75,192,192,0.2)",
-                        borderColor: "rgba(75,192,192,1)",
+                        label: "Active",
+                        // backgroundColor: "#d61e73",
+                        backgroundColor: colorActive[index],
+                        borderColor: "#212529",
+                        borderWidth: 1,
+                        data: [activeMillion[index] / 1000],
+                        stack: 0,
+                      },
+
+                      {
+                        label: "Cases",
+                        backgroundColor: colorCase[index],
+                        borderColor: "#212529",
+                        borderWidth: 1,
+                        data: [casesMillion[index] / 1000],
+                        stack: 0,
+                      },
+                      {
+                        label: "Tests",
+                        backgroundColor: "teal",
+                        borderColor: "#212529",
+                        borderWidth: 1,
+                        data: [testsMillion[index] / 10000],
+                        stack: 0,
                       },
                     ],
                   }}
                 />
               </Row>
 
-              <div
-                className="pt-3 pb-3 ml-4"
-                style={{ color: "grey", fontSize: "14px" }}
-              >
-                Cases Statistics
-              </div>
-              <Row className="subtitle ml-1">
-                <Col className="box px-2 py-3 mr-1">
-                  Active
-                  {(activeMillion[index] / casesMillion[index]) * 100 <= 2.5 ? (
-                    <Badge variant="success" text="dark" className="badge">
-                      LOW
-                    </Badge>
-                  ) : (activeMillion[index] / casesMillion[index]) * 100 >=
-                    4.5 ? (
-                    <Badge variant="danger" text="dark" className="badge">
-                      HIGH
-                    </Badge>
-                  ) : (
-                    " "
-                  )}
+
+              <Row className="subtitle mt-2">
+                <Col className="box py-3 px-2 mr-2" >
+                  <div style={{ color: colorActive[index] }}>Active&nbsp;</div>
                   <strong className="mb-0">
                     {(
                       (activeMillion[index] / casesMillion[index]) *
@@ -391,201 +502,306 @@ const Menu = ({
                     %
                   </strong>
                 </Col>
-                <Col className="box px-3 pt-3 pb-4  ml-1">
-        
-                 Today
-                  {(criticalMillion[index] / casesMillion[index]) * 100 <=
-                  0.005 ? (
-                    <Badge variant="success" text="dark" className="badge">
-                      LOW
-                    </Badge>
-                  ) : (criticalMillion[index] / casesMillion[index]) * 100 >=
-                    0.015 ? (
-                    <Badge variant="danger" text="dark" className="badge">
-                      HIGH
-                    </Badge>
-                  ) : (
-                    " "
-                  )}
-                  <strong className="mb-0">+
-                    {
-                      (numberWithCommas((todayCases[index]/1000).toFixed(0) + 'k'))
-                    } 
+
+                <Col className="box py-3 px-2" >
+                  <div style={{ color: 'teal' }}>Positive&nbsp;</div>
+                  <strong className="mb-0">
+                    {numberWithCommas(
+                      (casesMillion[index] / testsMillion[index] * 100).toFixed(2) + "%"
+                    )}
                   </strong>
                 </Col>
-              </Row>
-              <Row className="subtitle ml-0">
-                <Col className="box p-2  mr-1 mt-3">
-                  {/* Deaths
-                  {(deathsMillion[index] / casesMillion[index]) * 100 <= 1.0 ? (
-                    <Badge variant="success" text="dark" className="badge">
-                      LOW
-                    </Badge>
-                  ) : (deathsMillion[index] / casesMillion[index]) * 100 >=
-                    2.0 ? (
-                    <Badge variant="danger" text="dark" className="badge">
-                      HIGH
-                    </Badge>
-                  ) : (
-                    " "
-                  )}
-                  <div className="mb-0">
-                    {(
-                      (deathsMillion[index] / casesMillion[index]) *
-                      100
-                    ).toFixed(2)}
-                    %
-                  </div> */}
-                  <Doughnut
-                    width={170}
-                    options={{
-                      elements: {
-                        arc: {
-                          borderWidth: 0,
-                        },
-                      },
-                      legend: {
-                        display: false,
-                        position: "",
-                      },
-                    }}
-                    data={{
-                      labels: ["Tested", "Untested"],
-                      datasets: [
-                        {
-                          data: [
-                            tests[index] / population[index],
-                            1 - tests[index] / population[index],
-                          ],
-                          backgroundColor: colorCases,
-                        },
-                      ],
-                    }}
-                  ></Doughnut>
-                </Col>
-                <Col className="box px-2 py-3 ml-1 mt-3">
-                  Tests
-                  {(tests[index] / population[index]) * 100 <= 100 ? (
-                    <Badge variant="danger" text="dark" className="badge">
-                      POOR
-                    </Badge>
-                  ) : (tests[index] / population[index]) * 100 >= 250 ? (
-                    <Badge variant="success" text="dark" className="badge">
-                      GOOD
-                    </Badge>
-                  ) : (
-                    " "
-                  )}
-                  <div className="mb-0">
-                    {(tests[index] / population[index]).toFixed(2)} p/<i className="fa fa-male"></i>
-                  </div>
-                </Col>
-              </Row>
-              <Row className=" ml-0"></Row>
-            </Col>
 
-            <Col
-              className=""
-              style={{
-                height: "100%",
-                overflowY: "scroll",
-              }}
-            >
-              <Row
-                className={"box mr-0 mt-2"}
-                style={{
-                  color: "#fff",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <div
-                  style={{ color: "grey", fontSize: "14px" }}
-                  className="pt-2"
-                >
-                  Cases Per Country
-                </div>
+                </Row>
 
-                <HorizontalBar
-                  height={countryNames.length * 50}
-                  ref={chartRef}
+
+
+
+
+
+            
+
+
+
+
+              <Row className="subtitle box pt-1 mt-2">
+                <Line
+                  width={160}
+                  height={120}
                   options={{
-                    onClick: function (evt, element) {
-                      if (element.length > 0) {
-                        console.log(element, element[0]._datasetIndex);
-                      }
-                    },
-                    maintainAspectRatio: true,
-                    hover: {
-                      mode: "index",
-                      intersect: false,
-                    },
                     legend: {
                       display: false,
-                      position: "",
+                      position: "bottom",
                     },
-                    layout: {
-                      padding: {
-                        left: 20,
-                        right: 0,
-                        top: 0,
-                        bottom: 0,
+                    scales: {
+                      yAxes: [
+                        {
+                          // display: false,
+                          // stacked: true,
+                          type: "logarithmic",
+                          display: false,
+                        },
+                      ],
+                      xAxes: [
+                        {
+                          // display: false,
+                        },
+                      ],
+                    },
+                    tooltips: {
+                      backgroundColor: "#212529",
+                      borderColor: "turquoise",
+                      borderWidth: 1,
+                      cornerRadius: 2,
+                      displayColors: true,
+                      bodyFontSize: 12,
+                      labels: {
+                        usePointStyle: true,
                       },
                     },
                   }}
                   data={{
-                    labels: countryNames,
+                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
                     datasets: [
                       {
-                        label: "Cases/1000",
+                        label: "Active",
+                        data: activePerOneMillion,
+                        fill: true,
+                        backgroundColor: "rgba(75,192,192,0.05)",
+                        borderColor: colorActive[index],
+                      },
+                      {
+                        label: "Cases",
                         data: casesPerOneMillion,
-                        backgroundColor: colorCases,
+                        fill: true,
+                        backgroundColor: "rgba(75,192,192,0.05)",
+                        borderColor: colorCase[index],
+                      },
+                      {
+                        label: "Tests",
+                        data: testsPerOneMillion,
+                        fill: true,
+                        backgroundColor: "rgba(75,192,192,0.05)",
+                        borderColor: "teal",
                       },
                     ],
                   }}
                 />
-
-                {countryNames.length < 15 && (
-                  <>
-                    <div
-                      style={{ color: "grey", fontSize: "14px" }}
-                      className="pt-2 pb-3"
-                    >
-                      Active Cases
-                    </div>
-                    <div className="pt-2 pb-2"></div>
-                    <HorizontalBar
-                      height={countryNames.length * 50}
-                      options={{
-                        maintainAspectRatio: true,
-                        legend: {
-                          display: false,
-                          position: "",
-                        },
-                        layout: {
-                          padding: {
-                            left: 20,
-                            right: 0,
-                            top: 0,
-                            bottom: 0,
-                          },
-                        },
-                      }}
-                      data={{
-                        labels: countryNames,
-                        datasets: [
-                          {
-                            label: "Active/1000",
-                            data: activePerOneMillion,
-                            backgroundColor: colorActive,
-                          },
-                        ],
-                      }}
-                    />
-                  </>
-                )}
               </Row>
+
+
+
+              <Row className="mt-2">
+                <Col className="box px-2 py-3 mr-2">
+                  <h4 className="mb-0">
+                    {(activeMillion[index] / 1000).toFixed(2)}
+                    {activePerOneMillion[0] / 1000 <=
+                    activePerOneMillion[5] / 1000 ? (
+                      <i
+                        style={{ fontSize: "0.7em", color: colorActive[index] }}
+                        className="fa fa-arrow-up"
+                      ></i>
+                    ) : (
+                      <i
+                        style={{ fontSize: "0.7em", color: colorActive[index] }}
+                        className="fa fa-arrow-down"
+                      ></i>
+                    )}
+                  </h4>
+                  <h6 style={{ color: colorActive[index] }}>Active/1k</h6>
+
+                 <h6> {activeMillion[index] / 1000 <= 5 ? (
+                    <Badge
+                      variant="success"
+                      text="dark"
+                      className="badge"
+                      style={{ zIndex: 1, backgroundColor: colorActive[index] }}
+                    >
+                      MILD
+                    </Badge>
+                  ) : activeMillion[index] / 1000 <= 10 ? (
+                    <Badge
+                      text="dark"
+                      className="badge"
+                      style={{ zIndex: 1, backgroundColor: colorActive[index] }}
+                    >
+                      LIMITED
+                    </Badge>
+                  ) : activeMillion[index] / 1000 <= 15 ? (
+                    <Badge
+                      text="dark"
+                      className="badge"
+                      style={{ zIndex: 1, backgroundColor: colorActive[index] }}
+                    >
+                      MODERATE
+                    </Badge>
+                  ) : activeMillion[index] / 1000 <= 35 ? (
+                    <Badge
+                      text="dark"
+                      className="badge"
+                      style={{ zIndex: 1, backgroundColor: colorActive[index] }}
+                    >
+                      SERIOUS
+                    </Badge>
+                  ) : (
+                    <Badge
+                      text="dark"
+                      className="badge"
+                      style={{ zIndex: 1, backgroundColor: colorActive[index] }}
+                    >
+                      EXTREME
+                    </Badge>
+                  )}</h6>
+                </Col>
+                <Col className="box px-2 py-3">
+                  <h4 className="mb-0">
+                    {(testsMillion[index] / 1000).toFixed(0)}
+                    {testsPerOneMillion[0] / 1000 <=
+                    testsPerOneMillion[5] / 1000 ? (
+                      <i
+                        style={{ fontSize: "0.7em", color: "teal" }}
+                        className="fa fa-arrow-up"
+                      ></i>
+                    ) : (
+                      <i
+                        style={{ fontSize: "0.7em", color: "teal" }}
+                        className="fa fa-arrow-down"
+                      ></i>
+                    )}
+                  </h4>
+                  <h6 style={{ color: "teal" }}>Tests/1k</h6>
+                </Col>
+              </Row>
+
+       
+
+
+            
+
+              <DoughnutCases
+                casesMillion={casesMillion}
+                activeMillion={activeMillion}
+                index={index}
+                colorsPie={colorsPie}
+                continentCountries={continentCountries}
+              />
+         
+
+              <Row
+        className="box subtitle mt-2"
+    
+      >
+          {testsMillion[index] / 1000 < 100 ? (
+          <h6>Very low</h6>
+        ) : testsMillion[index] / 1000 < 1000 ? (
+          <h6>Limited</h6>
+        ) : testsMillion[index] / 1000 < 1500 ? (
+          <h6>Moderate</h6>
+        ) : testsMillion[index] / 1000 < 3500 ? (
+          <h6>High</h6>
+        ) : (
+          <h6>Very high</h6> 
+        )}
+        <h6>&nbsp;testing but </h6>
+        {casesMillion[index] / 1000 < 50 ? (
+          <h6>&nbsp;mild</h6>
+        ) : casesMillion[index] / 1000 < 100 ? (
+          <h6>&nbsp;limited</h6>
+        ) : casesMillion[index] / 1000 < 150 ? (
+          <h6>&nbsp;moderate</h6>
+        ) : casesMillion[index] / 1000 < 350 ? (
+          <h6>&nbsp;serious</h6>
+        ) : (
+          <h6>&nbsp;extreme</h6> 
+        )}
+       <h6>&nbsp;cases and </h6>{activeMillion[index] / 1000 < 5 ? (
+          <h6>&nbsp;mild </h6>
+        ) : activeMillion[index] / 1000 < 10 ? (
+          <h6>&nbsp;limited </h6>
+        ) : activeMillion[index] / 1000 < 15 ? (
+          <h6>&nbsp;moderate </h6>
+        ) : activeMillion[index] / 1000 < 35 ? (
+          <h6>&nbsp;serious </h6>
+        ) : (
+          <h6>&nbsp;extreme </h6> 
+        )} 
+        <h6>&nbsp;case activity. </h6>
+     </Row>
+
+
+<Row className="subtitle mt-2 ">
+                <Col className="box py-3 px-2 mr-2" >
+                  <div style={{ color: colorActive[index] }}>Today&nbsp;</div>
+                  <strong className="mb-0">
+                    +
+                    {numberWithCommas(
+                      (todayCases[index] / 1000).toFixed(0) + "k"
+                    )}
+                  </strong> 
+                </Col>
+          
+                <Col className="box py-3 px-2">
+                  <div style={{ color: "teal" }}>Tests&nbsp;</div>
+                  <strong className="mb-0">
+                    {(tests[index] / population[index]).toFixed(2)}pp
+                  </strong>
+                </Col>
+                </Row>
+
+             
+         
+            
+            </Col>
+
+            {/* COLUMN TWO */}
+
+            <Col
+              className="ml-2 "
+              style={{
+                height: "100%",
+                overflowY: "scroll",
+                // marginRight: "5px",
+              }}
+            >
+              <Row className="box subtitle px-4 pb-1 pt-2">
+                <strong>
+                  {maxName}&nbsp;
+                  {numberWithCommas((max / 1000).toFixed(1))} &nbsp;
+                </strong>
+                <h6 style={{ color: colorCase[index] }}>
+                  Most Cases/1k &nbsp;
+                </h6>
+              </Row>
+              <Row className="box subtitle px-4 mt-2 pb-1 pt-2">
+                <strong>
+                  {maxActiveName}&nbsp;
+                  {numberWithCommas((maxActive / 1000).toFixed(1))} &nbsp;
+                </strong>
+                <h6 style={{ color: colorActive[index] }}>
+                  Most Active/1k &nbsp;
+                </h6>
+              </Row>
+              <Row className="box subtitle px-4 mt-2 pb-1 pt-2">
+                <strong>
+                  {maxTestsName}&nbsp;
+                  {numberWithCommas((maxTests / 1000).toFixed(0))} &nbsp;
+                </strong>
+                <h6 style={{ color: "teal" }}>Most Tests/1k &nbsp;</h6>
+              </Row>
+              <HorizontalChart
+                countryNames={countryNames}
+                activePerOneMillion={activePerOneMillion}
+                colorActivity={colorActivity}
+                casesPerOneMillion={casesPerOneMillion}
+                colorCases={colorCases}
+                testsPerOneMillion={testsPerOneMillion}
+                casesMillion={casesMillion}
+                activeMillion={activeMillion}
+                testsMillion={testsMillion}
+                index={index}
+                region={region}
+                colorCase={colorCase}
+              />
             </Col>
           </Row>
         </>
@@ -597,118 +813,294 @@ const Menu = ({
       // icon: <a id='check1'></a>,
       content: (
         <>
-          <Row style={{ height: "86vh" }}>
-            <Col className="mr-3 mt-2">
-              <Row className="box p-2 ml-1 mb-0" style={{ color: "#ccc" }}>
-                <h1 className="mb-0">
-                  {(deathsMillion[index] / 1000).toFixed(2)}{" "}
-                  <FontAwesomeIcon color="green" size="sm" icon={faArrowDown} />
-                </h1>
-
-                <h5>Deaths / 1000</h5>
-              </Row>
-
+          <Row style={{ height: "90vh", border: "" }} className="px-3">
+            {/* COLUMN ONE */}
+            <Col className="subtitle">
               <Row
-                className={"box ml-1 mt-3 pb-2"}
+                className="box mb-2"
                 style={{
                   color: "#ccc",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  //   border: "2px solid",
+                  //   borderColor: colorCase[index],
+                  //   borderRadius: "5px",
                 }}
               >
-                <div
-                  className="py-2 "
-                  style={{ color: "grey", fontSize: "14px" }}
-                >
-                  Country Analysis
+                <div className=" px-3" style={{}}>
+                  <h1 className="mb-0">
+                    {/* <CountUp
+                  start={(casesMillion[index] / 1000).toFixed(1) - 5}
+                  end={(casesMillion[index] / 1000).toFixed(1)}
+                  duration={0.2}
+                  separator=","
+                  decimals={1}
+                /> */}
+                    {(deathsMillion[index] / 1000).toFixed(2)}
+                    {deathsPerOneMillion[0] / 1000 <=
+                    deathsPerOneMillion[5] / 1000 ? (
+                      <i
+                        style={{ fontSize: "0.7em", color: colorDeath[index] }}
+                        className="fa fa-arrow-up"
+                      ></i>
+                    ) : (
+                      <i
+                        style={{ fontSize: "0.7em", color: colorDeath[index] }}
+                        className="fa fa-arrow-down"
+                      ></i>
+                    )}
+                  </h1>
+                  <h6 style={{ color: colorDeath[index] }}>Deaths/1k</h6>
                 </div>
-
-                <Doughnut
-                  width={170}
-                  options={{
-                    elements: {
-                      arc: {
-                        borderWidth: 0,
-                      },
-                    },
-                    legend: {
-                      display: false,
-                      position: "",
-                    },
-                  }}
-                  data={{
-                    labels: [
-                      "Lowest Deaths",
-                      "Lower Deaths",
-                      "Average Deaths",
-                      "Higher Deaths",
-                      "Highest Deaths",
-                    ],
-                    datasets: [
-                      {
-                        data: [
-                          mild.length,
-                          contained.length,
-                          moderate.length,
-                          serious.length,
-                          extreme.length,
-                        ],
-                        backgroundColor: colorsPie,
-                      },
-                    ],
-                  }}
-                ></Doughnut>
               </Row>
-
-              <Row className="subtitle box pt-1 ml-1 mt-3">
-                <div
-                  className="pt-1 pb-1 ml-0"
-                  style={{ color: "grey", fontSize: "14px" }}
-                >
-                  Deaths Trend
-                </div>
-                <Line
-                  width={160}
-                  height={100}
+              <Row
+                style={{
+                  color: "#ccc",
+                  border: "1px solid",
+                  borderColor: "#2a3d3d",
+                  borderRadius: "5px",
+                  paddingLeft: "10px",
+                }}
+              >
+                <HorizontalBar
+                  height={12}
+                  width={100}
                   options={{
+                    tooltips: {
+                      yPadding: 10,
+                      xPadding: 10,
+                      xAlign: "left",
+                      cornerRadius: 2,
+                      backgroundColor: "#212529",
+                      borderColor: "turquoise",
+                      borderWidth: 1,
+                      displayColors: true,
+                      bodyFontSize: 12,
+                      labels: {
+                        usePointStyle: true,
+                      },
+                    },
+
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    hover: {
+                      mode: "index",
+                      intersect: false,
+                    },
                     legend: {
                       display: false,
                       position: "bottom",
+                      labels: {
+                        usePointStyle: true,
+                        fontSize: 12,
+                      },
+                    },
+                    layout: {
+                      padding: {
+                        left: 0,
+                        right: 10,
+                        top: 0,
+                        bottom: 0,
+                      },
+                    },
+                    scales: {
+                      xAxes: [
+                        {
+                          display: false,
+                          stacked: true,
+                          type: "logarithmic",
+                        },
+                      ],
+                      yAxes: [
+                        {
+                          display: false,
+                        },
+                      ],
                     },
                   }}
                   data={{
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                    labels: [region],
                     datasets: [
                       {
-                        label: "Cases / 1000",
-                        data: deathsPerOneMillion,
-                        fill: true,
-                        backgroundColor: "rgba(75,192,192,0.2)",
-                        borderColor: "rgba(75,192,192,1)",
+                        label: "Critical",
+                        backgroundColor: "#d61e73",
+                        borderColor: "turquoise",
+                        borderWidth: 1,
+                        data: [criticalMillion[index] / 1000],
+                        stack: 0,
+                      },
+
+                      {
+                        label: "Deaths",
+                        backgroundColor: colorDeath[index],
+                        borderColor: "turquoise",
+                        borderWidth: 1,
+                        data: [deathsMillion[index] / 1000],
+                        stack: 0,
+                      },
+                      {
+                        label: "Recovered",
+                        backgroundColor: "teal",
+                        borderColor: "turquoise",
+                        borderWidth: 1,
+                        data: [recoveredMillion[index] / 10000],
+                        stack: 0,
                       },
                     ],
                   }}
                 />
               </Row>
 
-              <div
-                className="pt-3 pb-3 ml-4"
+              <Row className="mt-2">
+                <Col
+                  className="box p-1 mr-1"
+                  //   style={{ border: "2px solid #e83e8c", borderRadius: "5px" }}
+                >
+                  <h4 className="mb-0">
+                    {(criticalMillion[index] / 1).toFixed(2)}
+                    {criticalPerOneMillion[0] / 1 <=
+                    criticalPerOneMillion[5] / 1 ? (
+                      <i
+                        style={{ fontSize: "0.7em", color: "#e83e8c" }}
+                        className="fa fa-arrow-up"
+                      ></i>
+                    ) : (
+                      <i
+                        style={{ fontSize: "0.7em", color: "#e83e8c" }}
+                        className="fa fa-arrow-down"
+                      ></i>
+                    )}
+                  </h4>
+                  <h6 style={{ color: "#e83e8c" }}>Critical</h6>
+                </Col>
+                <Col
+                  className="box p-1"
+                  //   style={{ border: "2px solid teal", borderRadius: "5px" }}
+                >
+                  <h4 className="mb-0">
+                    {(recoveredMillion[index] / 1000).toFixed(0)}
+                    {recoveredPerOneMillion[0] / 1000 <=
+                    recoveredPerOneMillion[5] / 1000 ? (
+                      <i
+                        style={{ fontSize: "0.7em", color: "teal" }}
+                        className="fa fa-arrow-up"
+                      ></i>
+                    ) : (
+                      <i
+                        style={{ fontSize: "0.7em", color: "teal" }}
+                        className="fa fa-arrow-down"
+                      ></i>
+                    )}
+                  </h4>
+                  <h6 style={{ color: "teal" }}>Recovered/1k</h6>
+                </Col>
+              </Row>
+
+              {/* <h6>
+                {" "}
+                {(activeMillion[index] / 1000).toFixed(2)}Active/1,000
+              </h6>{" "}
+              <h6>{(testsMillion[index] / 1000).toFixed(2)}Tests/1,000</h6> */}
+
+              <Row className="subtitle box pt-1 mt-2">
+                {/* <div
+                className="pt-1 pb-1 ml-0"
                 style={{ color: "grey", fontSize: "14px" }}
               >
-                Death Statistics
-              </div>
-              <Row className="subtitle ml-1">
-                <Col className="box p-2 py-4 mr-1">
-                  Critical
+                Cases Trend
+              </div> */}
+                <Line
+                  width={160}
+                  height={120}
+                  options={{
+                    legend: {
+                      display: false,
+                      position: "bottom",
+                    },
+                    scales: {
+                      yAxes: [
+                        {
+                          // display: false,
+                          // stacked: true,
+                          type: "logarithmic",
+                          display: false,
+                        },
+                      ],
+                      xAxes: [
+                        {
+                          // display: false,
+                        },
+                      ],
+                    },
+                    tooltips: {
+                      backgroundColor: "#212529",
+                      borderColor: "turquoise",
+                      borderWidth: 1,
+                      cornerRadius: 2,
+                      displayColors: true,
+                      bodyFontSize: 12,
+                      labels: {
+                        usePointStyle: true,
+                      },
+                    },
+                  }}
+                  data={{
+                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                    datasets: [
+                      {
+                        label: "Critical",
+                        data: criticalPerOneMillion,
+                        fill: true,
+                        backgroundColor: "rgba(75,192,192,0.05)",
+                        borderColor: "#e83e8c",
+                      },
+                      {
+                        label: "Deaths",
+                        data: deathsPerOneMillion,
+                        fill: true,
+                        backgroundColor: "rgba(75,192,192,0.05)",
+                        borderColor: colorDeath[index],
+                      },
+                      {
+                        label: "Recovered",
+                        data: recoveredPerOneMillion,
+                        fill: true,
+                        backgroundColor: "rgba(75,192,192,0.05)",
+                        borderColor: "teal",
+                      },
+                    ],
+                  }}
+                />
+              </Row>
+
+              <DoughnutDeaths
+                deathsMillion={deathsMillion}
+                criticalMillion={criticalMillion}
+                recoveredMillion={recoveredMillion}
+                index={index}
+                colorsPie={colorsPie}
+                continentCountries={continentCountries}
+              />
+
+              <Row className="subtitle mt-2">
+                <Col className="box py-4" xs={6}>
+                  <span style={{ color: "#d61e73" }}>Critical&nbsp;</span>
                   {(criticalMillion[index] / deathsMillion[index]) * 100 <=
                   2.5 ? (
-                    <Badge variant="success" text="dark" className="badge">
+                    <Badge
+                      variant="success"
+                      text="dark"
+                      className="badge"
+                      style={{ zIndex: 1 }}
+                    >
                       LOW
                     </Badge>
-                  ) : (activeMillion[index] / deathsMillion[index]) * 100 >=
+                  ) : (criticalMillion[index] / deathsMillion[index]) * 100 >=
                     4.5 ? (
-                    <Badge variant="danger" text="dark" className="badge">
+                    <Badge
+                      variant="danger"
+                      text="dark"
+                      className="badge"
+                      style={{ zIndex: 1 }}
+                    >
                       HIGH
                     </Badge>
                   ) : (
@@ -716,14 +1108,14 @@ const Menu = ({
                   )}
                   <strong className="mb-0">
                     {(
-                      (criticalMillion[index] / casesMillion[index]) *
+                      (criticalMillion[index] / deathsMillion[index]) *
                       100
                     ).toFixed(2)}
                     %
                   </strong>
                 </Col>
-                <Col className="box px-4 py-4 ml-1">
-                  Today
+                <Col className="box py-4 px-4" xs={6}>
+                  <span style={{ color: colorDeath[index] }}>Today&nbsp;</span>
                   {(criticalMillion[index] / deathsMillion[index]) * 100 <=
                   0.005 ? (
                     <Badge variant="success" text="dark" className="badge">
@@ -737,535 +1129,654 @@ const Menu = ({
                   ) : (
                     " "
                   )}
-                       <strong className="mb-0">+
-                    {
-                      (numberWithCommas((todayDeaths[index])))
-                    } 
+                  <strong className="mb-0">
+                    +{numberWithCommas((todayDeaths[index] / 1).toFixed(0))}
                   </strong>
-                  {/* <div className="mb-0">
-                    {(
-                      (criticalMillion[index] / deathsMillion[index]) *
-                      100
-                    ).toFixed(2)}
-                    %
-                  </div> */}
+                </Col>
+
+                <Col className="box py-4" xs={6}>
+                  <span style={{ color: "teal" }}>Recovered &nbsp;</span>
+                  <span>
+                    {(recovered[index] / cases[index]) * 100 <= 100 ? (
+                      <Badge
+                        variant="danger"
+                        text="dark"
+                        className="badge"
+                        style={{ zIndex: 1 }}
+                      >
+                        POOR
+                      </Badge>
+                    ) : (recovered[index] / cases[index]) * 100 >= 250 ? (
+                      <Badge
+                        variant="success"
+                        text="dark"
+                        className="badge"
+                        style={{ zIndex: 1 }}
+                      >
+                        GOOD
+                      </Badge>
+                    ) : (
+                      " "
+                    )}
+                  </span>
+                  <strong className="mb-0">
+                    {(recovered[index] / cases[index]).toFixed(2)}pp
+                  </strong>
+                </Col>
+                <Col className="box pt-2" style={{ color: "teal" }} xs={6}>
+                  {(recovered[index] / cases[index]).toFixed(0) <= 0.5 ? (
+                    <>
+                      <h2 className="mb-0">
+                        <i
+                          className="fa fa-male"
+                          style={{ color: "#474747" }}
+                        ></i>
+                        <i
+                          className="fa fa-female"
+                          style={{ color: "#474747" }}
+                        ></i>
+                      </h2>
+                      <h2>
+                        <i
+                          className="fa fa-male"
+                          style={{ color: "#474747" }}
+                        ></i>
+                        <i
+                          className="fa fa-female"
+                          style={{ color: "#474747" }}
+                        ></i>
+                      </h2>
+                    </>
+                  ) : (recovered[index] / cases[index]).toFixed(0) <= 1.5 ? (
+                    <>
+                      <h2 className="mb-0">
+                        <i className="fa fa-male"></i>
+                        <i
+                          className="fa fa-female"
+                          style={{ color: "#474747" }}
+                        ></i>
+                      </h2>
+                      <h2>
+                        <i
+                          className="fa fa-male"
+                          style={{ color: "#474747" }}
+                        ></i>
+                        <i
+                          className="fa fa-female"
+                          style={{ color: "#474747" }}
+                        ></i>
+                      </h2>
+                    </>
+                  ) : (recovered[index] / cases[index]).toFixed(0) <= 2.5 ? (
+                    <>
+                      <h2 className="mb-0">
+                        <i className="fa fa-male"></i>
+                        <i className="fa fa-female"></i>
+                      </h2>
+                      <h2>
+                        <i
+                          className="fa fa-male"
+                          style={{ color: "#474747" }}
+                        ></i>
+                        <i
+                          className="fa fa-female"
+                          style={{ color: "#474747" }}
+                        ></i>
+                      </h2>
+                    </>
+                  ) : (recovered[index] / cases[index]).toFixed(0) <= 3.5 ? (
+                    <>
+                      <h2 className="mb-0">
+                        <i className="fa fa-male"></i>
+                        <i className="fa fa-female"></i>
+                      </h2>
+                      <h2>
+                        <i className="fa fa-male"></i>
+                        <i
+                          className="fa fa-female"
+                          style={{ color: "#474747" }}
+                        ></i>
+                      </h2>
+                    </>
+                  ) : (
+                    <>
+                      <h2 className="mb-0">
+                        <i className="fa fa-male"></i>
+                        <i className="fa fa-female"></i>
+                      </h2>
+                      <h2>
+                        <i className="fa fa-male"></i>
+                        <i className="fa fa-female"></i>
+                      </h2>
+                    </>
+                  )}
                 </Col>
               </Row>
-              <Row className="subtitle ml-0">
-                <Col className="box p-2 py-4 mr-1 mt-3">
-                  p/Case
-                  {(deathsMillion[index] / casesMillion[index]) * 100 <= 1.0 ? (
-                    <Badge variant="success" text="dark" className="badge">
-                      LOW
-                    </Badge>
-                  ) : (deathsMillion[index] / casesMillion[index]) * 100 >=
-                    2.0 ? (
-                    <Badge variant="danger" text="dark" className="badge">
-                      HIGH
-                    </Badge>
-                  ) : (
-                    " "
-                  )}
-                  <strong className="mb-0">
-                    {(
-                      (deathsMillion[index] / casesMillion[index]) *
-                      100
-                    ).toFixed(2)}
-                    %
-                  </strong>
-                </Col>
-                <Col className="box p-3 py-4 ml-1 mt-3">
-                  p/Pop
-                  {(tests[index] / population[index]) * 100 <= 100 ? (
-                    <Badge variant="danger" text="dark" className="badge">
-                      POOR
-                    </Badge>
-                  ) : (tests[index] / population[index]) * 100 >= 250 ? (
-                    <Badge variant="success" text="dark" className="badge">
-                      GOOD
-                    </Badge>
-                  ) : (
-                    " "
-                  )}
-                  <strong className="mb-0">
-                    {((deaths[index] / population[index]) * 100).toFixed(2)}%
-                  </strong>
-                </Col>
-              </Row>
-              <Row className=" ml-0"></Row>
+
+              {/* <div
+              className="pt-3 pb-2 ml-4"
+              style={{ color: "grey", fontSize: "14px" }}
+            >
+              Cases Statistics
+            </div> */}
             </Col>
+
+            {/* COLUMN TWO */}
 
             <Col
-              className=""
+              className="ml-2 "
               style={{
-                height: "100%",
+                height: "97%",
                 overflowY: "scroll",
+                // marginRight: "5px",
               }}
             >
-              <Row
-                className={"box mr-0 mt-2"}
-                style={{
-                  color: "#fff",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <div
-                  style={{ color: "grey", fontSize: "14px" }}
-                  className="pt-2"
-                >
-                  Deaths Per Country
-                </div>
-
-                <HorizontalBar
-                  height={countryNames.length * 50}
-                  ref={chartRef}
-                  options={{
-                    onClick: function (evt, element) {
-                      if (element.length > 0) {
-                        console.log(element, element[0]._datasetIndex);
-                      }
-                    },
-                    maintainAspectRatio: true,
-                    hover: {
-                      mode: "index",
-                      intersect: false,
-                    },
-                    legend: {
-                      display: false,
-                      position: "",
-                    },
-                    layout: {
-                      padding: {
-                        left: 20,
-                        right: 0,
-                        top: 0,
-                        bottom: 0,
-                      },
-                    },
-                  }}
-                  data={{
-                    labels: countryNames,
-                    datasets: [
-                      {
-                        label: "Deaths/1000",
-                        data: deathsPerOneMillion,
-                        backgroundColor: colorDeaths,
-                      },
-                    ],
-                  }}
-                />
-
-                {countryNames.length < 15 && (
-                  <>
-                    <div
-                      style={{ color: "grey", fontSize: "14px" }}
-                      className="pt-2 pb-3"
-                    >
-                      Critical Cases
-                    </div>
-                    <div className="pt-2 pb-2"></div>
-                    <HorizontalBar
-                      height={countryNames.length * 50}
-                      options={{
-                        maintainAspectRatio: true,
-                        legend: {
-                          display: false,
-                          position: "",
-                        },
-                        layout: {
-                          padding: {
-                            left: 20,
-                            right: 0,
-                            top: 0,
-                            bottom: 0,
-                          },
-                        },
-                      }}
-                      data={{
-                        labels: countryNames,
-                        datasets: [
-                          {
-                            label: "Critical/1000",
-                            data: criticalPerOneMillion,
-                            backgroundColor: colorActive,
-                          },
-                        ],
-                      }}
-                    />
-                  </>
-                )}
+              <Row className="box subtitle px-4">
+                <strong>
+                  {maxDeathsName}&nbsp;
+                  {numberWithCommas((maxDeaths / 1000).toFixed(2))} &nbsp;
+                </strong>
+                <h6 style={{ color: colorDeath[index] }}>
+                  Most Deaths/1k &nbsp;
+                </h6>
               </Row>
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-
-    {
-      id: 3,
-      title: "Mortality",
-      // icon: <a id='check1'></a>,
-      content: (
-        <>
-          <Row style={{ height: "86vh" }}>
-            <Col className="mr-3 mt-2">
-              <Row className="box p-2 ml-1 mb-0" style={{ color: "#ccc" }}>
-                <h1 className="mb-0">
-                  {((deathsMillion[index] / casesMillion[index]) * 100).toFixed(
-                    2
-                  )}{" "}
-                  {mortalityRate[0] / 1000 <= mortalityRate[5] / 1000 ? (
-                    <FontAwesomeIcon color="red" size="sm" icon={faArrowUp} />
-                  ) : (
-                    <FontAwesomeIcon
-                      color="green"
-                      size="sm"
-                      icon={faArrowDown}
-                    />
-                  )}
-                </h1>
-
-                <h5>Deaths / Cases</h5>
+              <Row className="box subtitle px-4 mt-2">
+                <strong>
+                  {maxCriticalName}&nbsp;
+                  {numberWithCommas((maxCritical / 1000).toFixed(2))} &nbsp;
+                </strong>
+                <h6 style={{ color: "#d61e73" }}>Most Critical/1k &nbsp;</h6>
               </Row>
-
-              <Row
-                className={"box ml-1 mt-3 pb-2"}
-                style={{
-                  color: "#ccc",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <div
-                  className="pt-5"
-                  style={{
-                    position: "absolute",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    color: "#ccc",
-                  }}
-                >
-                  {deathsMillion[index]/casesMillion[index] < 0.005 ? (
-                    <h6>Mild</h6>
-                  ) : deathsMillion[index]/casesMillion[index] < 0.001 ? (
-                    <h6>Contained</h6>
-                  ) : deathsMillion[index]/casesMillion[index]  < 0.015 ? (
-                    <h6>Moderate</h6>
-                  ) : deathsMillion[index]/casesMillion[index]  < 0.02 ? (
-                    <h6>Serious</h6>
-                  ) : (
-                    <h6>Extreme</h6>
-                  ) }
-                </div>
-
-                <div
-                  className="py-2 "
-                  style={{ color: "grey", fontSize: "14px" }}
-                >
-                  Country Analysis
-                </div>
-
-                <Doughnut
-                  width={170}
-                  options={{
-                    elements: {
-                      arc: {
-                        borderWidth: 0,
-                      },
-                    },
-                    legend: {
-                      display: false,
-                      position: "",
-                    },
-                  }}
-                  data={{
-                    labels: [
-                      "Lowest Mortality",
-                      "Lower Mortality",
-                      "Average Mortality",
-                      "Higher Mortality",
-                      "Highest Mortality",
-                    ],
-                    datasets: [
-                      {
-                        data: [
-                          lowest.length,
-                          lower.length,
-                          average.length,
-                          higher.length,
-                          highest.length,
-                        ],
-                        backgroundColor: colorsPie,
-                      },
-                    ],
-                  }}
-                ></Doughnut>
+              <Row className="box subtitle px-3 mt-2">
+                <strong>
+                  {maxRecoveredName}&nbsp;
+                  {numberWithCommas((maxRecovered / 1000).toFixed(0))} &nbsp;
+                </strong>
+                <h6 style={{ color: "teal" }}>Most Recovered/1k &nbsp;</h6>
               </Row>
+              <HorizontalChart
+                countryNames={countryNames}
+                criticalPerOneMillion={criticalPerOneMillion}
+                //   colorCritical={colorCritical}
+                deathsPerOneMillion={deathsPerOneMillion}
+                colorDeaths={colorDeaths}
+                recoveredPerOneMillion={recoveredPerOneMillion}
+                deathsMillion={deathsMillion}
+                criticalMillion={criticalMillion}
+                recoveredMillion={recoveredMillion}
+                index={index}
+                region={region}
+                colorCase={colorCase}
+                colorActivity={colorActivity}
+              />
 
-              <Row className="subtitle box pt-1 ml-1 mt-3">
-                <div
-                  className="pt-1 pb-1 ml-0"
-                  style={{ color: "grey", fontSize: "14px" }}
-                >
-                  Mortality Trend
-                </div>
-                <Line
-                  width={160}
-                  height={110}
-                  options={{
-                    legend: {
-                      display: false,
-                      position: "bottom",
-                    },
-                  }}
-                  data={{
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-                    datasets: [
-                      {
-                        label: "Cases / 1000",
-                        data: mortalityRate,
-                        fill: true,
-                        backgroundColor: "rgba(75,192,192,0.2)",
-                        borderColor: "rgba(75,192,192,1)",
-                      },
-                    ],
-                  }}
-                />
-              </Row>
+              {/* <Row
+      className={"box mt-2"}
+      style={{
+        color: "#fff",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div style={{ color: "grey", fontSize: "14px" }} className="pt-2">
+        Country Stats / 1k
+      </div>
 
-              <div
-                className="pt-3 pb-3 ml-4"
-                style={{ color: "grey", fontSize: "14px" }}
-              >
-                Mortality Statistics
-              </div>
-              <Row className="subtitle ml-1" style={{border: "1px solid #2a3d3d", borderRadius: "5px"}}>
-                <Col className="px-2 pt-3 pb-4 mr-1">
-                  Recovery
-                  {(activeMillion[index] / casesMillion[index]) * 100 <= 2.5 ? (
-                    <Badge variant="success" text="dark" className="badge">
-                      LOW
-                    </Badge>
-                  ) : (activeMillion[index] / casesMillion[index]) * 100 >=
-                    4.5 ? (
-                    <Badge variant="danger" text="dark" className="badge">
-                      HIGH
-                    </Badge>
-                  ) : (
-                    " "
-                  )}
-                  <strong className="mb-0">
-                    {(
-                      (recoveredMillion[index] / casesMillion[index]) *
-                      100
-                    ).toFixed(2)}
-                    %
-                  </strong>
-                </Col>
-                <Col className="px-3 pt-3 pb-1 ml-1">
+      <HorizontalBar
+        height={countryNames.length * 40}
+        options={{
+
+          tooltips: {
+            yPadding: 10,
+            xPadding: 10,
+            xAlign: "right",
+            cornerRadius: 2,
+            backgroundColor: "#212529",
+
+            borderColor: "turquoise",
+            borderWidth: 1,
+            displayColors: true,
+            bodyFontSize: 12,
+
+            labels: {
+              usePointStyle: true,
+              labelFontColor: "orange",
+              pointColor: "red",
+            },
+          },
+          responsive: true,
+          maintainAspectRatio: true,
+          hover: {
+            mode: "index",
+            intersect: false,
+          },
+          legend: {
+            display: false,
+            position: "bottom",
+            labels: {
+              usePointStyle: true,
+              fontSize: 12,
+              fontColor: "#fff",
+            },
+          },
+          layout: {
+            padding: {
+              left: 0,
+              right: 10,
+              top: 0,
+              bottom: 0,
+            },
+          },
+          scales: {
+            xAxes: [
+              {
+                display: false,
+                type: "logarithmic",
+              },
+            ],
+          },
+        }}
+        data={{
+          labels: countryNames,
+          datasets: [
       
-                  Today
-                  {(criticalMillion[index] / casesMillion[index]) * 100 <=
-                  0.005 ? (
-                    <Badge variant="success" text="dark" className="badge">
-                      LOW
-                    </Badge>
-                  ) : (criticalMillion[index] / casesMillion[index]) * 100 >=
-                    0.015 ? (
-                    <Badge variant="danger" text="dark" className="badge">
-                      HIGH
-                    </Badge>
-                  ) : (
-                    " "
-                  )}
-                  <strong className="mb-0">+
-                 
-                  {((todayRecovered[index]) / 1000).toFixed(0) + 'k'} 
-                
-                  </strong>
-                </Col>
-              </Row>
-              <Row className="subtitle ml-0">
-                <Col className="box p-2  mr-1 mt-3">
-                  {/* Deaths
-                  {(deathsMillion[index] / casesMillion[index]) * 100 <= 1.0 ? (
-                    <Badge variant="success" text="dark" className="badge">
-                      LOW
-                    </Badge>
-                  ) : (deathsMillion[index] / casesMillion[index]) * 100 >=
-                    2.0 ? (
-                    <Badge variant="danger" text="dark" className="badge">
-                      HIGH
-                    </Badge>
-                  ) : (
-                    " "
-                  )}
-                  <div className="mb-0">
-                    {(
-                      (deathsMillion[index] / casesMillion[index]) *
-                      100
-                    ).toFixed(2)}
-                    %
-                  </div> */}
-                  <Doughnut
-                    width={170}
-                    options={{
-                      elements: {
-                        arc: {
-                          borderWidth: 0,
-                        },
-                      },
-                      legend: {
-                        display: false,
-                        position: "",
-                      },
-                    }}
-                    data={{
-                      labels: ["Tested", "Untested"],
-                      datasets: [
-                        {
-                          data: [
-                            tests[index] / population[index],
-                            1 - tests[index] / population[index],
-                          ],
-                          backgroundColor: colorCases,
-                        },
-                      ],
-                    }}
-                  ></Doughnut>
-                </Col>
-                <Col className="box px-4 py-3 ml-1 mt-3">
-                  Vac'd
-                  {(tests[index] / population[index]) * 100 <= 100 ? (
-                    <Badge variant="danger" text="dark" className="badge">
-                      LOW
-                    </Badge>
-                  ) : (tests[index] / population[index]) * 100 >= 250 ? (
-                    <Badge variant="success" text="dark" className="badge">
-                      HIGH
-                    </Badge>
-                  ) : (
-                    " "
-                  )}
-                  <strong className="mb-0">
-                    {(tests[index] / population[index]).toFixed(2) * 100}%
-                  </strong>
-                </Col>
-              </Row>
-              <Row className=" ml-0"></Row>
-            </Col>
+            {
+              label: "Critical",
+              data: criticalPerOneMillion,
+              backgroundColor: "#d61e73",
+              stack: "0",
+            },
+            {
+              label: "Deaths",
+              data: deathsPerOneMillion,
+              backgroundColor: colorDeaths,
+              stack: "0",
+            },
 
-            <Col
-              className=""
-              style={{
-                height: "100%",
-                overflowY: "scroll",
-              }}
-            >
-              <Row
-                className={"box mr-0 mt-2"}
-                style={{
-                  color: "#fff",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <div
-                  style={{ color: "grey", fontSize: "14px" }}
-                  className="pt-2"
-                >
-                  Mortality Per Country
-                </div>
-
-                <HorizontalBar
-                  height={countryNames.length * 50}
-                  ref={chartRef}
-                  options={{
-                    onClick: function (evt, element) {
-                      if (element.length > 0) {
-                        console.log(element, element[0]._datasetIndex);
-                      }
-                    },
-                    maintainAspectRatio: true,
-                    hover: {
-                      mode: "index",
-                      intersect: false,
-                    },
-                    legend: {
-                      display: false,
-                      position: "",
-                    },
-                    layout: {
-                      padding: {
-                        left: 20,
-                        right: 0,
-                        top: 0,
-                        bottom: 0,
-                      },
-                    },
-                  }}
-                  data={{
-                    labels: countryNames,
-                    datasets: [
-                      {
-                        label: "Mortality/1000",
-                        data: mortalityRate,
-                        backgroundColor: backgroundcolor,
-                      },
-                    ],
-                  }}
-                />
-
-                {countryNames.length < 15 && (
-                  <>
-                    <div
-                      style={{ color: "grey", fontSize: "14px" }}
-                      className="pt-2 pb-3"
-                    >
-                      Recovered Per Country
-                    </div>
-                    <div className="pt-2 pb-2"></div>
-                    <HorizontalBar
-                      height={countryNames.length * 50}
-                      options={{
-                        maintainAspectRatio: true,
-                        legend: {
-                          display: false,
-                          position: "",
-                        },
-                        layout: {
-                          padding: {
-                            left: 20,
-                            right: 0,
-                            top: 0,
-                            bottom: 0,
-                          },
-                        },
-                      }}
-                      data={{
-                        labels: countryNames,
-                        datasets: [
-                          {
-                            label: "Active/1000",
-                            data: recoveredPerOneMillion,
-                            backgroundColor: colorActive,
-                          },
-                        ],
-                      }}
-                    />
-                  </>
-                )}
-              </Row>
+            {
+              label: "Recovered",
+              data: recoveredPerOneMillion,
+              backgroundColor: "teal",
+              stack: "0",
+            },
+          ],
+       
+        }}
+      />
+    </Row> */}
             </Col>
           </Row>
         </>
       ),
     },
+
+    // {
+    //   id: 3,
+    //   title: "Mortality",
+    //   // icon: <a id='check1'></a>,
+    //   content: (
+    //     <>
+    //       <Row style={{ height: "86vh" }}>
+    //         <Col className="mr-3 mt-2">
+    //           <Row className="box p-2 ml-1 mb-0" style={{ color: "#ccc" }}>
+    //             <h1 className="mb-0">
+    //               {((deathsMillion[index] / casesMillion[index]) * 100).toFixed(
+    //                 2
+    //               )}
+    //               {mortalityRate[0] / 1000 <= mortalityRate[5] / 1000 ? (
+    //                 <i
+    //                   style={{ fontSize: "0.7em", color: "green" }}
+    //                   className="fa fa-arrow-up"
+    //                 ></i>
+    //               ) : (
+    //                 <i
+    //                   style={{ fontSize: "0.7em", color: "red" }}
+    //                   className="fa fa-arrow-down"
+    //                 ></i>
+    //               )}
+    //             </h1>
+
+    //             <h5>Deaths / Cases</h5>
+    //           </Row>
+
+    //           <Row
+    //             className={"box ml-1 mt-3 pb-2"}
+    //             style={{
+    //               color: "#ccc",
+    //               display: "flex",
+    //               justifyContent: "center",
+    //               alignItems: "center",
+    //             }}
+    //           >
+    //             <div
+    //               className="pt-5"
+    //               style={{
+    //                 position: "absolute",
+    //                 display: "flex",
+    //                 justifyContent: "center",
+    //                 alignItems: "center",
+    //                 color: "grey",
+    //               }}
+    //             >
+    //               {deathsMillion[index] / casesMillion[index] < 0.005 ? (
+    //                 <h6>Mild</h6>
+    //               ) : deathsMillion[index] / casesMillion[index] < 0.001 ? (
+    //                 <h6>Contained</h6>
+    //               ) : deathsMillion[index] / casesMillion[index] < 0.015 ? (
+    //                 <h6>Moderate</h6>
+    //               ) : deathsMillion[index] / casesMillion[index] < 0.02 ? (
+    //                 <h6>Serious</h6>
+    //               ) : (
+    //                 <h6>Extreme</h6>
+    //               )}
+    //             </div>
+
+    //             <div
+    //               className="py-2 "
+    //               style={{ color: "grey", fontSize: "14px" }}
+    //             >
+    //               Country Analysis
+    //             </div>
+
+    //             {/* <Doughnut
+    //               width={170}
+    //               options={{
+    //                 elements: {
+    //                   arc: {
+    //                     borderWidth: 0,
+    //                   },
+    //                 },
+    //                 legend: {
+    //                   display: false,
+    //                   position: "",
+    //                 },
+    //               }}
+    //               data={{
+    //                 labels: [
+    //                   "Lowest Mortality",
+    //                   "Lower Mortality",
+    //                   "Average Mortality",
+    //                   "Higher Mortality",
+    //                   "Highest Mortality",
+    //                 ],
+    //                 datasets: [
+    //                   {
+    //                     data: [
+    //                       lowest.length,
+    //                       lower.length,
+    //                       average.length,
+    //                       higher.length,
+    //                       highest.length,
+    //                     ],
+    //                     backgroundColor: colorsPie,
+    //                   },
+    //                 ],
+    //               }}
+    //             ></Doughnut> */}
+    //           </Row>
+
+    //           <Row className="subtitle box pt-1 ml-1 mt-3">
+    //             <div
+    //               className="pt-1 pb-1 ml-0"
+    //               style={{ color: "grey", fontSize: "14px" }}
+    //             >
+    //               Mortality Trend
+    //             </div>
+    //             <Line
+    //               width={160}
+    //               height={110}
+    //               options={{
+    //                 legend: {
+    //                   display: false,
+    //                   position: "bottom",
+    //                 },
+    //               }}
+    //               data={{
+    //                 labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    //                 datasets: [
+    //                   {
+    //                     label: "Cases / 1000",
+    //                     data: mortalityRate,
+    //                     fill: true,
+    //                     backgroundColor: "rgba(75,192,192,0.2)",
+    //                     borderColor: "rgba(75,192,192,1)",
+    //                   },
+    //                 ],
+    //               }}
+    //             />
+    //           </Row>
+
+    //           <div
+    //             className="pt-3 pb-3 ml-4"
+    //             style={{ color: "grey", fontSize: "14px" }}
+    //           >
+    //             Mortality Statistics
+    //           </div>
+    //           <Row
+    //             className="subtitle ml-1"
+    //             style={{ border: "1px solid #2a3d3d", borderRadius: "5px" }}
+    //           >
+    //             <Col className="px-2 pt-3 pb-4 mr-1">
+    //               Recovery
+    //               {(activeMillion[index] / casesMillion[index]) * 100 <= 2.5 ? (
+    //                 <Badge variant="success" text="dark" className="badge">
+    //                   LOW
+    //                 </Badge>
+    //               ) : (activeMillion[index] / casesMillion[index]) * 100 >=
+    //                 4.5 ? (
+    //                 <Badge variant="danger" text="dark" className="badge">
+    //                   HIGH
+    //                 </Badge>
+    //               ) : (
+    //                 " "
+    //               )}
+    //               <strong className="mb-0">
+    //                 {(
+    //                   (recoveredMillion[index] / casesMillion[index]) *
+    //                   100
+    //                 ).toFixed(2)}
+    //                 %
+    //               </strong>
+    //             </Col>
+    //             <Col className="px-3 pt-3 pb-1 ml-1">
+    //               Today
+    //               {(criticalMillion[index] / casesMillion[index]) * 100 <=
+    //               0.005 ? (
+    //                 <Badge variant="success" text="dark" className="badge">
+    //                   LOW
+    //                 </Badge>
+    //               ) : (criticalMillion[index] / casesMillion[index]) * 100 >=
+    //                 0.015 ? (
+    //                 <Badge variant="danger" text="dark" className="badge">
+    //                   HIGH
+    //                 </Badge>
+    //               ) : (
+    //                 " "
+    //               )}
+    //               <strong className="mb-0">
+    //                 +{(todayRecovered[index] / 1000).toFixed(0) + "k"}
+    //               </strong>
+    //             </Col>
+    //           </Row>
+    //           <Row className="subtitle ml-0">
+    //             <Col className="box p-2  mr-1 mt-3">
+    //               {/* Deaths
+    //               {(deathsMillion[index] / casesMillion[index]) * 100 <= 1.0 ? (
+    //                 <Badge variant="success" text="dark" className="badge">
+    //                   LOW
+    //                 </Badge>
+    //               ) : (deathsMillion[index] / casesMillion[index]) * 100 >=
+    //                 2.0 ? (
+    //                 <Badge variant="danger" text="dark" className="badge">
+    //                   HIGH
+    //                 </Badge>
+    //               ) : (
+    //                 " "
+    //               )}
+    //               <div className="mb-0">
+    //                 {(
+    //                   (deathsMillion[index] / casesMillion[index]) *
+    //                   100
+    //                 ).toFixed(2)}
+    //                 %
+    //               </div> */}
+    //               <Doughnut
+    //                 width={170}
+    //                 options={{
+    //                   elements: {
+    //                     arc: {
+    //                       borderWidth: 0,
+    //                     },
+    //                   },
+    //                   legend: {
+    //                     display: false,
+    //                     position: "",
+    //                   },
+    //                 }}
+    //                 data={{
+    //                   labels: ["Tested", "Untested"],
+    //                   datasets: [
+    //                     {
+    //                       data: [
+    //                         tests[index] / population[index],
+    //                         1 - tests[index] / population[index],
+    //                       ],
+    //                       backgroundColor: colorCases,
+    //                     },
+    //                   ],
+    //                 }}
+    //               ></Doughnut>
+    //             </Col>
+    //             <Col className="box px-4 py-3 ml-1 mt-3">
+    //               Vac'd
+    //               {(tests[index] / population[index]) * 100 <= 100 ? (
+    //                 <Badge variant="danger" text="dark" className="badge">
+    //                   LOW
+    //                 </Badge>
+    //               ) : (tests[index] / population[index]) * 100 >= 250 ? (
+    //                 <Badge variant="success" text="dark" className="badge">
+    //                   HIGH
+    //                 </Badge>
+    //               ) : (
+    //                 " "
+    //               )}
+    //               <strong className="mb-0">
+    //                 {(tests[index] / population[index]).toFixed(2) * 100}%
+    //               </strong>
+    //             </Col>
+    //           </Row>
+    //           <Row className=" ml-0"></Row>
+    //         </Col>
+
+    //         {/* COLUMN TWO */}
+    //         <Col
+    //           className=""
+    //           style={{
+    //             height: "100%",
+    //             overflowY: "scroll",
+    //           }}
+    //         >
+    //           <Row
+    //             className={"box mr-0 mt-2"}
+    //             style={{
+    //               color: "#fff",
+    //               display: "flex",
+    //               justifyContent: "center",
+    //               alignItems: "center",
+    //             }}
+    //           >
+    //             <div
+    //               style={{ color: "grey", fontSize: "14px" }}
+    //               className="pt-2"
+    //             >
+    //               Mortality Per Country
+    //             </div>
+
+    //             <HorizontalBar
+    //               height={countryNames.length * 50}
+
+    //               options={{
+    //                 onClick: function (evt, element) {
+    //                   if (element.length > 0) {
+    //                     console.log(element, element[0]._datasetIndex);
+    //                   }
+    //                 },
+    //                 maintainAspectRatio: true,
+    //                 hover: {
+    //                   mode: "index",
+    //                   intersect: false,
+    //                 },
+    //                 legend: {
+    //                   display: false,
+    //                   position: "",
+    //                 },
+    //                 layout: {
+    //                   padding: {
+    //                     left: 20,
+    //                     right: 0,
+    //                     top: 0,
+    //                     bottom: 0,
+    //                   },
+    //                 },
+    //               }}
+    //               data={{
+    //                 labels: countryNames,
+    //                 datasets: [
+    //                   {
+    //                     label: "Mortality/1000",
+    //                     data: mortalityRate,
+    //                     backgroundColor: backgroundcolor,
+    //                   },
+    //                 ],
+    //               }}
+    //             />
+
+    //             {countryNames.length < 15 && (
+    //               <>
+    //                 <div
+    //                   style={{ color: "grey", fontSize: "14px" }}
+    //                   className="pt-2 pb-3"
+    //                 >
+    //                   Recovered Per Country
+    //                 </div>
+    //                 <div className="pt-2 pb-2"></div>
+    //                 <HorizontalBar
+    //                   height={countryNames.length * 50}
+    //                   options={{
+    //                     maintainAspectRatio: true,
+    //                     legend: {
+    //                       display: false,
+    //                       position: "",
+    //                     },
+    //                     layout: {
+    //                       padding: {
+    //                         left: 20,
+    //                         right: 0,
+    //                         top: 0,
+    //                         bottom: 0,
+    //                       },
+    //                     },
+    //                   }}
+    //                   data={{
+    //                     labels: countryNames,
+    //                     datasets: [
+    //                       {
+    //                         label: "Active/1000",
+    //                         data: recoveredPerOneMillion,
+    //                         backgroundColor: colorActive,
+    //                       },
+    //                     ],
+    //                   }}
+    //                 />
+    //               </>
+    //             )}
+    //           </Row>
+    //         </Col>
+    //       </Row>
+    //     </>
+    //   ),
+    // },
 
     // {
     //   id: 4,
@@ -1628,21 +2139,17 @@ const Menu = ({
     // },
   ];
 
-
-
   const TabsMenu = () => {
+    // function usePrevious(value) {
+    //   const ref = useRef();
+    //   useEffect(() => {
+    //     ref.current = value; //assign the value of ref to the argument
+    //   }, [value]); //this code will run when the value of 'value' changes
+    //   return ref.current; //in the end, return the current ref value.
+    // }
 
-    function usePrevious(value) {
-        const ref = useRef();
-        useEffect(() => {
-          ref.current = value; //assign the value of ref to the argument
-        },[value]); //this code will run when the value of 'value' changes
-        return ref.current; //in the end, return the current ref value.
-      }
-
-    
-    const [active, setActive] = useState(1);
-    const prevCount = usePrevious(active)
+    const [tab, setTab] = useState(1);
+    // const prevCount = usePrevious(active);
 
     const TabItem = ({
       icon = "",
@@ -1665,85 +2172,84 @@ const Menu = ({
       );
     };
 
+    console.log(tab, "VALUE");
+
     return (
-      <div className="wrapper">
+      <Row className="pl-3 pr-1 py-1">
         <div className="tabs">
           {tabItems.map(({ id, icon, title }) => (
             <TabItem
               key={title}
               icon={icon}
               title={title}
-              onItemClicked={() => setActive(id)}
-              isActive={active === id}
+              onItemClicked={() => setTab(id)}
+              isActive={tab === id}
             />
           ))}
         </div>
         <div className="content">
           {tabItems.map(({ id, content }) => {
-            return active === id ? content : "";
+            return tab === id ? content : "";
           })}
         </div>
-      </div>
+      </Row>
     );
   };
 
   return (
-    <>
-      <div className={open ? "visible" : "hidden"}>
-        <Animated
-          animationIn="fadeInLeft"
-          animationOut="fadeOut"
-          isVisible={true}
-        >
-          <div className="side">
-            <div className={!open ? "hidden" : "visible"}>
-              <Container>
-       
-                <Row className="title">
-      
-                  <Col xs={9} className="px-0 pt-2">
-                   <Animated
-          animationIn="fadeInLeft"
-          animationOut="fadeOut"
-          isVisible={true}
-       
-        >   {region}</Animated>  
-                  </Col>
-                
-                  <Col className="px-0">
-                    <div
-                      style={{ display: "flex", justifyContent: "flex-end" }}
-                    >
-                      <Button
-                        // onClick={toggleAsia}
-                        onClick={handleClose}
-                        // size="lg"
-                        variant="outline-info"
-                        // style={{ margin: "10px", padding: "0px 10px 3px 10px" }}
-                        className="close button"
-                      >
-                        <h6>x</h6>
-                      </Button>
-                    </div>
-                  </Col>
-                </Row>
-              
-                <TabsMenu
-                  countries={countries}
-                  index={index}
-                  region={region}
-                  casesMillion={casesMillion}
-                  activeMillion={activeMillion}
-                  criticalMillion={criticalMillion}
-                  deathsMillion={deathsMillion}
-                  tests={tests}
-                />
-              </Container>
-            </div>
-          </div>
-        </Animated>
-      </div>
-    </>
+    <div className={open ? "visible" : "hidden"}>
+      <Animated
+        animationIn="fadeInLeft"
+        animationOut="fadeOut"
+        isVisible={true}
+      >
+        <div className="side">
+          <Container>
+            {/* <div className={!open ? "hidden" : "visible"}> */}
+            <Row className="title">
+              <Col xs={9} className="my-2 pl-3">
+                <Animated
+                  animationIn="fadeInLeft"
+                  animationOut="fadeOut"
+                  isVisible={true}
+                >
+                  {" "}
+                  {region}
+                </Animated>
+              </Col>
+
+              <Col className="my-2 pr-2">
+                <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                  <Button
+                    // onClick={toggleAsia}
+                    onClick={handleClose}
+                    // size="lg"
+                    variant="outline-info"
+                    // style={{ margin: "10px", padding: "0px 10px 3px 10px" }}
+                    className="close button"
+                  >
+                    <h6>x</h6>
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+
+            <TabsMenu
+              countries={countries}
+              index={index}
+              region={region}
+              casesMillion={casesMillion}
+              activeMillion={activeMillion}
+              criticalMillion={criticalMillion}
+              deathsMillion={deathsMillion}
+              tests={tests}
+              tabItems={tabItems}
+            />
+            {/* </div> */}
+          </Container>
+        </div>
+      </Animated>
+    </div>
   );
 };
 
@@ -1758,3 +2264,5 @@ let colorsPie = [
   "rgb(212, 23, 83)",
   "rgb(45, 182, 130)",
 ];
+
+let colorsSpec = ["#0c99a0", " #0095d1", "#6880e6", " #d451bd", "  #ff1d5e"];

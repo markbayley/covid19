@@ -1,7 +1,7 @@
 export const BASE_URL =  "https://disease.sh/v2";
 export const GLOBAL_URL = BASE_URL + "/all";
 export const COUNTRY_URL = BASE_URL + "/countries";
-export const HISTORY_URL = BASE_URL + "/historical?lastdays=6";
+export const HISTORY_URL = BASE_URL + "/historical?lastdays=180";
 export const GLOBAL_HISTORY_URL = BASE_URL + "/historical/all?lastdays=all";
 export const CONTINENT_URL = BASE_URL + "/continents";
 export const STATE_URL = BASE_URL + "/states";

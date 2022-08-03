@@ -1,4 +1,4 @@
-import { CONTINENT_URL, COUNTRY_URL } from "./api";
+import { CONTINENT_URL, COUNTRY_URL } from "../api/api";
 import React, { useEffect, useState } from "react";
 
 export const Fetch = () => {
