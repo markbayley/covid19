@@ -13,6 +13,7 @@
 .title {
   /* font-size: calc(8px + 2.5vmin); */
   font-size: 1.7rem;
+  /* font-size: calc(1.7rem + 0.5vmin); */
   color: turquoise;
   /* padding-left: 1.5rem; */
   /* padding-bottom: none; */
@@ -38,12 +39,12 @@
 
 .badge {
   position: absolute;
-  top: -7px;
+  top: -2px;
   right: 10px;
 }
 
 .col {
-  max-width: 50% !important;
+  /* max-width: 50% !important; */
   /* border: 1px solid grey; */
 }
 
@@ -81,12 +82,13 @@
 .side {
   background: #212529;
   opacity: 0.98;
-  height: 100vh;
+  min-height: 100vh;
   font-size: calc(20px + 2.5vmin);
   /* color: rgb(45, 182, 130); */
   /* border: 1px solid turquoise; */
   /* border-radius: 5px; */
   overflow: hidden;
+  /* width: auto; */
 }
 
 .visible {
@@ -97,17 +99,18 @@
   display: none;
 }
 
-@media only screen and (min-width: 930px) {
+@media only screen and (min-width: 913px) {
   .side {
     width: 25vw;
   }
 }
 
-/* @media only screen and (min-width: 1130px) {
+@media only screen and (min-width: 1560px) {
   .side {
-    width: 20vw;
+    width: 25vw;
+   
   }
-} */
+}
 
 /* Buttons */
 
@@ -173,6 +176,7 @@
   /* margin-right: 30px; */
 }
 
+
 .tabitem--inactive {
   opacity: 0.5;
   filter: grayscale(100%);
@@ -230,3 +234,25 @@ a.active:hover {
   border-radius: 5px;
   border: 1px solid teal;
 }
+
+
+.mild {
+  color: #444e86;
+}
+
+.limited {
+  color: #955196;
+}
+
+.moderate {
+  color: #ffa600;
+}
+
+.serious {
+  color: #ff6e54;
+}
+
+.extreme {
+  color: #dd5182;
+}
+

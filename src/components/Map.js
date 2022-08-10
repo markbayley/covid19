@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import useSWR from "swr";
 import lookup from "country-code-lookup";
@@ -8,32 +8,80 @@ import { numberWithCommas } from "../utils/numberWithCommas";
 import { Animated } from "react-animated-css";
 import { Button, Col, Row, Container } from "react-bootstrap";
 
+import { Chart } from "react-chartjs-2";
+
 mapboxgl.accessToken =
   "pk.eyJ1IjoidHJib3QiLCJhIjoiY2s3NmFscm1xMTV0MDNmcXFyOWp1dGhieSJ9.tR2IMHDqBPOf_AeGjHOKFA";
 
-const Map2 = ({ countries }) => {
+const Map2 = ({ countries, region }) => {
   const mapboxElRef = useRef(null); // DOM element to render map
 
-  // console.log(countries, "countries");
-  const populationCountry = countries.map((country) => [
-    country.population,
-    country.country,
-  ]);
+  // // console.log(countries, "countries");
+  // const populationCountry = countries.map((country) => [
+  //   country.population,
+  //   country.country,
+  // ]);
   // console.log(populationCountry, "pC");
-  const mort = countries.map((selectedCountry) =>
-    (
-      (selectedCountry.deathsPerOneMillion /
-        selectedCountry.casesPerOneMillion) *
-      100
-    ).toFixed(2)
-  );
-  // console.log(mort, "mort");
-  const casesPerOneMillion = countries.map((selectedCountry) =>
-    (selectedCountry.casesPerOneMillion / 1000).toFixed(1)
-  );
-  // console.log(casesPerOneMillion, "cPOM");
+  // const mort = countries.map((selectedCountry) =>
+  //   (
+  //     (selectedCountry.deathsPerOneMillion /
+  //       selectedCountry.casesPerOneMillion) *
+  //     100
+  //   ).toFixed(2)
+  // );
+  // // console.log(mort, "mort");
+  // const casesPerOneMillion = countries.map((selectedCountry) =>
+  //   (selectedCountry.casesPerOneMillion / 1000).toFixed(1)
+  // );
+  // // console.log(casesPerOneMillion, "cPOM");
+
+
+
+
+  //Fetch Continents Data
+  // const [data2, setDataMap] = useState([]);
+  // useEffect(() => {
+    
+  //   async function fetchContinents() {
+  //     try {
+  //       const result = await fetch("https://disease.sh/v3/covid-19/jhucsse");
+  //       const data2 = await result.json()
+  //       .then((data) =>
+  //       data.map((point, index) => ({
+  //         type: "Feature",
+  //         geometry: {
+  //           type: "Point",
+  //           coordinates: [
+  //             point.coordinates.longitude,
+  //             point.coordinates.latitude,
+  //           ],
+  //         },
+  //         properties: {
+  //           id: index,
+  //           country: point.country,
+  //           province: point.province,
+  //           cases: point.stats.confirmed,
+  //           deaths: point.stats.deaths,
+  //           mort: point.stats.deaths / point.stats.confirmed,
+  //         },
+  //       }))
+  //     );
+  //       setDataMap([data2]);
+  //       console.log(data2, "DATAmap");
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   fetchContinents();
+  // }, []);
+
+  
+ 
+  // const pointData =  [cases, country];
+  // console.log(pointData, 'Points')
 
   const fetcher = (url) =>
+
     fetch(url)
       .then((r) => r.json())
       .then((data) =>
@@ -53,12 +101,42 @@ const Map2 = ({ countries }) => {
             cases: point.stats.confirmed,
             deaths: point.stats.deaths,
             mort: point.stats.deaths / point.stats.confirmed,
+            // population: merge[0]
             // casesM: countries.country.casesPerOneMillion,
           },
         }))
       );
-
+      // console.log(merge, 'merge');
   const { data } = useSWR("https://disease.sh/v3/covid-19/jhucsse", fetcher);
+
+
+
+  // useEffect(() => {
+  //   data.forEach((id) => {
+  //     getInfo(id)
+  //       .then((response) => {
+  //         getOtherInfo(id).then((otherReponse) => {
+  //           response.otherInfo = otherResponse;
+  //           setItemList((itemList) => [...itemList, response]);
+  //         });
+  //       })
+  //       .catch((error) => console.log("Loading failed: " + error));
+  //   });
+  // }, []);
+
+
+  // console.log(cas, 'CAS')
+ 
+//  const newdata = [...point.stats.cases, ...merge]
+//  console.log(newdata, 'newdata')
+  // const [merge, setMerge] = useState([]);
+
+  // merge array1 and array2
+//  console.log(data, 'data')
+
+// const data2 = {data}.push(...countries)
+// console.log(data2, 'DATA2')
+
 
   // Initialize our map
   useEffect(() => {
@@ -66,7 +144,7 @@ const Map2 = ({ countries }) => {
       const average =
         data.reduce((total, next) => total + next.properties.cases, 0) /
         data.length;
-        //800,000
+      //800,000
       const min = Math.min(...data.map((item) => item.properties.cases));
       const max = Math.max(...data.map((item) => item.properties.cases));
       //32,000,000
@@ -74,10 +152,18 @@ const Map2 = ({ countries }) => {
       const averageD =
         data.reduce((total, next) => total + next.properties.deaths, 0) /
         data.length;
-        //8,000
+      //8,000
       const minD = Math.min(...data.map((item) => item.properties.deaths));
       const maxD = Math.max(...data.map((item) => item.properties.deaths));
       //173,000
+
+      console.log(countries, 'COUNTRIES')
+      const merge = countries.map((country, key) => country.population);
+      const cas = data.map((item) => item.properties.cases);
+      console.log(cas, 'CAS')
+      console.log(merge, 'MER')
+      const m = [...cas, ...merge]
+      console.log(m, 'M')
 
       console.log(average, min, max, "stats");
       console.log(averageD, minD, maxD, "statsD");
@@ -87,6 +173,7 @@ const Map2 = ({ countries }) => {
       // const maxmr = maxD / 1;
       // console.log(amr, minmr, maxmr, 'amr')
 
+      // ...data.map((item) => item.properties.cases, 
       // const countryname = data.map((item) => item.properties.country);
       // console.log(countryname, 'countryname')
 
@@ -96,6 +183,9 @@ const Map2 = ({ countries }) => {
         center: [99, 20], // Asia - intial geo location
         zoom: 3, // initial zoom
       });
+
+
+
 
       //DOUGHNUT
       // filters for classifying earthquakes into five categories based on magnitude
@@ -158,24 +248,55 @@ const Map2 = ({ countries }) => {
       // console.log(deaths1, "d/c");
       // colors to use for the categories
       const colors = [
-        "#444e86",
-        "#955196",
-        "#ffa600",
-        "#ff6e54",
-        "#dd5182",
-        "rgb(212, 23, 83)",
-        "rgb(45, 182, 130)",
+        // "#444e86",
+        // "#955196",
+        // "#ffa600",
+        // "#ff6e54",
+        // "#dd5182",
+
+//         "#ffaf1d",
+//  "#ff9435",
+//  "#ff7744",
+//  "#ff534f",
+//  "#ff1558",
+
+// "#2770b4",
+// "#6d68c1",
+// "#ae54b8",
+// "#e23295",
+// "#ff1560",
+"#5748ff", "#a13ed5", "#ca32ad", "#e72585", "#ff125e"
+
+        // "rgb(212, 23, 83)",
+        // "rgb(45, 182, 130)",
       ];
 
       const colors2 = [
-        "#444e86",
-        "#955196",
-        "#ffa600",
-        "#ff6e54",
-        "#dd5182",
-        "rgb(212, 23, 83)",
-        "rgb(45, 182, 130)",
+        // "#444e86",
+        // "#955196",
+        // "#ffa600",
+        // "#ff6e54",
+        // "#dd5182",
+//         "#ffaf1d",
+//  "#ff9435",
+//  "#ff7744",
+//  "#ff534f",
+//  "#ff1558"
+
+// "#2770b4",
+// "#6d68c1",
+// "#ae54b8",
+// "#e23295",
+// "#ff1560",
+
+"#5748ff", "#a13ed5", "#ca32ad", "#e72585", "#ff125e"
+
+        // "rgb(212, 23, 83)",
+        // "rgb(45, 182, 130)",
       ];
+
+
+
 
       //DOT
       const size = 150;
@@ -237,6 +358,12 @@ const Map2 = ({ countries }) => {
           return true;
         },
       };
+
+
+
+
+
+
 
       //LAYERS
       map.on("load", () => {
@@ -474,30 +601,30 @@ const Map2 = ({ countries }) => {
           },
         });
 
-        map.addLayer({
-          id: "clusters2",
-          type: "symbol",
-          source: "points",
-          filter: ["!=", "cluster", true],
-          layout: {
-            "text-field": [
-              "number-format",
-              ["get", "points"],
-              { "min-fraction-digits": 1, "max-fraction-digits": 1 },
-            ],
-            "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
-            "text-size": 10,
-            visibility: "visible",
-          },
-          paint: {
-            "text-color": [
-              "case",
-              ["<", ["get", "deaths"], 3],
-              "black",
-              "white",
-            ],
-          },
-        });
+        // map.addLayer({
+        //   id: "clusters2",
+        //   type: "symbol",
+        //   source: "points",
+        //   filter: ["!=", "cluster", true],
+        //   layout: {
+        //     "text-field": [
+        //       "number-format",
+        //       ["get", "points"],
+        //       { "min-fraction-digits": 1, "max-fraction-digits": 1 },
+        //     ],
+        //     "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+        //     "text-size": 10,
+        //     visibility: "visible",
+        //   },
+        //   paint: {
+        //     "text-color": [
+        //       "case",
+        //       ["<", ["get", "deaths"], 3],
+        //       "black",
+        //       "white",
+        //     ],
+        //   },
+        // });
 
         // objects for caching and keeping track of HTML marker objects (for performance)
         const markers = {};
@@ -538,7 +665,12 @@ const Map2 = ({ countries }) => {
           if (!map.isSourceLoaded("points")) return;
           updateMarkers();
         });
-      });
+      }); // map(load) End
+
+
+
+
+
 
       // code for creating an SVG donut chart from feature properties
       function createDonutChart(props) {
@@ -647,23 +779,28 @@ const Map2 = ({ countries }) => {
       }
 
       // inspect a cluster on click
-      map.on("click", "clusters", function (e) {
-        var features = map.queryRenderedFeatures(e.point, {
-          layers: ["clusters"],
-        });
-        var clusterId = features[0].properties.cluster_id;
-       
-        map
-          .getSource("points")
-          .getClusterExpansionZoom(clusterId, function (err, zoom) {
-            if (err) return;
+      map.on("click", "Cases", function (e) {
+        // var features = map.queryRenderedFeatures(e.point, {
+        //   layers: ["clusters"],
+        // });
+        // var clusterId = features[0].properties.cluster_id;
 
-            map.easeTo({
-              center: features[0].geometry.coordinates,
-              zoom: zoom,
-            });
+        // map
+        //   .getSource("clusters")
+        //   .getClusterExpansionZoom(clusterId, function (err, zoom) {
+        //     if (err) return;
+
+            const coordinates = e.features[0].geometry.coordinates.slice();
+
+            map.flyTo({ center:coordinates, zoom: 6 });
+
+            // map.easeTo({
+            
+            //   center: features[0].geometry.coordinates,
+            //   zoom: 4
+            // });
             // console.log(clusterId, 'clusterID', features, 'features', features[0].properties.cluster_id)
-          });
+          // });
       });
 
       //TOGGLE
@@ -718,136 +855,304 @@ const Map2 = ({ countries }) => {
           const layers = document.getElementById("menu");
           layers.appendChild(link);
         }
-      });
+      }); // map(idle) End
 
       //Add navigation controls to the top right of the canvas
       // map.addControl(new mapboxgl.NavigationControl());
 
       // Add navigation to center the map on your geo location
-      // map.addControl(
-      //   new mapboxgl.GeolocateControl({
-      //     fitBoundsOptions: { maxZoom: 6 },
-      //   })
-      // );
+      map.addControl(
+        new mapboxgl.GeolocateControl({
+          fitBoundsOptions: { maxZoom: 6 },
+        })
+      );
 
       //CIRCLES
       map.once("load", function () {
         //POPUP
-        const popup2 = new mapboxgl.Popup({
-          closeButton: false,
-          closeOnClick: false,
-          className: "popup",
-        });
 
-        let lastId2;
+        // const popup = new mapboxgl.Popup({
+        //   closeButton: false,
+        //   closeOnClick: false,
+        //   className: "popup",
+        // });
 
-        map.on("mousemove", "Deaths", (e) => {
-          const id = e.features[0].properties.id;
+        // let lastId;
 
-          if (id !== lastId2) {
-            lastId = id;
-            const { cases, deaths, country, province, mort } =
-              e.features[0].properties;
+        // map.on("mousemove", "Cases", (e) => {
+        //   const id = e.features[0].properties.id;
 
-            // Change the pointer type on mouseenter
-            map.getCanvas().style.cursor = "pointer";
+        //   if (id !== lastId) {
+        //     lastId = id;
+        //     const { cases, deaths, country, province, mort } =
+        //       e.features[0].properties;
 
-            const coordinates = e.features[0].geometry.coordinates.slice();
+        //     // Change the pointer type on mouseenter
+        //     map.getCanvas().style.cursor = "pointer";
 
-            const countryISO =
-              lookup.byCountry(country)?.iso2 ||
-              lookup.byInternet(country)?.iso2;
-            const countryFlag = `https://raw.githubusercontent.com/stefangabos/world_countries/master/data/flags/64x64/${countryISO?.toLowerCase()}.png`;
-            const provinceHTML =
-              province !== "null" ? `<p>Province: <b>${province}</b></p>` : "";
-            const mortalityRate = ((deaths / cases) * 100).toFixed(2);
-            const countryFlagHTML = Boolean(countryISO)
-              ? `<img src="${countryFlag}"></img>`
-              : "";
+        //     const coordinates = e.features[0].geometry.coordinates.slice();
 
-            const HTML = `  ${countryFlagHTML}<p>Country: <b>${country}</b></p>
-                ${provinceHTML}
-                <p>Cases: <b>${numberWithCommas(cases)}</b></p>
-                <p>Deaths: <b>${numberWithCommas(deaths)}</b></p>
-                <p>Mortality Rate: <b>${mortalityRate}%</b></p>
-             
-                `;
-            //
-            // Ensure that if the map is zoomed out such that multiple
-            // copies of the feature are visible, the popup appears
-            // over the copy being pointed to.
-            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-              coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-            }
+        //     const countryISO =
+        //       lookup.byCountry(country)?.iso2 ||
+        //       lookup.byInternet(country)?.iso2;
+        //     const countryFlag = `https://raw.githubusercontent.com/stefangabos/world_countries/master/data/flags/64x64/${countryISO?.toLowerCase()}.png`;
+        //     const provinceHTML =
+        //       province !== "null" ? `<p>Province: <b>${province}</b></p>` : "";
+        //     const mortalityRate = ((deaths / cases) * 100).toFixed(2);
+        //     const countryFlagHTML = Boolean(countryISO)
+        //       ? `<img src="${countryFlag}"></img>`
+        //       : "";
 
-            popup2.setLngLat(coordinates).setHTML(HTML).addTo(map);
-          }
-        });
+        //     const HTML = `  ${countryFlagHTML}<p>Country: <b>${country}</b></p>
+        //         ${provinceHTML}
+        //         <p>Cases: <b>${numberWithCommas(cases)}</b></p>
+        //         <p>Deaths: <b>${numberWithCommas(deaths)}</b></p>
+        //         <p>Mortality Rate: <b>${mortalityRate}%</b></p>
 
-        map.on("mouseleave", "Deaths", function () {
-          lastId = undefined;
-          map.getCanvas().style.cursor = "";
-          popup2.remove();
-        });
+        //         `;
 
-        //POPUP
+        //     // Ensure that if the map is zoomed out such that multiple
+        //     // copies of the feature are visible, the popup appears
+        //     // over the copy being pointed to.
+        //     while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        //       coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        //     }
+
+        //     popup.setLngLat(coordinates).setHTML(HTML).addTo(map);
+        //   }
+        // });
+
 
         const popup = new mapboxgl.Popup({
-          closeButton: false,
-          closeOnClick: false,
-          className: "popup",
-        });
+        className: "popup"})
+     
 
+        var i = 0;
         let lastId;
-
-        map.on("mousemove", "Cases", (e) => {
+        map.on("mousemove", "Cases", function (e) {
           const id = e.features[0].properties.id;
 
-          if (id !== lastId) {
-            lastId = id;
-            const { cases, deaths, country, province, mort } =
-              e.features[0].properties;
+            if (id !== lastId) {
+              lastId = id;
 
-            // Change the pointer type on mouseenter
-            map.getCanvas().style.cursor = "pointer";
+              map.getCanvas().style.cursor = "pointer";
 
-            const coordinates = e.features[0].geometry.coordinates.slice();
+          var coordinates = e.features[0].geometry.coordinates.slice();
+          // var cases = e.features[0].properties.cases;
 
-            const countryISO =
-              lookup.byCountry(country)?.iso2 ||
-              lookup.byInternet(country)?.iso2;
-            const countryFlag = `https://raw.githubusercontent.com/stefangabos/world_countries/master/data/flags/64x64/${countryISO?.toLowerCase()}.png`;
-            const provinceHTML =
-              province !== "null" ? `<p>Province: <b>${province}</b></p>` : "";
-            const mortalityRate = ((deaths / cases) * 100).toFixed(2);
-            const countryFlagHTML = Boolean(countryISO)
-              ? `<img src="${countryFlag}"></img>`
-              : "";
+          let colorsCases = [
+            // " #006390",
+            " #7668b4",
+            " #ffa500",
+            // " #ff6a67",
+            // "#d75ea4",
+           ];
 
-            const HTML = `  ${countryFlagHTML}<p>Country: <b>${country}</b></p>
-                ${provinceHTML}
-                <p>Cases: <b>${numberWithCommas(cases)}</b></p>
-                <p>Deaths: <b>${numberWithCommas(deaths)}</b></p>
-                <p>Mortality Rate: <b>${mortalityRate}%</b></p>
-             
-                `;
+  
+  
 
-            // Ensure that if the map is zoomed out such that multiple
-            // copies of the feature are visible, the popup appears
-            // over the copy being pointed to.
-            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-              coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+          const { cases, deaths, country, province } =
+          e.features[0].properties;
+
+          while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+          }
+
+
+
+          const colorCase = [];
+          const statusCase = [];
+          const classText = [];
+            if (cases  < 50000) {
+              colorCase.push("#5d67a1");
+              statusCase.push("Mild");
+              classText.push("mild");
+            }
+            if (cases >= 50000 && cases  < 100000) {
+              colorCase.push("#955196");
+              statusCase.push("Limited");
+              classText.push("limited");
+            }
+            if (cases  >= 100000 && cases  < 400000) {
+              colorCase.push("#ffa600");
+              statusCase.push("Moderate");
+              classText.push("moderate");
+            }
+            if (cases  >= 400000 && cases  < 16000000) {
+              colorCase.push("#ff6e54");
+              statusCase.push("Serious");
+              classText.push("serious");
+            }
+            if (cases >= 16000000) {
+              colorCase.push("#dd5182");
+              statusCase.push("Extreme");
+              classText.push("extreme");
+              //   pink
             }
 
-            popup.setLngLat(coordinates).setHTML(HTML).addTo(map);
+            const colorDeath = [];
+            const statusDeath = [];
+            const classText2 = [];
+       
+            if (deaths  < 2500) {
+              colorDeath.push("#5d67a1");
+              statusDeath.push("Mild");
+              classText2.push("mild");
+              //   blue
+            }
+            if (deaths >= 2500 && deaths  < 5000) {
+              colorDeath.push("#955196");
+              statusDeath.push("Limited");
+              classText2.push("limited");
+            }
+            if (deaths  >= 5000 && deaths < 20000) {
+              colorDeath.push("#cf8c11");
+              statusDeath.push("Moderate");
+              classText2.push("moderate");
+            }
+            if (deaths  >= 20000 && deaths  < 80000) {
+              colorDeath.push("#ff6e54");
+              statusDeath.push("Serious");
+              classText2.push("serious");
+            }
+            if (deaths >= 80000) {
+              colorDeath.push("#dd5182");
+              statusDeath.push("Extreme");
+              classText2.push("extreme");
+              //   pink
+            }
+       
+       
+
+
+          const countryISO =
+                lookup.byCountry(country)?.iso2 ||
+                lookup.byInternet(country)?.iso2;
+              const countryFlag = `https://raw.githubusercontent.com/stefangabos/world_countries/master/data/flags/64x64/${countryISO?.toLowerCase()}.png`;
+              const provinceHTML =
+                province !== "null" ? `<p>Province: <b>${province}</b></p>` : "";
+              const mortalityRate = ((deaths / cases) * 100).toFixed(2);
+              const countryFlagHTML = Boolean(countryISO)
+                ? `<img src="${countryFlag}"></img>`
+                : "";
+  
+              const HTML = ` <p>Country: <b>${country}</b></p>
+                  ${provinceHTML}
+                  <p>Cases: <b>${numberWithCommas(cases)}</b><span class="${classText}">(${statusCase})</span></p>
+                  <p>Deaths: <b>${numberWithCommas(deaths)}</b><span class="${classText2}"}>(${statusDeath})</span></p>
+                  <p>Mortality Rate: <b>${mortalityRate}%</b></p>
+               
+                  `;
+
+
+         
+
+                  popup.setLngLat(coordinates)
+                  .setHTML(  '<canvas className="info" id="foo' + i + '"></canvas>' + HTML)
+                  .addTo(map);
+
+                  // map.flyTo({ center: e.features[0].geometry.coordinates, zoom: 4 });
+
+
+             
+      
+
+
+        
+          var ctx = document.getElementById("foo" + i).getContext("2d");
+
+          console.log(ctx);
+          var chart = new Chart(ctx, {
+            type: "doughnut",
+            options: {
+              elements: {
+                arc: {
+                  borderColor: "#212529",
+                  borderWidth: 1,
+                },
+              },
+           
+              responsive: true,
+              maintainAspectRatio: true,
+              legend: {
+                display: false,
+                position: "",
+              },
+              title: {
+                display: false,
+                text: "",
+              },
+              animation: {
+                animateScale: true,
+                animateRotate: true,
+              },
+              tooltips: {
+                backgroundColor: "#212529",
+                borderColor: "turquoise",
+                borderWidth: 1,
+                cornerRadius: 2,
+                displayColors: true,
+                bodyFontSize: 12,
+                labels: {
+                  usePointStyle: true,
+                },
+                callbacks: {
+                  label: function (item, data) {
+                    console.log(data.labels, item);
+                    return (
+                      data.datasets[item.datasetIndex].label +
+                      ": " +
+                      data.labels[item.index] +
+                      ": " +
+                      data.datasets[item.datasetIndex].data[item.index]
+                    );
+                  },
+                },
+              },
+            },
+            data: {
+              labels: [
+                "Cases",
+                "Deaths",
+              ],
+              datasets: [
+                {
+                  label: "Distribution",
+                  backgroundColor: [colorDeath, colorCase],
+                  borderColor: colorCase,
+                  // data: caseChart,
+                  // data: [12, 34, 16, 52, 13]
+                  data: [ deaths*2, cases],
+                },
+              ],
+            },
+
+          });
+          i++;
+
+      
           }
         });
+
+
 
         map.on("mouseleave", "Cases", function () {
           lastId = undefined;
           map.getCanvas().style.cursor = "";
           popup.remove();
         });
+
+
+      
+
+
+
+      
+
+
+
+
+
 
         // map.doubleClickZoom.enable();
         //IDS
@@ -887,7 +1192,8 @@ const Map2 = ({ countries }) => {
               essential: true,
             });
           });
-        document.getElementById("asia").addEventListener("click", function () {
+        document.getElementById("asia")
+        .addEventListener("click", function () {
           map.flyTo({
             zoom: 3.1,
             center: [100, 17],
@@ -913,18 +1219,36 @@ const Map2 = ({ countries }) => {
               essential: true,
             });
           });
-      });
-    }
+
+         
+
+    
+      
+
+   
+
+
+      }); //map(once) End
+    } //id Data End
   }, [data]);
+  //useEffect End
+
+
+
+
+
+  // console.log((countries[1].country[1]), 'count1')
 
   return (
     <div className="App">
+  
+
       <div className="mapContainer">
-        {/* Mapbox Container */}
-        <div className="mapBox" ref={mapboxElRef} />
-      </div>
+
+        <div className="mapBox" ref={mapboxElRef} /> 
+      </div> 
     </div>
   );
 };
-
+//Map End
 export default Map2;

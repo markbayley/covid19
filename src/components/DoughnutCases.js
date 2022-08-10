@@ -4,6 +4,7 @@ import { Row } from "react-bootstrap";
 
 const DoughnutCases = ({
   casesMillion,
+  activeMillion,
   index,
   colorsPie,
   continentCountries,
@@ -74,13 +75,13 @@ const DoughnutCases = ({
           color: "#ccc",
         }}
       >
-        {casesMillion[index] / 1000 < 50 ? (
+        {activeMillion[index] / 1000 < 5 ? (
           <h6>Mild</h6>
-        ) : casesMillion[index] / 1000 < 100 ? (
+        ) : activeMillion[index] / 1000 < 10 ? (
           <h6>Limited</h6>
-        ) : casesMillion[index] / 1000 < 150 ? (
+        ) : activeMillion[index] / 1000 < 15 ? (
           <h6>Moderate</h6>
-        ) : casesMillion[index] / 1000 < 350 ? (
+        ) : activeMillion[index] / 1000 < 35 ? (
           <h6>Serious</h6>
         ) : (
           <h6>Extreme</h6>

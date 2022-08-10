@@ -43,11 +43,13 @@ function LineGraph({ casesType, ...props }) {
     <div className={props.className}>
       {data?.length > 0 && (
         <Line
-          width={320}
-          height={130}
+          width={300}
+          height={150}
         //   options={options}
 
         options={{
+          responsive: true,
+          maintainAspectRatio: true,
             legend: {
               display: false,
               position: "bottom",

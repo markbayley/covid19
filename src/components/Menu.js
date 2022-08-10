@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Animated } from "react-animated-css";
 import { Button, Col, Row, Container } from "react-bootstrap";
 import { numberWithCommas } from "../utils/numberWithCommas";
-import { HorizontalBar, Line } from "react-chartjs-2";
+import { HorizontalBar, Line, Doughnut } from "react-chartjs-2";
 import Badge from "react-bootstrap/Badge";
 import DoughnutCases from "./DoughnutCases";
 import DoughnutDeaths from "./DoughnutDeaths";
 import HorizontalChart from "./HorizontalChart";
+import Form from "react-bootstrap/Form";
 
 const Menu = ({
   countries,
@@ -31,17 +32,11 @@ const Menu = ({
   todayRecovered,
   handleClose,
 }) => {
-
-   
-
   // Filter Countries in Region
-  const continentCountries = countries.sort((a, b) =>
-   (a.casesPerOneMillion )
-    < (b.casesPerOneMillion ) ? 1 : -1)
-  
-  .filter(
-    (country) => country.continent === region
-  );
+  const continentCountries = countries
+    .sort((a, b) => (a.casesPerOneMillion < b.casesPerOneMillion ? 1 : -1))
+
+    .filter((country) => country.continent === region);
   // Map Country Names && country.population > 1000000
   const countryNames = countries
     .filter(
@@ -52,12 +47,12 @@ const Menu = ({
     .map((selectedCountry) => selectedCountry.country);
 
   // .filter((country) => country.country.length <= 12)
-//   console.log(continentCountries);
+  //   console.log(continentCountries);
 
   //Max Stats
   const max = Math.max(
     ...continentCountries
-    //   .filter((country) => country.country.length <= 12)
+      //   .filter((country) => country.country.length <= 12)
       .map((item) => item.casesPerOneMillion)
   );
   console.log(continentCountries);
@@ -74,7 +69,7 @@ const Menu = ({
 
   const maxActive = Math.max(
     ...continentCountries
-    //   .filter((country) => country.country.length <= 12)
+      //   .filter((country) => country.country.length <= 12)
       .map((item) => item.activePerOneMillion)
   );
   console.log(continentCountries);
@@ -102,7 +97,7 @@ const Menu = ({
 
   const maxCritical = Math.max(
     ...continentCountries
-    //   .filter((country) => country.country.length <= 12)
+      //   .filter((country) => country.country.length <= 12)
       .map((item) => item.criticalPerOneMillion)
   );
   const maxCriticalName = countries
@@ -142,14 +137,18 @@ const Menu = ({
     )
     .map((selectedCountry) => selectedCountry.country);
 
-  
-  
-  
-    //   console.log(deathsPerOneMillion, "deathsPerOneMillion");
+  //   console.log(deathsPerOneMillion, "deathsPerOneMillion");
   const mortalityRate = continentCountries.map((selectedCountry) =>
     (
       (selectedCountry.deathsPerOneMillion /
         selectedCountry.casesPerOneMillion) *
+      100
+    ).toFixed(2)
+  );
+
+  const mortalityMillion = continentCountries.map((selectedCountry) =>
+    (
+      (selectedCountry.deathsMillion / selectedCountry.casesMillion) *
       100
     ).toFixed(2)
   );
@@ -175,41 +174,41 @@ const Menu = ({
   );
 
   //Color Schemes
-  const backgroundcolor = [];
+  const colorMortality = [];
   for (let i = 0; i < mortalityRate.length; i++) {
     if (mortalityRate[i] < 1.0) {
-      backgroundcolor.push("#444e86");
+      colorMortality.push("#444e86");
     }
     if (mortalityRate[i] >= 1.0 && mortalityRate[i] < 2.0) {
-      backgroundcolor.push("#955196");
+      colorMortality.push("#955196");
     }
     if (mortalityRate[i] >= 2.0 && mortalityRate[i] < 3.5) {
-      backgroundcolor.push("#ffa600");
+      colorMortality.push("#ffa600");
     }
     if (mortalityRate[i] >= 3.5 && mortalityRate[i] < 6.0) {
-      backgroundcolor.push("#ff6e54");
+      colorMortality.push("#ff6e54");
     }
     if (mortalityRate[i] >= 6.0) {
-      backgroundcolor.push("#dd5182");
+      colorMortality.push("#dd5182");
     }
   }
 
   const colorCases = [];
   for (let i = 0; i < casesPerOneMillion.length; i++) {
     if (casesPerOneMillion[i] < 50) {
-      colorCases.push("#444e86");
+      colorCases.push("#ffaf1d");
     }
     if (casesPerOneMillion[i] >= 50 && casesPerOneMillion[i] < 100) {
-      colorCases.push("#955196");
+      colorCases.push("#ff9435");
     }
     if (casesPerOneMillion[i] >= 100 && casesPerOneMillion[i] < 150) {
-      colorCases.push("#ef9b00");
+      colorCases.push("#ff7744");
     }
     if (casesPerOneMillion[i] >= 150 && casesPerOneMillion[i] < 350) {
-      colorCases.push("#ff6e54");
+      colorCases.push("#ff534f");
     }
     if (casesPerOneMillion[i] >= 350) {
-      colorCases.push("#dd5182");
+      colorCases.push("#ff1558");
     }
   }
 
@@ -274,20 +273,20 @@ const Menu = ({
 
   const colorActivity = [];
   for (let i = 0; i < casesPerOneMillion.length; i++) {
-    if (casesPerOneMillion[i]  < 50) {
+    if (casesPerOneMillion[i] < 50) {
       colorActivity.push("#00a5f1");
       //   blue
     }
-    if (casesPerOneMillion[i]  >= 50 && casesPerOneMillion[i] < 100) {
+    if (casesPerOneMillion[i] >= 50 && casesPerOneMillion[i] < 100) {
       colorActivity.push("#ad93f9");
     }
-    if (casesPerOneMillion[i] >= 100 && casesPerOneMillion[i]  < 150) {
+    if (casesPerOneMillion[i] >= 100 && casesPerOneMillion[i] < 150) {
       colorActivity.push("#ffa600");
     }
-    if (casesPerOneMillion[i]  >= 150 && casesPerOneMillion[i] < 350) {
+    if (casesPerOneMillion[i] >= 150 && casesPerOneMillion[i] < 350) {
       colorActivity.push("#ff7972");
     }
-    if (casesPerOneMillion[i]  >= 350) {
+    if (casesPerOneMillion[i] >= 350) {
       colorActivity.push("#ff76c8");
       //   pink
     }
@@ -312,6 +311,42 @@ const Menu = ({
     }
   }
 
+  // const displayData = ({countries}) => {
+  //   if (!countries.length)
+  //     return (
+  //       <tr>
+  //         <td>{("noResults")}</td>
+  //       </tr>
+  //     );
+    
+  
+  //   return countries.map((country, index) => {
+  //     return (
+  //       <tbody key={country.country} style={{color: "#fff"}}>
+     
+  //         <tr>
+       
+  //           <td>
+  //             {/* <img
+  //               src={country["countryInfo"]["flag"]}
+  //               alt=""
+  //               width="30px"
+  //               height="20px"
+  //               className="mr-2 d-none d-sm-inline"
+  //             ></img> */}
+  //             {country.country}
+  //           </td>
+  //           <td>{numberWithCommas(country["cases"])}</td>
+  //           <td>{numberWithCommas(country["deaths"])}</td>
+  //           <td>{numberWithCommas(country["recovered"])}</td>
+  //           {/* <td>{numberWithCommas(country["todayCases"])}</td> */}
+  //           {/* <td>{numberWithCommas(country["todayDeaths"])}</td> */}
+  //         </tr>
+  //       </tbody>
+  //     );
+  //   });
+  // };
+
   const tabItems = [
     {
       id: 1,
@@ -319,10 +354,12 @@ const Menu = ({
       content: (
         <>
           <Row style={{ height: "90vh", border: "" }} className="px-3">
+         
             {/* COLUMN ONE */}
-            <Col className="subtitle">
+            <Col className="subtitle" style={{ maxWidth: "50%" }}>
+             
               <Row
-                className="box mb-2 py-2"
+                className="box mb-2 pt-4 pb-3 "
                 style={{
                   color: "#ccc",
                   //   border: "2px solid",
@@ -330,7 +367,8 @@ const Menu = ({
                   //   borderRadius: "5px",
                 }}
               >
-                <div className=" px-3" style={{}}>
+                <div className="pr-3 pl-0" style={{}}>
+             
                   <h1 className="mb-0">
                     {(casesMillion[index] / 1000).toFixed(1)}
                     {casesPerOneMillion[0] / 1000 <=
@@ -348,6 +386,15 @@ const Menu = ({
                   </h1>
                   <h6 style={{ color: colorCase[index] }}>Cases/1k</h6>
                 </div>
+                <Animated animationIn="fadeInUp" isVisible={true}>
+                  <div style={{ color: colorActive[index] }}>Today&nbsp;</div>
+                  <strong className="mb-0">
+                    +
+                    {numberWithCommas(
+                      (todayCases[index] / 1000).toFixed(0) + "k"
+                    )}
+                  </strong>
+                </Animated>
                 {casesMillion[index] / 1000 <= 50 ? (
                   <Badge
                     variant="success"
@@ -391,7 +438,7 @@ const Menu = ({
                   </Badge>
                 )}
               </Row>
-              <Row
+              {/* <Row
                 style={{
                   color: "#ccc",
                   border: "1px solid",
@@ -488,13 +535,12 @@ const Menu = ({
                     ],
                   }}
                 />
-              </Row>
-
+              </Row> */}
 
               <Row className="subtitle mt-2">
-                <Col className="box py-3 px-2 mr-2" >
+                <Col className="box pb-4 pt-3 px-2 mr-2">
                   <div style={{ color: colorActive[index] }}>Active&nbsp;</div>
-                  <strong className="mb-0">
+                  <strong className="">
                     {(
                       (activeMillion[index] / casesMillion[index]) *
                       100
@@ -503,26 +549,20 @@ const Menu = ({
                   </strong>
                 </Col>
 
-                <Col className="box py-3 px-2" >
-                  <div style={{ color: 'teal' }}>Positive&nbsp;</div>
-                  <strong className="mb-0">
+                <Col className="box pb-4 pt-3 px-2">
+                  <div className="" style={{ color: "teal" }}>
+                    Positive&nbsp;
+                  </div>
+                  <strong>
                     {numberWithCommas(
-                      (casesMillion[index] / testsMillion[index] * 100).toFixed(2) + "%"
+                      (
+                        (casesMillion[index] / testsMillion[index]) *
+                        100
+                      ).toFixed(2) + "%"
                     )}
                   </strong>
                 </Col>
-
-                </Row>
-
-
-
-
-
-
-            
-
-
-
+              </Row>
 
               <Row className="subtitle box pt-1 mt-2">
                 <Line
@@ -589,10 +629,8 @@ const Menu = ({
                 />
               </Row>
 
-
-
               <Row className="mt-2">
-                <Col className="box px-2 py-3 mr-2">
+                <Col className="box px-2 pt-4 pb-3 mr-2">
                   <h4 className="mb-0">
                     {(activeMillion[index] / 1000).toFixed(2)}
                     {activePerOneMillion[0] / 1000 <=
@@ -610,50 +648,68 @@ const Menu = ({
                   </h4>
                   <h6 style={{ color: colorActive[index] }}>Active/1k</h6>
 
-                 <h6> {activeMillion[index] / 1000 <= 5 ? (
-                    <Badge
-                      variant="success"
-                      text="dark"
-                      className="badge"
-                      style={{ zIndex: 1, backgroundColor: colorActive[index] }}
-                    >
-                      MILD
-                    </Badge>
-                  ) : activeMillion[index] / 1000 <= 10 ? (
-                    <Badge
-                      text="dark"
-                      className="badge"
-                      style={{ zIndex: 1, backgroundColor: colorActive[index] }}
-                    >
-                      LIMITED
-                    </Badge>
-                  ) : activeMillion[index] / 1000 <= 15 ? (
-                    <Badge
-                      text="dark"
-                      className="badge"
-                      style={{ zIndex: 1, backgroundColor: colorActive[index] }}
-                    >
-                      MODERATE
-                    </Badge>
-                  ) : activeMillion[index] / 1000 <= 35 ? (
-                    <Badge
-                      text="dark"
-                      className="badge"
-                      style={{ zIndex: 1, backgroundColor: colorActive[index] }}
-                    >
-                      SERIOUS
-                    </Badge>
-                  ) : (
-                    <Badge
-                      text="dark"
-                      className="badge"
-                      style={{ zIndex: 1, backgroundColor: colorActive[index] }}
-                    >
-                      EXTREME
-                    </Badge>
-                  )}</h6>
+                  <h6>
+                    {" "}
+                    {activeMillion[index] / 1000 <= 5 ? (
+                      <Badge
+                        variant="success"
+                        text="dark"
+                        className="badge"
+                        style={{
+                          zIndex: 1,
+                          backgroundColor: colorActive[index],
+                        }}
+                      >
+                        MILD
+                      </Badge>
+                    ) : activeMillion[index] / 1000 <= 10 ? (
+                      <Badge
+                        text="dark"
+                        className="badge"
+                        style={{
+                          zIndex: 1,
+                          backgroundColor: colorActive[index],
+                        }}
+                      >
+                        LIMITED
+                      </Badge>
+                    ) : activeMillion[index] / 1000 <= 15 ? (
+                      <Badge
+                        text="dark"
+                        className="badge"
+                        style={{
+                          zIndex: 1,
+                          backgroundColor: colorActive[index],
+                        }}
+                      >
+                        MODERATE
+                      </Badge>
+                    ) : activeMillion[index] / 1000 <= 35 ? (
+                      <Badge
+                        text="dark"
+                        className="badge"
+                        style={{
+                          zIndex: 1,
+                          backgroundColor: colorActive[index],
+                        }}
+                      >
+                        SERIOUS
+                      </Badge>
+                    ) : (
+                      <Badge
+                        text="dark"
+                        className="badge"
+                        style={{
+                          zIndex: 1,
+                          backgroundColor: colorActive[index],
+                        }}
+                      >
+                        EXTREME
+                      </Badge>
+                    )}
+                  </h6>
                 </Col>
-                <Col className="box px-2 py-3">
+                <Col className="box px-2 pt-4 pb-3">
                   <h4 className="mb-0">
                     {(testsMillion[index] / 1000).toFixed(0)}
                     {testsPerOneMillion[0] / 1000 <=
@@ -673,11 +729,6 @@ const Menu = ({
                 </Col>
               </Row>
 
-       
-
-
-            
-
               <DoughnutCases
                 casesMillion={casesMillion}
                 activeMillion={activeMillion}
@@ -685,59 +736,52 @@ const Menu = ({
                 colorsPie={colorsPie}
                 continentCountries={continentCountries}
               />
-         
 
-              <Row
-        className="box subtitle mt-2"
-    
-      >
-          {testsMillion[index] / 1000 < 100 ? (
-          <h6>Very low</h6>
-        ) : testsMillion[index] / 1000 < 1000 ? (
-          <h6>Limited</h6>
-        ) : testsMillion[index] / 1000 < 1500 ? (
-          <h6>Moderate</h6>
-        ) : testsMillion[index] / 1000 < 3500 ? (
-          <h6>High</h6>
-        ) : (
-          <h6>Very high</h6> 
-        )}
-        <h6>&nbsp;testing but </h6>
-        {casesMillion[index] / 1000 < 50 ? (
-          <h6>&nbsp;mild</h6>
-        ) : casesMillion[index] / 1000 < 100 ? (
-          <h6>&nbsp;limited</h6>
-        ) : casesMillion[index] / 1000 < 150 ? (
-          <h6>&nbsp;moderate</h6>
-        ) : casesMillion[index] / 1000 < 350 ? (
-          <h6>&nbsp;serious</h6>
-        ) : (
-          <h6>&nbsp;extreme</h6> 
-        )}
-       <h6>&nbsp;cases and </h6>{activeMillion[index] / 1000 < 5 ? (
-          <h6>&nbsp;mild </h6>
-        ) : activeMillion[index] / 1000 < 10 ? (
-          <h6>&nbsp;limited </h6>
-        ) : activeMillion[index] / 1000 < 15 ? (
-          <h6>&nbsp;moderate </h6>
-        ) : activeMillion[index] / 1000 < 35 ? (
-          <h6>&nbsp;serious </h6>
-        ) : (
-          <h6>&nbsp;extreme </h6> 
-        )} 
-        <h6>&nbsp;case activity. </h6>
-     </Row>
+              <Row className="box subtitle mt-2 pt-1">
+                {casesMillion[index] / 1000 < 50 ? (
+                  <h6>&nbsp;Mild</h6>
+                ) : casesMillion[index] / 1000 < 100 ? (
+                  <h6>&nbsp;Limited</h6>
+                ) : casesMillion[index] / 1000 < 150 ? (
+                  <h6>&nbsp;Moderate</h6>
+                ) : casesMillion[index] / 1000 < 350 ? (
+                  <h6>&nbsp;Serious</h6>
+                ) : (
+                  <h6>&nbsp;Extreme</h6>
+                )}
 
+                <h6>&nbsp;cases and </h6>
 
-<Row className="subtitle mt-2 ">
+                {activeMillion[index] / 1000 < 5 ? (
+                  <h6>&nbsp;mild </h6>
+                ) : activeMillion[index] / 1000 < 10 ? (
+                  <h6>&nbsp;limited </h6>
+                ) : activeMillion[index] / 1000 < 15 ? (
+                  <h6>&nbsp;moderate </h6>
+                ) : activeMillion[index] / 1000 < 35 ? (
+                  <h6>&nbsp;serious </h6>
+                ) : (
+                  <h6>&nbsp;extreme </h6>
+                )}
+                <h6>&nbsp;activity with&nbsp;</h6>
+
+                {testsMillion[index] / 1000 < 100 ? (
+                  <h6>very low</h6>
+                ) : testsMillion[index] / 1000 < 1000 ? (
+                  <h6>limited</h6>
+                ) : testsMillion[index] / 1000 < 1500 ? (
+                  <h6>moderate</h6>
+                ) : testsMillion[index] / 1000 < 3500 ? (
+                  <h6>high</h6>
+                ) : (
+                  <h6>very high</h6>
+                )}
+                <h6>&nbsp;testing.</h6>
+              </Row>
+
+              {/* <Row className="subtitle mt-2 ">
                 <Col className="box py-3 px-2 mr-2" >
-                  <div style={{ color: colorActive[index] }}>Today&nbsp;</div>
-                  <strong className="mb-0">
-                    +
-                    {numberWithCommas(
-                      (todayCases[index] / 1000).toFixed(0) + "k"
-                    )}
-                  </strong> 
+            
                 </Col>
           
                 <Col className="box py-3 px-2">
@@ -746,48 +790,29 @@ const Menu = ({
                     {(tests[index] / population[index]).toFixed(2)}pp
                   </strong>
                 </Col>
-                </Row>
-
-             
-         
-            
+                </Row> */}
             </Col>
 
             {/* COLUMN TWO */}
-
+           
             <Col
               className="ml-2 "
               style={{
                 height: "100%",
                 overflowY: "scroll",
+                maxWidth: "50%",
                 // marginRight: "5px",
               }}
             >
-              <Row className="box subtitle px-4 pb-1 pt-2">
-                <strong>
-                  {maxName}&nbsp;
-                  {numberWithCommas((max / 1000).toFixed(1))} &nbsp;
-                </strong>
-                <h6 style={{ color: colorCase[index] }}>
-                  Most Cases/1k &nbsp;
-                </h6>
-              </Row>
-              <Row className="box subtitle px-4 mt-2 pb-1 pt-2">
-                <strong>
-                  {maxActiveName}&nbsp;
-                  {numberWithCommas((maxActive / 1000).toFixed(1))} &nbsp;
-                </strong>
-                <h6 style={{ color: colorActive[index] }}>
-                  Most Active/1k &nbsp;
-                </h6>
-              </Row>
-              <Row className="box subtitle px-4 mt-2 pb-1 pt-2">
-                <strong>
-                  {maxTestsName}&nbsp;
-                  {numberWithCommas((maxTests / 1000).toFixed(0))} &nbsp;
-                </strong>
-                <h6 style={{ color: "teal" }}>Most Tests/1k &nbsp;</h6>
-              </Row>
+              {/* <Form.Group
+                className="mb-3"
+                controlId="formBasicEmail"
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+              >
+                <Form.Control type="email" placeholder="Search" />
+              </Form.Group> */}
+
               <HorizontalChart
                 countryNames={countryNames}
                 activePerOneMillion={activePerOneMillion}
@@ -802,6 +827,27 @@ const Menu = ({
                 region={region}
                 colorCase={colorCase}
               />
+              <Row className="box subtitle px-4 pb-1 pt-2 mt-2">
+                <a id={maxName}>
+                  {maxName}&nbsp;
+                  {numberWithCommas((max / 1000).toFixed(1))} &nbsp;
+                  <h6 style={{ color: colorCase[index] }}>
+                    Most Cases/1k &nbsp;
+                  </h6>
+                </a>
+              </Row>
+              <Row className="box subtitle px-4 mt-2 pb-1 pt-2">
+                {maxActiveName}&nbsp;
+                {numberWithCommas((maxActive / 1000).toFixed(1))} &nbsp;
+                <h6 style={{ color: colorActive[index] }}>
+                  Most Active/1k &nbsp;
+                </h6>
+              </Row>
+              <Row className="box subtitle px-4 mt-2 pb-1 pt-2">
+                {maxTestsName}&nbsp;
+                {numberWithCommas((maxTests / 1000).toFixed(0))} &nbsp;
+                <h6 style={{ color: "teal" }}>Most Tests/1k &nbsp;</h6>
+              </Row>
             </Col>
           </Row>
         </>
@@ -815,7 +861,7 @@ const Menu = ({
         <>
           <Row style={{ height: "90vh", border: "" }} className="px-3">
             {/* COLUMN ONE */}
-            <Col className="subtitle">
+            <Col className="subtitle" style={{ maxWidth: "50%" }}>
               <Row
                 className="box mb-2"
                 style={{
@@ -1268,6 +1314,8 @@ const Menu = ({
               style={{
                 height: "97%",
                 overflowY: "scroll",
+
+                maxWidth: "50%",
                 // marginRight: "5px",
               }}
             >
@@ -1281,7 +1329,7 @@ const Menu = ({
                 </h6>
               </Row>
               <Row className="box subtitle px-4 mt-2">
-                <strong>
+                <strong >
                   {maxCriticalName}&nbsp;
                   {numberWithCommas((maxCritical / 1000).toFixed(2))} &nbsp;
                 </strong>
@@ -1405,6 +1453,506 @@ const Menu = ({
         }}
       />
     </Row> */}
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+
+    {
+      id: 3,
+      title: "Mortality",
+      content: (
+        <>
+          <Row style={{ height: "90vh", border: "" }} className="px-3">
+            {/* COLUMN ONE */}
+            <Col className="subtitle" style={{ maxWidth: "50%" }}>
+              <Row
+                className="box mb-2 pt-3 pb-3 "
+                style={{
+                  color: "#ccc",
+                  //   border: "2px solid",
+                  //   borderColor: colorCase[index],
+                  //   borderRadius: "5px",
+                }}
+              >
+                <div className="pr-3 pl-0" style={{}}>
+                  <h1 className="mb-0">
+                    {(
+                      (deathsMillion[index] / casesMillion[index]) *
+                      100
+                    ).toFixed(2)}
+                    %
+                    {mortalityRate[0] / 1000 <= mortalityRate[5] / 1000 ? (
+                      <i
+                        style={{ fontSize: "0.7em", color: "currentcolor" }}
+                        className="fa fa-arrow-up"
+                      ></i>
+                    ) : (
+                      <i
+                        style={{ fontSize: "0.7em", color: "currentcolor" }}
+                        className="fa fa-arrow-down"
+                      ></i>
+                    )}
+                  </h1>
+                  <h6 style={{ color: "currentcolor" }}>Mortality</h6>
+                </div>
+                <Animated animationIn="fadeInUp" isVisible={true}>
+                  <div style={{ color: colorMortality[index] }}>
+                    Today&nbsp;
+                  </div>
+                  <strong className="mb-0">
+                    +
+                    {numberWithCommas(
+                      ((todayDeaths[index] / todayCases[index]) * 1000).toFixed(
+                        2
+                      ) + "%"
+                    )}
+                  </strong>
+                </Animated>
+                {((deathsMillion[index] / casesMillion[index]) * 100).toFixed(
+                  2
+                ) <= 0.5 ? (
+                  <Badge
+                    text="dark"
+                    className="badge"
+                    style={{ zIndex: 1, backgroundColor: "#5d67a1" }}
+                  >
+                    MILD
+                  </Badge>
+                ) : (
+                    (deathsMillion[index] / casesMillion[index]) *
+                    100
+                  ).toFixed(2) <= 1 ? (
+                  <Badge
+                    text="dark"
+                    className="badge"
+                    style={{ zIndex: 1, backgroundColor: "#955196" }}
+                  >
+                    LIMITED
+                  </Badge>
+                ) : (
+                    (deathsMillion[index] / casesMillion[index]) *
+                    100
+                  ).toFixed(2) <= 1.5 ? (
+                  <Badge
+                    text="dark"
+                    className="badge"
+                    style={{ zIndex: 1, backgroundColor: "#ffa400" }}
+                  >
+                    MODERATE
+                  </Badge>
+                ) : (
+                    (deathsMillion[index] / casesMillion[index]) *
+                    100
+                  ).toFixed(2) <= 2 ? (
+                  <Badge
+                    text="dark"
+                    className="badge"
+                    style={{ zIndex: 1, backgroundColor: "#ff6e54" }}
+                  >
+                    SERIOUS
+                  </Badge>
+                ) : (
+                  <Badge
+                    text="dark"
+                    className="badge"
+                    style={{ zIndex: 1, backgroundColor: "#dd5182" }}
+                  >
+                    EXTREME
+                  </Badge>
+                )}
+              </Row>
+
+              <Row
+                style={{
+                  color: "#ccc",
+                  border: "1px solid",
+                  borderColor: "#2a3d3d",
+                  borderRadius: "5px",
+                  paddingLeft: "10px",
+                }}
+              >
+                <HorizontalBar
+                  height={13}
+                  width={100}
+                  options={{
+                    tooltips: {
+                      yPadding: 10,
+                      xPadding: 10,
+                      xAlign: "left",
+                      cornerRadius: 2,
+                      backgroundColor: "#212529",
+                      borderColor: "turquoise",
+                      borderWidth: 1,
+                      displayColors: true,
+                      bodyFontSize: 12,
+                      labels: {
+                        usePointStyle: true,
+                      },
+                    },
+
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    hover: {
+                      mode: "index",
+                      intersect: false,
+                    },
+                    legend: {
+                      display: false,
+                      position: "bottom",
+                      labels: {
+                        usePointStyle: true,
+                        fontSize: 12,
+                      },
+                    },
+                    layout: {
+                      padding: {
+                        left: 0,
+                        right: 10,
+                        top: 0,
+                        bottom: 0,
+                      },
+                    },
+                    scales: {
+                      xAxes: [
+                        {
+                          display: false,
+                          stacked: true,
+                          type: "logarithmic",
+                        },
+                      ],
+                      yAxes: [
+                        {
+                          display: false,
+                        },
+                      ],
+                    },
+                  }}
+                  data={{
+                    labels: [region],
+                    datasets: [
+                      // {
+                      //   label: "Active",
+                      //   // backgroundColor: "#d61e73",
+                      //   backgroundColor: colorActive[index],
+                      //   borderColor: "#212529",
+                      //   borderWidth: 1,
+                      //   data: [activeMillion[index] / 1000],
+                      //   stack: 0,
+                      // },
+
+                      {
+                        label: "Mortality",
+                        backgroundColor: colorMortality[index],
+                        borderColor: "#212529",
+                        borderWidth: 1,
+                        data: mortalityRate[index],
+                        stack: 0,
+                      },
+                      // {
+                      //   label: "Tests",
+                      //   backgroundColor: "teal",
+                      //   borderColor: "#212529",
+                      //   borderWidth: 1,
+                      //   data: [testsMillion[index] / 10000],
+                      //   stack: 0,
+                      // },
+                    ],
+                  }}
+                />
+              </Row>
+
+              <Row className="subtitle mt-2">
+                <Col className="box pb-4 pt-3 px-2 mr-2">
+                  <div style={{ color: colorActive[index] }}>Active&nbsp;</div>
+                  <strong className="">
+                    {(
+                      (activeMillion[index] / casesMillion[index]) *
+                      100
+                    ).toFixed(2)}
+                    %
+                  </strong>
+                </Col>
+
+                <Col className="box pb-4 pt-3 px-2">
+                  <div className="" style={{ color: "teal" }}>
+                    Positive&nbsp;
+                  </div>
+                  <strong>
+                    {numberWithCommas(
+                      (
+                        (casesMillion[index] / testsMillion[index]) *
+                        100
+                      ).toFixed(2) + "%"
+                    )}
+                  </strong>
+                </Col>
+              </Row>
+
+              <Row className="subtitle box pt-1 mt-2">
+                <Line
+                  width={160}
+                  height={120}
+                  options={{
+                    legend: {
+                      display: false,
+                      position: "bottom",
+                    },
+                    scales: {
+                      yAxes: [
+                        {
+                          // display: false,
+                          // stacked: true,
+                          type: "logarithmic",
+                          display: false,
+                        },
+                      ],
+                      xAxes: [
+                        {
+                          // display: false,
+                        },
+                      ],
+                    },
+                    tooltips: {
+                      backgroundColor: "#212529",
+                      borderColor: "turquoise",
+                      borderWidth: 1,
+                      cornerRadius: 2,
+                      displayColors: true,
+                      bodyFontSize: 12,
+                      labels: {
+                        usePointStyle: true,
+                      },
+                    },
+                  }}
+                  data={{
+                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                    datasets: [
+                      {
+                        label: "Active",
+                        data: activePerOneMillion,
+                        fill: true,
+                        backgroundColor: "rgba(75,192,192,0.05)",
+                        borderColor: colorActive[index],
+                      },
+                      {
+                        label: "Cases",
+                        data: casesPerOneMillion,
+                        fill: true,
+                        backgroundColor: "rgba(75,192,192,0.05)",
+                        borderColor: colorCase[index],
+                      },
+                      {
+                        label: "Tests",
+                        data: testsPerOneMillion,
+                        fill: true,
+                        backgroundColor: "rgba(75,192,192,0.05)",
+                        borderColor: "teal",
+                      },
+                    ],
+                  }}
+                />
+              </Row>
+
+              <Row className="mt-2">
+                <Col className="box px-2 pt-4 pb-3 mr-2">
+                  <h4 className="mb-0">
+                    {(activeMillion[index] / 1000).toFixed(2)}
+                    {activePerOneMillion[0] / 1000 <=
+                    activePerOneMillion[5] / 1000 ? (
+                      <i
+                        style={{ fontSize: "0.7em", color: colorActive[index] }}
+                        className="fa fa-arrow-up"
+                      ></i>
+                    ) : (
+                      <i
+                        style={{ fontSize: "0.7em", color: colorActive[index] }}
+                        className="fa fa-arrow-down"
+                      ></i>
+                    )}
+                  </h4>
+                  <h6 style={{ color: colorActive[index] }}>Active/1k</h6>
+
+                  <h6>
+                    {" "}
+                    {activeMillion[index] / 1000 <= 5 ? (
+                      <Badge
+                        variant="success"
+                        text="dark"
+                        className="badge"
+                        style={{
+                          zIndex: 1,
+                          backgroundColor: colorActive[index],
+                        }}
+                      >
+                        MILD
+                      </Badge>
+                    ) : activeMillion[index] / 1000 <= 10 ? (
+                      <Badge
+                        text="dark"
+                        className="badge"
+                        style={{
+                          zIndex: 1,
+                          backgroundColor: colorActive[index],
+                        }}
+                      >
+                        LIMITED
+                      </Badge>
+                    ) : activeMillion[index] / 1000 <= 15 ? (
+                      <Badge
+                        text="dark"
+                        className="badge"
+                        style={{
+                          zIndex: 1,
+                          backgroundColor: colorActive[index],
+                        }}
+                      >
+                        MODERATE
+                      </Badge>
+                    ) : activeMillion[index] / 1000 <= 35 ? (
+                      <Badge
+                        text="dark"
+                        className="badge"
+                        style={{
+                          zIndex: 1,
+                          backgroundColor: colorActive[index],
+                        }}
+                      >
+                        SERIOUS
+                      </Badge>
+                    ) : (
+                      <Badge
+                        text="dark"
+                        className="badge"
+                        style={{
+                          zIndex: 1,
+                          backgroundColor: colorActive[index],
+                        }}
+                      >
+                        EXTREME
+                      </Badge>
+                    )}
+                  </h6>
+                </Col>
+                <Col className="box px-2 pt-4 pb-3">
+                  <h4 className="mb-0">
+                    {(testsMillion[index] / 1000).toFixed(0)}
+                    {testsPerOneMillion[0] / 1000 <=
+                    testsPerOneMillion[5] / 1000 ? (
+                      <i
+                        style={{ fontSize: "0.7em", color: "teal" }}
+                        className="fa fa-arrow-up"
+                      ></i>
+                    ) : (
+                      <i
+                        style={{ fontSize: "0.7em", color: "teal" }}
+                        className="fa fa-arrow-down"
+                      ></i>
+                    )}
+                  </h4>
+                  <h6 style={{ color: "teal" }}>Tests/1k</h6>
+                </Col>
+              </Row>
+
+              <DoughnutCases
+                casesMillion={casesMillion}
+                activeMillion={activeMillion}
+                index={index}
+                colorsPie={colorsPie}
+                continentCountries={continentCountries}
+              />
+
+              <Row className="box subtitle mt-2 pt-1">
+                {casesMillion[index] / 1000 < 50 ? (
+                  <h6>&nbsp;Mild</h6>
+                ) : casesMillion[index] / 1000 < 100 ? (
+                  <h6>&nbsp;Limited</h6>
+                ) : casesMillion[index] / 1000 < 150 ? (
+                  <h6>&nbsp;Moderate</h6>
+                ) : casesMillion[index] / 1000 < 350 ? (
+                  <h6>&nbsp;Serious</h6>
+                ) : (
+                  <h6>&nbsp;Extreme</h6>
+                )}
+
+                <h6>&nbsp;cases and </h6>
+
+                {activeMillion[index] / 1000 < 5 ? (
+                  <h6>&nbsp;mild </h6>
+                ) : activeMillion[index] / 1000 < 10 ? (
+                  <h6>&nbsp;limited </h6>
+                ) : activeMillion[index] / 1000 < 15 ? (
+                  <h6>&nbsp;moderate </h6>
+                ) : activeMillion[index] / 1000 < 35 ? (
+                  <h6>&nbsp;serious </h6>
+                ) : (
+                  <h6>&nbsp;extreme </h6>
+                )}
+                <h6>&nbsp;activity with&nbsp;</h6>
+
+                {testsMillion[index] / 1000 < 100 ? (
+                  <h6>very low</h6>
+                ) : testsMillion[index] / 1000 < 1000 ? (
+                  <h6>limited</h6>
+                ) : testsMillion[index] / 1000 < 1500 ? (
+                  <h6>moderate</h6>
+                ) : testsMillion[index] / 1000 < 3500 ? (
+                  <h6>high</h6>
+                ) : (
+                  <h6>very high</h6>
+                )}
+                <h6>&nbsp;testing.</h6>
+              </Row>
+            </Col>
+
+            {/* COLUMN TWO */}
+
+            <Col
+              className="ml-2 "
+              style={{
+                height: "100%",
+                overflowY: "scroll",
+                maxWidth: "50%",
+                // marginRight: "5px",
+              }}
+            >
+              <Row className="box subtitle px-4 pb-1 pt-2">
+                <a id={maxName}>
+                  {maxName}&nbsp;
+                  {numberWithCommas((max / 1000).toFixed(1))} &nbsp;
+                  <h6 style={{ color: colorCase[index] }}>
+                    Most Cases/1k &nbsp;
+                  </h6>
+                </a>
+              </Row>
+              <Row className="box subtitle px-4 mt-2 pb-1 pt-2">
+                {maxActiveName}&nbsp;
+                {numberWithCommas((maxActive / 1000).toFixed(1))} &nbsp;
+                <h6 style={{ color: colorActive[index] }}>
+                  Most Active/1k &nbsp;
+                </h6>
+              </Row>
+              <Row className="box subtitle px-4 mt-2 pb-1 pt-2">
+                {maxTestsName}&nbsp;
+                {numberWithCommas((maxTests / 1000).toFixed(0))} &nbsp;
+                <h6 style={{ color: "teal" }}>Most Tests/1k &nbsp;</h6>
+              </Row>
+              <HorizontalChart
+                countryNames={countryNames}
+                //   activePerOneMillion={activePerOneMillion}
+                //   colorActivity={colorActivity}
+                //   casesPerOneMillion={casesPerOneMillion}
+                //   colorCases={colorCases}
+                //   testsPerOneMillion={testsPerOneMillion}
+                mortalityRate={mortalityRate}
+                //   casesMillion={casesMillion}
+                //   activeMillion={activeMillion}
+                //   testsMillion={testsMillion}
+                index={index}
+                region={region}
+                //   colorCase={colorCase}
+              />
             </Col>
           </Row>
         </>
@@ -2172,10 +2720,8 @@ const Menu = ({
       );
     };
 
-    console.log(tab, "VALUE");
-
     return (
-      <Row className="pl-3 pr-1 py-1">
+      <Row className="pl-3 pr-1">
         <div className="tabs">
           {tabItems.map(({ id, icon, title }) => (
             <TabItem
@@ -2233,7 +2779,10 @@ const Menu = ({
                 </div>
               </Col>
             </Row>
-
+            {/* <Button id='asia'>click</Button> */}
+       
+            
+                
             <TabsMenu
               countries={countries}
               index={index}

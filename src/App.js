@@ -43,6 +43,7 @@ const App = () => {
   const globalActive = getGlobal("activePerOneMillion");
   const globalCritical = getGlobal("criticalPerOneMillion");
   const globalTests = getGlobal("testsPerOneMillion");
+  const globalRecovered = getGlobal("recoveredPerOneMillion");
   console.log(globalCases, "globalCases");
   const populationGlobal = getGlobal("population");
   const testsGlobal = getGlobal("tests");
@@ -257,19 +258,21 @@ const App = () => {
           globalActive={globalActive}
           globalCritical={globalCritical}
           globalTests={globalTests}
+          globalRecovered={globalRecovered}
           casesMillion={casesMillion}
           deathsMillion={deathsMillion}
           activeMillion={activeMillion}
           criticalMillion={criticalMillion}
           testsMillion={testsMillion}
+          recoveredMillion={recoveredMillion}
           populationGlobal={populationGlobal}
           testsG={testsGlobal}
           todayGlobalCases={todayGlobalCases}
           todayGlobalDeaths={todayGlobalDeaths}
         />
       </div>
-
-      <Map countries={countries} />
+   
+      <Map countries={countries} region={state.region}/>
     </>
   );
 };

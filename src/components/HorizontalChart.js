@@ -1,8 +1,22 @@
-import React from "react";
-import { Row } from "react-bootstrap";
-import { HorizontalBar } from "react-chartjs-2";
+import { useState, useEffect } from 'react';
+import React, { useRef } from 'react';
+import { Row } from 'react-bootstrap';
+
+
+import {  
+
+
+  getElementAtEvent,
+  HorizontalBar,
+ 
+} from 'react-chartjs-2';
+
+
+
+
 
 const HorizontalChart = ({
+  props,
   countryNames,
   activePerOneMillion,
   casesPerOneMillion,
@@ -14,27 +28,124 @@ const HorizontalChart = ({
   colorActivity,
   colorDeaths,
   index,
+  mortalityRate,
 }) => {
+
+  const chartRef = useRef();
+
+
+  
+
+
+  
+
+  const data = {
+    labels: countryNames,
+    datasets: [
+      // {
+      //   label: "Active",
+      //   data: activePerOneMillion,
+      //   backgroundColor: colorActivity,
+      // //   backgroundColor: "#d61e73",
+      // borderColor: "#212529",
+      // borderWidth: 1,
+      //   stack: "0",
+      // },
+      {
+        label: "Cases",
+        data: casesPerOneMillion,
+        backgroundColor: colorCases,
+        borderColor: "#212529",
+        borderWidth: 1,
+        stack: "0",
+      },
+
+      {
+        label: "Tests",
+        data: testsPerOneMillion,
+        backgroundColor: "teal",
+        borderColor: "#212529",
+        borderWidth: 1,
+        stack: "0",
+      },
+      {
+        label: "Critical",
+        data: criticalPerOneMillion,
+        backgroundColor: "#d61e73",
+        borderColor: "#212529",
+        borderWidth: 1,
+        stack: "0",
+      },
+      {
+        label: "Deaths",
+        data: deathsPerOneMillion,
+        backgroundColor: colorDeaths,
+        borderColor: "#212529",
+        borderWidth: 1,
+        stack: "0",
+      },
+
+      {
+        label: "Recovered",
+        data: recoveredPerOneMillion,
+        backgroundColor: "teal",
+        borderColor: "#212529",
+        borderWidth: 1,
+        stack: "0",
+      },
+      {
+        label: "Mortality",
+        data: mortalityRate,
+        backgroundColor: "#d61e73",
+        borderColor: "#212529",
+        borderWidth: 1,
+        stack: "0",
+      },
+    ],
+  }
+
+  const onClick = (event) => {
+    const elem = getElementAtEvent(chartRef.current, event)
+    props.onHandleBarClickEvent(elem[0].index, elem[0].datasetIndex)    
+  }
 
   return (
     <Row
-      className={"box mt-2"}
+      className={"box"}
       style={{
         color: "#fff",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-    
       }}
     >
       <strong style={{ color: "#ccc", fontSize: "14px" }} className="pt-2">
         By Country / 1k
       </strong>
-
+    
       <HorizontalBar
+        // options={options} 
+        onClick={onClick}  
+        ref={chartRef}
+        data={data}
+     
         height={countryNames.length * 40}
         options={{
           tooltips: {
+            // callbacks: {
+            //   label: function (item, data) {
+            //     // console.log( data.labels[item.index]);
+            //     const id = item.label;
+            //     console.log(id);
+            //     return (
+            //       data.datasets[item.datasetIndex].label +
+            //       ": " +
+            //       data.labels[item.index] +
+            //       ": " +
+            //       data.datasets[item.datasetIndex].data[item.index]
+            //     );
+            //   },
+            // },
             // position: 'nearest',
             yPadding: 10,
             xPadding: 10,
@@ -49,8 +160,6 @@ const HorizontalChart = ({
 
             labels: {
               usePointStyle: true,
-            
-            
             },
           },
           responsive: true,
@@ -85,62 +194,7 @@ const HorizontalChart = ({
             ],
           },
         }}
-        data={{
-          labels: countryNames,
-          datasets: [
-            {
-              label: "Active",
-              data: activePerOneMillion,
-              backgroundColor: colorActivity,
-            //   backgroundColor: "#d61e73",
-            borderColor: "#212529",
-            borderWidth: 1,
-              stack: "0",
-            },
-            {
-              label: "Cases",
-              data: casesPerOneMillion,
-              backgroundColor: colorCases,
-              borderColor: "#212529",
-              borderWidth: 1,
-              stack: "0",
-            },
-
-            {
-              label: "Tests",
-              data: testsPerOneMillion,
-              backgroundColor: "teal",
-              borderColor: "#212529",
-              borderWidth: 1,
-              stack: "0",
-            },
-            {
-              label: "Critical",
-              data: criticalPerOneMillion,
-              backgroundColor: "#d61e73",
-              borderColor: "#212529",
-              borderWidth: 1,
-              stack: "0",
-            },
-            {
-              label: "Deaths",
-              data: deathsPerOneMillion,
-              backgroundColor: colorDeaths,
-              borderColor: "#212529",
-              borderWidth: 1,
-              stack: "0",
-            },
-
-            {
-              label: "Recovered",
-              data: recoveredPerOneMillion,
-              backgroundColor: "teal",
-              borderColor: "#212529",
-              borderWidth: 1,
-              stack: "0",
-            },
-          ],
-        }}
+  
       />
 
       {/* {countryNames.length < 15 && (
