@@ -115,7 +115,7 @@ const DoughnutCases = ({
                   active4.length,
                   active5.length,
                 ],
-                backgroundColor: colorsPie,
+                backgroundColor: ["#ffb300","#ffa400","#ff9400","#ff8300","#ff7200"],
                 label: "Active",
                 stack: "0",
               },

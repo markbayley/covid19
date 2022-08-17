@@ -37,7 +37,7 @@ function LineGraph({ casesType, ...props }) {
     fetchData();
   }, [casesType]);
 
-  console.log(data[178], 'DATA178')
+  // console.log(data[178], 'DATA178')
 
   return (
     <div className={props.className}>

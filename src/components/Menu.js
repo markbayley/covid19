@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Animated } from "react-animated-css";
 import { Button, Col, Row, Container } from "react-bootstrap";
 import { numberWithCommas } from "../utils/numberWithCommas";
@@ -7,7 +7,10 @@ import Badge from "react-bootstrap/Badge";
 import DoughnutCases from "./DoughnutCases";
 import DoughnutDeaths from "./DoughnutDeaths";
 import HorizontalChart from "./HorizontalChart";
-import Form from "react-bootstrap/Form";
+
+
+
+
 
 const Menu = ({
   countries,
@@ -31,23 +34,129 @@ const Menu = ({
   todayDeaths,
   todayRecovered,
   handleClose,
+  toggleEurope,
 }) => {
+
+  
   // Filter Countries in Region
   const continentCountries = countries
-    .sort((a, b) => (a.casesPerOneMillion < b.casesPerOneMillion ? 1 : -1))
+  // console.log(countries, 'countries');
+    // .sort((a, b) => (a.casesPerOneMillion < b.casesPerOneMillion ? 1 : -1))
 
     .filter((country) => country.continent === region);
   // Map Country Names && country.population > 1000000
-  const countryNames = countries
-    .filter(
-      (country) => country.continent === region
-      //   && country.country.length <= 12
-    )
+
+  const countryNames = continentCountries
+  
+    // .filter(
+    //   (country) => country.continent === region
+      
+    // )
 
     .map((selectedCountry) => selectedCountry.country);
+    // console.log(countryNames, 'countryNames')
+    // console.log(continentCountries, 'continentCountries');
+
+    const [continentCountrys, setSampleData] = useState(continentCountries);
+    const [sorted, setSorted] = useState(false);
+
+
+ 
+
+
+
+
+    // useEffect(() => {
+    //   setSampleData(continentCountrys);
+    //   setSorted(!sorted);
+    // }, []);
+
+    // function handleSort() {
+    //   const sortedData = sorted
+    //     ? [...continentCountries].sort((a, b) => {
+    //         return a.casesPerOneMillion < b.casesPerOneMillion ? 1 : -1;
+    //       })
+    //     : [...continentCountries].sort((a, b) => {
+    //         return a.casesPerOneMillion > b.casesPerOneMillion ? 1 : -1;
+    //       });
+  
+    //   setSampleData(sortedData);
+    //   setSorted(!sorted);
+    // }
+  
+    // function handleSortActive() {
+    //   const sortedData = sorted
+    //     ? [...continentCountries].sort((a, b) => {
+    //         return a.activePerOneMillion < b.activePerOneMillion ? 1 : -1;
+    //       })
+    //     : [...continentCountries].sort((a, b) => {
+    //         return a.activePerOneMillion > b.activePerOneMillion ? 1 : -1;
+    //       });
+  
+    //   setSampleData(sortedData);
+    //   setSorted(!sorted);
+    // }
+  
+    // function handleSortTests() {
+    //   const sortedData = sorted
+    //     ? [...continentCountries].sort((a, b) => {
+    //         return a.testsPerOneMillion < b.testsPerOneMillion ? 1 : -1;
+    //       })
+    //     : [...continentCountries].sort((a, b) => {
+    //         return a.testsPerOneMillion > b.testsPerOneMillion ? 1 : -1;
+    //       });
+  
+    //   setSampleData(sortedData);
+    //   setSorted(!sorted);
+    // }
+    // const countryNamesDeaths = continentCountries.sort((a, b) => (a.deathsPerOneMillion < b.deathsPerOneMillion ? 1 : -1))
+
+
+    // .map((selectedCountry) => selectedCountry.country);
+
+// const HandleSort = () => {
+//   const continentCountriesSorted = continentCountries.sort((a, b) => (a.casesPerOneMillion < b.casesPerOneMillion ? 1 : -1))
+//   .map((selectedCountry) => [selectedCountry.country, selectedCountry.casesPerOneMillion]);
+//   console.log(continentCountriesSorted, 'contSort');
+//   return (
+//     <>
+//     <Button >Sort</Button>
+//     <div className="subtitle box" style={{width: "200px"}}>{continentCountriesSorted}</div>
+//     </>
+//   );
+ 
+// }
+    
+
+
+  
+   
+
+    // const continentCountriesSorted = 
+    // continentCountries
+    // .sort((a, b) => (a.casesPerOneMillion < b.casesPerOneMillion ? 1 : -1))
+    // .filter((country) => country.continent === region)
+    // .map((selectedCountry) => selectedCountry.country);
+
+    // console.log(continentCountriesSorted, 'contientCountriesSorted');
+
+    // // .filter(
+    //   (country) => country.continent === region
+      
+    // )
+    // 
+  
 
   // .filter((country) => country.country.length <= 12)
   //   console.log(continentCountries);
+
+  // const sortCountries = ({ continentCountries }) => {
+  //   const sortedCountries = 
+  //   continentCountries.sort((a, b) => (a.casesPerOneMillion < b.casesPerOneMillion ? 1 : -1))
+  //     .filter((country) => country.continent === region)
+  //     .map((selectedCountry) => selectedCountry.country);
+  //     return sortedCountries;
+  // };
 
   //Max Stats
   const max = Math.max(
@@ -55,8 +164,8 @@ const Menu = ({
       //   .filter((country) => country.country.length <= 12)
       .map((item) => item.casesPerOneMillion)
   );
-  console.log(continentCountries);
-  console.log(max, "MAX");
+
+  // console.log(max, "MAX");
 
   const maxName = countries
     .filter(
@@ -72,7 +181,7 @@ const Menu = ({
       //   .filter((country) => country.country.length <= 12)
       .map((item) => item.activePerOneMillion)
   );
-  console.log(continentCountries);
+  // console.log(continentCountries);
 
   const maxActiveName = countries
     .filter(
@@ -160,6 +269,7 @@ const Menu = ({
   const deathsPerOneMillion = continentCountries.map((selectedCountry) =>
     (selectedCountry.deathsPerOneMillion / 1000).toFixed(2)
   );
+  // console.log(deathsPerOneMillion, 'deathsPerOneMillion')
   const activePerOneMillion = continentCountries.map((selectedCountry) =>
     (selectedCountry.activePerOneMillion / 1000).toFixed(2)
   );
@@ -177,40 +287,40 @@ const Menu = ({
   const colorMortality = [];
   for (let i = 0; i < mortalityRate.length; i++) {
     if (mortalityRate[i] < 1.0) {
-      colorMortality.push("#444e86");
+      colorMortality.push("#5748ff");
     }
     if (mortalityRate[i] >= 1.0 && mortalityRate[i] < 2.0) {
-      colorMortality.push("#955196");
+      colorMortality.push("#a13ed5");
     }
     if (mortalityRate[i] >= 2.0 && mortalityRate[i] < 3.5) {
-      colorMortality.push("#ffa600");
+      colorMortality.push("#ca32ad");
     }
     if (mortalityRate[i] >= 3.5 && mortalityRate[i] < 6.0) {
-      colorMortality.push("#ff6e54");
+      colorMortality.push("#e72585");
     }
     if (mortalityRate[i] >= 6.0) {
-      colorMortality.push("#dd5182");
+      colorMortality.push("#ff125e");
     }
   }
-
-  const colorCases = [];
-  for (let i = 0; i < casesPerOneMillion.length; i++) {
-    if (casesPerOneMillion[i] < 50) {
-      colorCases.push("#ffaf1d");
-    }
-    if (casesPerOneMillion[i] >= 50 && casesPerOneMillion[i] < 100) {
-      colorCases.push("#ff9435");
-    }
-    if (casesPerOneMillion[i] >= 100 && casesPerOneMillion[i] < 150) {
-      colorCases.push("#ff7744");
-    }
-    if (casesPerOneMillion[i] >= 150 && casesPerOneMillion[i] < 350) {
-      colorCases.push("#ff534f");
-    }
-    if (casesPerOneMillion[i] >= 350) {
-      colorCases.push("#ff1558");
-    }
-  }
+  // "#5748ff", "#a13ed5", "#ca32ad", "#e72585", "#ff125e"
+  // const colorCases = [];
+  // for (let i = 0; i < casesPerOneMillion.length; i++) {
+  //   if (casesPerOneMillion[i] < 50) {
+  //     colorCases.push("#5748ff");
+  //   }
+  //   if (casesPerOneMillion[i] >= 50 && casesPerOneMillion[i] < 100) {
+  //     colorCases.push("#a13ed5");
+  //   }
+  //   if (casesPerOneMillion[i] >= 100 && casesPerOneMillion[i] < 150) {
+  //     colorCases.push("#ca32ad");
+  //   }
+  //   if (casesPerOneMillion[i] >= 150 && casesPerOneMillion[i] < 350) {
+  //     colorCases.push("#e72585");
+  //   }
+  //   if (casesPerOneMillion[i] >= 350) {
+  //     colorCases.push("#ff125e");
+  //   }
+  // }
 
   const colorDeaths = [];
   for (let i = 0; i < deathsPerOneMillion.length; i++) {
@@ -318,14 +428,13 @@ const Menu = ({
   //         <td>{("noResults")}</td>
   //       </tr>
   //     );
-    
-  
+
   //   return countries.map((country, index) => {
   //     return (
   //       <tbody key={country.country} style={{color: "#fff"}}>
-     
+
   //         <tr>
-       
+
   //           <td>
   //             {/* <img
   //               src={country["countryInfo"]["flag"]}
@@ -350,16 +459,19 @@ const Menu = ({
   const tabItems = [
     {
       id: 1,
-      title: "Cases",
+      title: "",
       content: (
         <>
-          <Row style={{ height: "90vh", border: "" }} className="px-3">
-         
+       
+        {/* <HandleSort /> */}
+       
+          <Row style={{ height: "95vh", border: "" }} className="px-3">
             {/* COLUMN ONE */}
+
             <Col className="subtitle" style={{ maxWidth: "50%" }}>
-             
+ 
               <Row
-                className="box mb-2 pt-4 pb-3 "
+                className="box mb-2 pt-4 pb-4 "
                 style={{
                   color: "#ccc",
                   //   border: "2px solid",
@@ -367,8 +479,8 @@ const Menu = ({
                   //   borderRadius: "5px",
                 }}
               >
-                <div className="pr-3 pl-0" style={{}}>
              
+                <div className="pr-3 pl-0" style={{}}>
                   <h1 className="mb-0">
                     {(casesMillion[index] / 1000).toFixed(1)}
                     {casesPerOneMillion[0] / 1000 <=
@@ -608,14 +720,14 @@ const Menu = ({
                         data: activePerOneMillion,
                         fill: true,
                         backgroundColor: "rgba(75,192,192,0.05)",
-                        borderColor: colorActive[index],
+                        borderColor: "#ff8300",
                       },
                       {
                         label: "Cases",
                         data: casesPerOneMillion,
                         fill: true,
                         backgroundColor: "rgba(75,192,192,0.05)",
-                        borderColor: colorCase[index],
+                        borderColor: "#ca32ad",
                       },
                       {
                         label: "Tests",
@@ -794,12 +906,12 @@ const Menu = ({
             </Col>
 
             {/* COLUMN TWO */}
-           
+
             <Col
-              className="ml-2 "
+              className="ml-2"
               style={{
-                height: "100%",
                 overflowY: "scroll",
+                height: "100%",
                 maxWidth: "50%",
                 // marginRight: "5px",
               }}
@@ -812,13 +924,15 @@ const Menu = ({
               >
                 <Form.Control type="email" placeholder="Search" />
               </Form.Group> */}
+              {/* <Button onClick={sortCountries}>Sort</Button> */}
+             {/* <Row className="subtitle box"> <Sort continentCountries={continentCountries}/></Row> */}
 
               <HorizontalChart
                 countryNames={countryNames}
                 activePerOneMillion={activePerOneMillion}
                 colorActivity={colorActivity}
                 casesPerOneMillion={casesPerOneMillion}
-                colorCases={colorCases}
+                // colorCases={colorCases}
                 testsPerOneMillion={testsPerOneMillion}
                 casesMillion={casesMillion}
                 activeMillion={activeMillion}
@@ -826,8 +940,12 @@ const Menu = ({
                 index={index}
                 region={region}
                 colorCase={colorCase}
+                continentCountries={continentCountries}
+                continentCountrys={continentCountrys}
+                sorted={sorted}
               />
-              <Row className="box subtitle px-4 pb-1 pt-2 mt-2">
+
+              {/* <Row className="box subtitle px-4 pb-1 pt-2 mt-2">
                 <a id={maxName}>
                   {maxName}&nbsp;
                   {numberWithCommas((max / 1000).toFixed(1))} &nbsp;
@@ -847,7 +965,8 @@ const Menu = ({
                 {maxTestsName}&nbsp;
                 {numberWithCommas((maxTests / 1000).toFixed(0))} &nbsp;
                 <h6 style={{ color: "teal" }}>Most Tests/1k &nbsp;</h6>
-              </Row>
+              </Row> */}
+           
             </Col>
           </Row>
         </>
@@ -855,13 +974,14 @@ const Menu = ({
     },
     {
       id: 2,
-      title: "Deaths",
+      title: "",
       // icon: <a id='check1'></a>,
       content: (
         <>
           <Row style={{ height: "90vh", border: "" }} className="px-3">
             {/* COLUMN ONE */}
             <Col className="subtitle" style={{ maxWidth: "50%" }}>
+             
               <Row
                 className="box mb-2"
                 style={{
@@ -1329,7 +1449,7 @@ const Menu = ({
                 </h6>
               </Row>
               <Row className="box subtitle px-4 mt-2">
-                <strong >
+                <strong>
                   {maxCriticalName}&nbsp;
                   {numberWithCommas((maxCritical / 1000).toFixed(2))} &nbsp;
                 </strong>
@@ -1356,6 +1476,8 @@ const Menu = ({
                 region={region}
                 colorCase={colorCase}
                 colorActivity={colorActivity}
+                continentCountrys={continentCountrys}
+                sorted={sorted}
               />
 
               {/* <Row
@@ -1461,7 +1583,7 @@ const Menu = ({
 
     {
       id: 3,
-      title: "Mortality",
+      title: "",
       content: (
         <>
           <Row style={{ height: "90vh", border: "" }} className="px-3">
@@ -1951,6 +2073,7 @@ const Menu = ({
                 //   testsMillion={testsMillion}
                 index={index}
                 region={region}
+           
                 //   colorCase={colorCase}
               />
             </Col>
@@ -2722,10 +2845,10 @@ const Menu = ({
 
     return (
       <Row className="pl-3 pr-1">
-        <div className="tabs">
+        <div className="tabs" >
           {tabItems.map(({ id, icon, title }) => (
             <TabItem
-              key={title}
+              key={id}
               icon={icon}
               title={title}
               onItemClicked={() => setTab(id)}
@@ -2753,18 +2876,20 @@ const Menu = ({
           <Container>
             {/* <div className={!open ? "hidden" : "visible"}> */}
             <Row className="title">
-              <Col xs={9} className="my-2 pl-3">
+              <Col xs={9} className="mt-1 pl-3">
                 <Animated
                   animationIn="fadeInLeft"
                   animationOut="fadeOut"
                   isVisible={true}
+                  className=""
                 >
                   {" "}
                   {region}
                 </Animated>
               </Col>
+              
 
-              <Col className="my-2 pr-2">
+              <Col className="mt-2 mb-1 pr-2">
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
                   <Button
                     // onClick={toggleAsia}
@@ -2780,11 +2905,10 @@ const Menu = ({
               </Col>
             </Row>
             {/* <Button id='asia'>click</Button> */}
-       
-            
-                
+          
             <TabsMenu
               countries={countries}
+              key={index}
               index={index}
               region={region}
               casesMillion={casesMillion}
@@ -2795,6 +2919,7 @@ const Menu = ({
               tabItems={tabItems}
             />
             {/* </div> */}
+        
           </Container>
         </div>
       </Animated>
@@ -2805,13 +2930,19 @@ const Menu = ({
 export default Menu;
 
 let colorsPie = [
-  "#444e86",
-  "#955196",
-  "#ffa600",
-  "#ff6e54",
-  "#dd5182",
-  "rgb(212, 23, 83)",
-  "rgb(45, 182, 130)",
+  // "#444e86",
+  // "#955196",
+  // "#ffa600",
+  // "#ff6e54",
+  // "#dd5182",
+  // "#5748ff",
+ " #6a5dfc",
+  "#a13ed5",
+  "#ca32ad",
+  "#e72585",
+  "#ff125e",
+  // "rgb(212, 23, 83)",
+  // "rgb(45, 182, 130)",
 ];
 
 let colorsSpec = ["#0c99a0", " #0095d1", "#6880e6", " #d451bd", "  #ff1d5e"];

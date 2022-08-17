@@ -40,31 +40,31 @@ const Menu = ({
   todayGlobalDeaths,
 }) => {
   const casesPerContinent = casesMillion.map((selectedContinent) =>
-    (selectedContinent / 1000 ).toFixed(1)
+    (selectedContinent / 1000).toFixed(1)
   );
   const deathsPerContinent = deathsMillion.map((selectedContinent) =>
     (selectedContinent / 1000).toFixed(1)
   );
   const activePerContinent = activeMillion.map((selectedContinent) =>
-    (selectedContinent / 1000 ).toFixed(1)
+    (selectedContinent / 1000).toFixed(1)
   );
   const criticalPerContinent = criticalMillion.map((selectedContinent) =>
     (selectedContinent / 1000).toFixed(1)
   );
   const testsPerContinent = testsMillion.map((selectedContinent) =>
-    (selectedContinent / 1000 ).toFixed(1)
+    (selectedContinent / 1000).toFixed(1)
   );
   const recoveredPerContinent = recoveredMillion.map((selectedContinent) =>
-  (selectedContinent / 1000 ).toFixed(1)
-);
-  console.log(casesPerContinent, "casesPerContinent");
+    (selectedContinent / 1000).toFixed(1)
+  );
+  // console.log(casesPerContinent, "casesPerContinent");
   //  const globalCases = globaldata.casesPerOneMillion;
   const casesGlobal = (globalCases / 1000).toFixed(1);
   const deathsGlobal = (globalDeaths / 1000).toFixed(3);
   const activeGlobal = (globalActive / 1000).toFixed(2);
   const criticalGlobal = (globalCritical / 1000).toFixed(4);
   const testsGlobal = (globalTests / 1000).toFixed(1);
-  const recoveredGlobal = (globalRecovered /1000).toFixed(1);
+  const recoveredGlobal = (globalRecovered / 1000).toFixed(1);
 
   // Filter Countries in Region
   const continentCountries = countries.filter(
@@ -144,8 +144,6 @@ const Menu = ({
   const deaths5 = continents.filter(
     (selectedCountry) => selectedCountry.deathsPerOneMillion / 1000 > 2.5
   );
-
-
 
   // Create Strata for Active
   const active1 = continents.filter(
@@ -254,231 +252,231 @@ const Menu = ({
       title: "Cases",
       content: (
         <>
-        <Row style={{ height: "90vh"}} className="px-3">
-          <Col className="subtitle" 
-          style={{
+          <Row style={{ height: "90vh" }} className="px-3">
+            <Col
+              className="subtitle"
+              style={{
                 height: "100%",
                 overflowY: "scroll",
-             
-                }}>
-
-
-           
-        <Row className="mb-2">
-          <Col className="box pt-2 mr-2">
-            <h1 >
-              {" "}
-              <CountUp
-                start={casesGlobal - 3}
-                end={casesGlobal}
-                duration={0.3}
-                separator=","
-                decimals={1}
-              />
-               {casesGlobal[0] / 1000 >= casesGlobal[5] / 1000 ? (
-                      <i
-                      style={{ fontSize: "0.7em", color: "#bb2124" }}
-                      className="fa fa-arrow-up"
-                    ></i>
-                  ) : (
-                    <i
-                    style={{ fontSize: "0.7em", color: "#22bb33" }}
-                    className="fa fa-arrow-down"
-                  ></i>
-                  )}{" "}
-                     <h5 className="">Cases/1k</h5>
-            </h1>
-            </Col>
-         
-           
-            
-     
-            <Col  className="" >
-           <Row style={{  }} className="box pt-1 "> <h3 className="">{testsGlobal}</h3>&nbsp;<h6 className="pt-2">Tests/1k</h6></Row>
-           <Row style={{  }} className="box mt-2 pt-1"> <h3>{activeGlobal}</h3>&nbsp;<h6 className="pt-2">Active/1k</h6></Row>
-           </Col>
-             
-           </Row>
-          
-        
-
-          {/* <BarGraph /> */}
-          <Row className="box px-3">
-            <div
-              className="pt-1 pb-1"
-              style={{ color: "grey", fontSize: "14px" }}
+              }}
             >
-              Cases Per Continent
-            </div>
+              <Row className="mb-2">
+                <Col className="box pt-2 mr-2">
+                  <h1>
+                    {" "}
+                    <CountUp
+                      start={casesGlobal - 3}
+                      end={casesGlobal - 0}
+                      duration={0.3}
+                      separator=","
+                      decimals={1}
+                    />
+                    {casesGlobal[0] / 1000 >= casesGlobal[5] / 1000 ? (
+                      <i
+                        style={{ fontSize: "0.7em", color: "#bb2124" }}
+                        className="fa fa-arrow-up"
+                      ></i>
+                    ) : (
+                      <i
+                        style={{ fontSize: "0.7em", color: "#22bb33" }}
+                        className="fa fa-arrow-down"
+                      ></i>
+                    )}{" "}
+                    {/* <h5 className="">Cases/1k</h5> */}
+                  </h1>
+                </Col>
 
-            <Bar
-              // pointStyle="star"
-              height={150}
-              width={300}
-              options={{
-                legend: {
-                  display: true,
-                  position: "bottom",
-                  labels: {
-                    usePointStyle: true,
-                  },
-                },
+                <Col className="">
+                  <Row style={{}} className="box pt-1 ">
+                    {" "}
+                    <h3 className="">{testsGlobal}</h3>&nbsp;
+                    <h6 className="pt-2">Tests/1k</h6>
+                  </Row>
+                  <Row style={{}} className="box mt-2 pt-1">
+                    {" "}
+                    <h3>{activeGlobal}</h3>&nbsp;
+                    <h6 className="pt-2">Active/1k</h6>
+                  </Row>
+                </Col>
+              </Row>
 
-             
-                  tooltips: {
-                    yPadding: 10,
-                    xPadding: 10,
-                    xAlign: "left",
-                    cornerRadius: 2,
-                    backgroundColor: "#212529",
-                    borderColor: "turquoise",
-                    borderWidth: 1,
-                    displayColors: true,
-                    bodyFontSize: 12,
-                    labels: {
-                      usePointStyle: true,
-                    },
-                  },
+              {/* <BarGraph /> */}
+              <Row className="box px-3">
+                <div
+                  className="pt-1 pb-1"
+                  style={{ color: "grey", fontSize: "14px" }}
+                >
+                  Cases Per Continent
+                </div>
 
-                //   scales:{
-                //     xAxes:[{
-                //        ticks:{
-                //        display: false
-                //       }
-                //     }]
-                // },
-
-                scales: {
-
-                  xAxes: [
-                    {
-                      // ticks: {
-                      //   min: 0,
-                      //   max: 3,
-                      //   stepWidth: 2,
-                      //   stepSize: 2,
-                      // },
-                      ticks: {
-                        display: false,
+                <Bar
+                  // pointStyle="star"
+                  height={150}
+                  width={300}
+                  options={{
+                    legend: {
+                      display: true,
+                      position: "bottom",
+                      labels: {
+                        usePointStyle: true,
                       },
                     },
-                  ],
-                  yAxes: [
-                    {
-                      // type: "logarithmic",
-                      ticks: {
-                        // min: 0,
-                        // max: 3,
-                        // stepWidth: 100,
-                        stepSize: 1000,
+
+                    tooltips: {
+                      yPadding: 10,
+                      xPadding: 10,
+                      xAlign: "left",
+                      cornerRadius: 2,
+                      backgroundColor: "#212529",
+                      borderColor: "turquoise",
+                      borderWidth: 1,
+                      displayColors: true,
+                      bodyFontSize: 12,
+                      labels: {
+                        usePointStyle: true,
                       },
                     },
-                  ],
-                },
-              }}
-              data={{
-                labels: continentNames,
-                datasets: [
-               
-                  {
-                    label: "Cases",
-                    data: casesPerContinent,
-                    backgroundColor: colorCases,
-                    stack: "0",
-                  },
-                
-                  {
-                    label: "Tests",
-                    data: testsPerContinent,
-                    backgroundColor: 'teal',
-                    stack: "0",
-                  },
-                  {
-                    label: "Active",
-                    data: activePerContinent,
-                    backgroundColor: 'orange',
-                    stack: "0",
-                  },
-                ],
-              }}
-            />
-          </Row>
 
-          <Row className="mt-2">
-            <Col >
-            {/* <Row className="box mb-2">
+                    //   scales:{
+                    //     xAxes:[{
+                    //        ticks:{
+                    //        display: false
+                    //       }
+                    //     }]
+                    // },
+
+                    scales: {
+                      xAxes: [
+                        {
+                          // ticks: {
+                          //   min: 0,
+                          //   max: 3,
+                          //   stepWidth: 2,
+                          //   stepSize: 2,
+                          // },
+                          ticks: {
+                            display: false,
+                          },
+                        },
+                      ],
+                      yAxes: [
+                        {
+                          // type: "logarithmic",
+                          ticks: {
+                            // min: 0,
+                            // max: 3,
+                            // stepWidth: 100,
+                            stepSize: 1000,
+                          },
+                        },
+                      ],
+                    },
+                  }}
+                  data={{
+                    labels: continentNames,
+                    datasets: [
+                      {
+                        label: "Cases",
+                        data: casesPerContinent,
+                        backgroundColor: colorCases,
+                        stack: "0",
+                      },
+
+                      {
+                        label: "Tests",
+                        data: testsPerContinent,
+                        backgroundColor: "teal",
+                        stack: "0",
+                      },
+                      {
+                        label: "Active",
+                        data: activePerContinent,
+                        backgroundColor: "orange",
+                        stack: "0",
+                      },
+                    ],
+                  }}
+                />
+              </Row>
+
+              <Row className="mt-2">
+                <Col>
+                  {/* <Row className="box mb-2">
             <div
                 className="py-2 ml-4"
               >
                 Global Statistics
               </div>
               </Row> */}
-   
-              <Row className="subtitle">
-                <Col className="box py-4 mr-2">
-                  Active
-                  {((activeGlobal / casesGlobal) * 100).toFixed(2) <= 2.5 ? (
-                    <Badge variant="success" text="dark" className="badge">
-                      LOW
-                    </Badge>
-                  ) : (activeMillion[index] / casesMillion[index]) * 100 >=
-                    4.5 ? (
-                    <Badge variant="danger" text="dark" className="badge">
-                      HIGH
-                    </Badge>
-                  ) : (
-                    " "
-                  )}
-                  <strong>
-                    {((activeGlobal / casesGlobal) * 100).toFixed(2)}%
-                  </strong>
-                </Col>
-                <Col className="box py-4">
-                  Today
-                  {(criticalMillion[index] / casesMillion[index]) * 100 <=
-                  0.005 ? (
-                    <Badge variant="success" text="dark" className="badge">
-                      LOW
-                    </Badge>
-                  ) : (criticalMillion[index] / casesMillion[index]) * 100 >=
-                    0.015 ? (
-                    <Badge variant="danger" text="dark" className="badge">
-                      HIGH
-                    </Badge>
-                  ) : (
-                    " "
-                  )}
-                  <strong>
-                    +
-                    {numberWithCommas(
-                      (todayGlobalCases / 1000).toFixed(0) + "k"
-                    )}
-                  </strong>
-                </Col>
-              </Row>
 
-              <Row className="subtitle mt-2">
-                <Col className="box py-4 mr-2">
-                Positive
-                  {(criticalMillion[index] / casesMillion[index]) * 100 <=
-                  0.005 ? (
-                    <Badge variant="success" text="dark" className="badge">
-                      LOW
-                    </Badge>
-                  ) : (criticalMillion[index] / casesMillion[index]) * 100 >=
-                    0.015 ? (
-                    <Badge variant="danger" text="dark" className="badge">
-                      HIGH
-                    </Badge>
-                  ) : (
-                    " "
-                  )}
-                  <strong >
-                    {numberWithCommas(
-                      (casesGlobal / testsGlobal * 100).toFixed(2) + "%"
-                    )}
-                  </strong>
-                  {/* <Doughnut
+                  <Row className="subtitle">
+                    <Col className="box py-4 mr-2">
+                      Active
+                      {((activeGlobal / casesGlobal) * 100).toFixed(2) <=
+                      2.5 ? (
+                        <Badge variant="success" text="dark" className="badge">
+                          LOW
+                        </Badge>
+                      ) : (activeMillion[index] / casesMillion[index]) * 100 >=
+                        4.5 ? (
+                        <Badge variant="danger" text="dark" className="badge">
+                          HIGH
+                        </Badge>
+                      ) : (
+                        " "
+                      )}
+                      <strong>
+                        {((activeGlobal / casesGlobal) * 100).toFixed(2)}%
+                      </strong>
+                    </Col>
+                    <Col className="box py-4">
+                      Today
+                      {(criticalMillion[index] / casesMillion[index]) * 100 <=
+                      0.005 ? (
+                        <Badge variant="success" text="dark" className="badge">
+                          LOW
+                        </Badge>
+                      ) : (criticalMillion[index] / casesMillion[index]) *
+                          100 >=
+                        0.015 ? (
+                        <Badge variant="danger" text="dark" className="badge">
+                          HIGH
+                        </Badge>
+                      ) : (
+                        " "
+                      )}
+                      <strong>
+                        +
+                        {numberWithCommas(
+                          (todayGlobalCases / 1000).toFixed(0) + "k"
+                        )}
+                      </strong>
+                    </Col>
+                  </Row>
+
+                  <Row className="subtitle mt-2">
+                    <Col className="box py-4 mr-2">
+                      Positive
+                      {(criticalMillion[index] / casesMillion[index]) * 100 <=
+                      0.005 ? (
+                        <Badge variant="success" text="dark" className="badge">
+                          LOW
+                        </Badge>
+                      ) : (criticalMillion[index] / casesMillion[index]) *
+                          100 >=
+                        0.015 ? (
+                        <Badge variant="danger" text="dark" className="badge">
+                          HIGH
+                        </Badge>
+                      ) : (
+                        " "
+                      )}
+                      <strong>
+                        {numberWithCommas(
+                          ((casesGlobal / testsGlobal) * 100).toFixed(2) + "%"
+                        )}
+                      </strong>
+                      {/* <Doughnut
                     width={170}
                     options={{
                       elements: {
@@ -504,136 +502,142 @@ const Menu = ({
                       ],
                     }}
                   ></Doughnut> */}
+                    </Col>
+                    <Col className="box py-4">
+                      Tests
+                      {(tests[index] / population[index]) * 100 <= 100 ? (
+                        <Badge variant="danger" text="dark" className="badge">
+                          POOR
+                        </Badge>
+                      ) : (tests[index] / population[index]) * 100 >= 250 ? (
+                        <Badge variant="success" text="dark" className="badge">
+                          GOOD
+                        </Badge>
+                      ) : (
+                        " "
+                      )}
+                      <strong className="">
+                        {(testsG / populationGlobal).toFixed(2)}pp
+                        {/* <i className="fa fa-male"></i> */}
+                      </strong>
+                    </Col>
+                  </Row>
                 </Col>
-                <Col className="box py-4">
-                  Tests
-                  {(tests[index] / population[index]) * 100 <= 100 ? (
-                    <Badge variant="danger" text="dark" className="badge">
-                      POOR
-                    </Badge>
-                  ) : (tests[index] / population[index]) * 100 >= 250 ? (
-                    <Badge variant="success" text="dark" className="badge">
-                      GOOD
-                    </Badge>
-                  ) : (
-                    " "
-                  )}
-                  <strong className="">
-                    {(testsG / populationGlobal).toFixed(2)}pp
-                    {/* <i className="fa fa-male"></i> */}
-                  </strong>
-                </Col>
-              </Row>
-            </Col>
 
-            <Col   className="box ml-2 px-0" style={{ color: "#fff", fontSize: "14px", maxWidth: "50%" }}>
-              {/* <div
+                <Col
+                  className="box ml-2 px-0"
+                  style={{ color: "#fff", fontSize: "14px", maxWidth: "50%" }}
+                >
+                  {/* <div
                 className="pt-2 pb-4 ml-2"
               
               >
                 Continent Analysis
               </div> */}
-              <Doughnut
-              // width={200}
-              height={250}
-          data={{
-            datasets: [
-              {
-                data: [
-                  cases1.length,
-                  cases2.length,
-                  cases3.length,
-                  cases4.length,
-                  cases5.length,
-                ],
-                backgroundColor: colorsPie,
-                label: "Cases",
-                stack: "0",
-              },
-              {
-                data: [
-                  active1.length,
-                  active2.length,
-                  active3.length,
-                  active4.length,
-                  active5.length,
-                ],
-                backgroundColor: colorsPie,
-                label: "Active",
-                stack: "0",
-              },
-            ],
+                  <Doughnut
+                    // width={200}
+                    height={250}
+                    data={{
+                      datasets: [
+                        {
+                          data: [
+                            cases1.length,
+                            cases2.length,
+                            cases3.length,
+                            cases4.length,
+                            cases5.length,
+                          ],
+                          backgroundColor: colorsPie,
+                          label: "Cases",
+                          stack: "0",
+                        },
+                        {
+                          data: [
+                            active1.length,
+                            active2.length,
+                            active3.length,
+                            active4.length,
+                            active5.length,
+                          ],
+                          backgroundColor: colorsPie,
+                          label: "Active",
+                          stack: "0",
+                        },
+                      ],
 
-            labels: ["Lowest", "Lower", "Average", "Higher", "Highest"],
-          }}
-          options={{
-            elements: {
-              arc: {
-                // borderWidth: 0.5,
-                // borderColor: "turquoise",
-                borderColor: "#212529",
-                borderWidth: 1,
-              },
-            },
-            responsive: true,
-            maintainAspectRatio: true,
-            legend: {
-              display: false,
-              position: "",
-            },
-            title: {
-              display: false,
-              text: "",
-            },
-            animation: {
-              animateScale: true,
-              animateRotate: true,
-            },
-            tooltips: {
-              backgroundColor: "#212529",
-              borderColor: "turquoise",
-              borderWidth: 1,
-              cornerRadius: 2,
-              displayColors: true,
-              bodyFontSize: 12,
-              labels: {
-                usePointStyle: true,
-              },
-              callbacks: {
-                label: function (item, data) {
-                  console.log(data.labels, item);
-                  return (
-                    data.datasets[item.datasetIndex].label +
-                    ": " +
-                    data.labels[item.index] +
-                    ": " +
-                    data.datasets[item.datasetIndex].data[item.index]
-                  );
-                },
-              },
-            },
-          }}
-        ></Doughnut>
-            </Col>
-          </Row>
+                      labels: [
+                        "Lowest",
+                        "Lower",
+                        "Average",
+                        "Higher",
+                        "Highest",
+                      ],
+                    }}
+                    options={{
+                      elements: {
+                        arc: {
+                          // borderWidth: 0.5,
+                          // borderColor: "turquoise",
+                          borderColor: "#212529",
+                          borderWidth: 1,
+                        },
+                      },
+                      responsive: true,
+                      maintainAspectRatio: true,
+                      legend: {
+                        display: false,
+                        position: "",
+                      },
+                      title: {
+                        display: false,
+                        text: "",
+                      },
+                      animation: {
+                        animateScale: true,
+                        animateRotate: true,
+                      },
+                      tooltips: {
+                        backgroundColor: "#212529",
+                        borderColor: "turquoise",
+                        borderWidth: 1,
+                        cornerRadius: 2,
+                        displayColors: true,
+                        bodyFontSize: 12,
+                        labels: {
+                          usePointStyle: true,
+                        },
+                        callbacks: {
+                          label: function (item, data) {
+                            console.log(data.labels, item);
+                            return (
+                              data.datasets[item.datasetIndex].label +
+                              ": " +
+                              data.labels[item.index] +
+                              ": " +
+                              data.datasets[item.datasetIndex].data[item.index]
+                            );
+                          },
+                        },
+                      },
+                    }}
+                  ></Doughnut>
+                </Col>
+              </Row>
 
-          <Row className="subtitle box mt-2 px-0">
-            {/* <Col className="box " style={{maxWidth: "50%"}}> */}
-            <div
-              className="py-1"
-              style={{ color: "grey", fontSize: "14px" }}
-            >
-              Cases Trend
-            </div>
-            <LineGraph casesType={casesType} />
-            {/* </Col> */}
-            {/* <Col className="box ml-2" style={{maxWidth: "50%"}}>
+              <Row className="subtitle box mt-2 px-0">
+                {/* <Col className="box " style={{maxWidth: "50%"}}> */}
+                <div
+                  className="py-1"
+                  style={{ color: "grey", fontSize: "14px" }}
+                >
+                  Cases Trend
+                </div>
+                {/* <LineGraph casesType={casesType} /> */}
+                {/* </Col> */}
+                {/* <Col className="box ml-2" style={{maxWidth: "50%"}}>
             </Col> */}
-  
-          </Row>
-
-
-          </Col>
+              </Row>
+            </Col>
           </Row>
         </>
       ),
@@ -643,231 +647,230 @@ const Menu = ({
       title: "Deaths",
       content: (
         <>
-        <Row style={{ height: "90vh"}} className="px-3">
-          <Col className="subtitle" 
-          style={{
+          <Row style={{ height: "90vh" }} className="px-3">
+            <Col
+              className="subtitle"
+              style={{
                 height: "100%",
                 overflowY: "scroll",
-             
-                }}>
-
-
-           
-        <Row className="mb-2">
-          <Col className="box pt-2 mr-2">
-            <h1 >
-              {" "}
-              <CountUp
-                start={deathsGlobal - 3}
-                end={deathsGlobal}
-                duration={0.3}
-                separator=","
-                decimals={1}
-              />
-               {deathsGlobal[0] / 1000 >= deathsGlobal[5] / 1000 ? (
-                      <i
-                      style={{ fontSize: "0.7em", color: "#bb2124" }}
-                      className="fa fa-arrow-up"
-                    ></i>
-                  ) : (
-                    <i
-                    style={{ fontSize: "0.7em", color: "#22bb33" }}
-                    className="fa fa-arrow-down"
-                  ></i>
-                  )}{" "}
-                     <h5 className="">Deaths/1k</h5>
-            </h1>
-            </Col>
-         
-           
-            
-     
-            <Col  className="" >
-           <Row style={{  }} className="box pt-1 "> <h3 className="">{recoveredGlobal}</h3>&nbsp;<h6 className="pt-2">Recovered/1k</h6></Row>
-           <Row style={{  }} className="box mt-2 pt-1"> <h3>{criticalGlobal}</h3>&nbsp;<h6 className="pt-2">Critical/1k</h6></Row>
-           </Col>
-             
-           </Row>
-          
-        
-
-          {/* <BarGraph /> */}
-          <Row className="box px-3">
-            <div
-              className="pt-1 pb-1"
-              style={{ color: "grey", fontSize: "14px" }}
+              }}
             >
-              Deaths Per Continent
-            </div>
+              <Row className="mb-2">
+                <Col className="box pt-2 mr-2">
+                  <h1>
+                    {" "}
+                    <CountUp
+                      start={deathsGlobal - 3}
+                      end={deathsGlobal - 0}
+                      duration={0.3}
+                      separator=","
+                      decimals={1}
+                    />
+                    {deathsGlobal[0] / 1000 >= deathsGlobal[5] / 1000 ? (
+                      <i
+                        style={{ fontSize: "0.7em", color: "#bb2124" }}
+                        className="fa fa-arrow-up"
+                      ></i>
+                    ) : (
+                      <i
+                        style={{ fontSize: "0.7em", color: "#22bb33" }}
+                        className="fa fa-arrow-down"
+                      ></i>
+                    )}{" "}
+                    <h5 className="">Deaths/1k</h5>
+                  </h1>
+                </Col>
 
-            <Bar
-              // pointStyle="star"
-              height={150}
-              width={300}
-              options={{
-                legend: {
-                  display: true,
-                  position: "bottom",
-                  labels: {
-                    usePointStyle: true,
-                  },
-                },
+                <Col className="">
+                  <Row style={{}} className="box pt-1 ">
+                    {" "}
+                    <h3 className="">{recoveredGlobal}</h3>&nbsp;
+                    <h6 className="pt-2">Recovered/1k</h6>
+                  </Row>
+                  <Row style={{}} className="box mt-2 pt-1">
+                    {" "}
+                    <h3>{criticalGlobal}</h3>&nbsp;
+                    <h6 className="pt-2">Critical/1k</h6>
+                  </Row>
+                </Col>
+              </Row>
 
-             
-                  tooltips: {
-                    yPadding: 10,
-                    xPadding: 10,
-                    xAlign: "left",
-                    cornerRadius: 2,
-                    backgroundColor: "#212529",
-                    borderColor: "turquoise",
-                    borderWidth: 1,
-                    displayColors: true,
-                    bodyFontSize: 12,
-                    labels: {
-                      usePointStyle: true,
+              {/* <BarGraph /> */}
+              <Row className="box px-3">
+                <div
+                  className="pt-1 pb-1"
+                  style={{ color: "grey", fontSize: "14px" }}
+                >
+                  Deaths Per Continent
+                </div>
+
+                <Bar
+                  // pointStyle="star"
+                  height={150}
+                  width={300}
+                  options={{
+                    legend: {
+                      display: true,
+                      position: "bottom",
+                      labels: {
+                        usePointStyle: true,
+                      },
                     },
-                  },
 
-                //   scales:{
-                //     xAxes:[{
-                //        ticks:{
-                //        display: false
-                //       }
-                //     }]
-                // },
+                    tooltips: {
+                      yPadding: 10,
+                      xPadding: 10,
+                      xAlign: "left",
+                      cornerRadius: 2,
+                      backgroundColor: "#212529",
+                      borderColor: "turquoise",
+                      borderWidth: 1,
+                      displayColors: true,
+                      bodyFontSize: 12,
+                      labels: {
+                        usePointStyle: true,
+                      },
+                    },
 
-                scales: {
+                    //   scales:{
+                    //     xAxes:[{
+                    //        ticks:{
+                    //        display: false
+                    //       }
+                    //     }]
+                    // },
 
-                  xAxes: [
-                    {
-                      // ticks: {
-                      //   min: 0,
-                      //   max: 3,
-                      //   stepWidth: 2,
-                      //   stepSize: 2,
+                    scales: {
+                      xAxes: [
+                        {
+                          // ticks: {
+                          //   min: 0,
+                          //   max: 3,
+                          //   stepWidth: 2,
+                          //   stepSize: 2,
+                          // },
+                          ticks: {
+                            display: false,
+                          },
+                        },
+                      ],
+                      yAxes: [
+                        {
+                          // type: "logarithmic",
+                          ticks: {
+                            // min: 0,
+                            // max: 3,
+                            // stepWidth: 100,
+                            stepSize: 1000,
+                          },
+                        },
+                      ],
+                    },
+                  }}
+                  data={{
+                    labels: continentNames,
+                    datasets: [
+                      {
+                        label: "Deaths",
+                        data: deathsPerContinent,
+                        backgroundColor: colorCases,
+                        stack: "0",
+                      },
+
+                      // {
+                      //   label: "Tests",
+                      //   data: recoveredPerContinent,
+                      //   backgroundColor: 'teal',
+                      //   stack: "0",
                       // },
-                      ticks: {
-                        display: false,
+                      {
+                        label: "Critical",
+                        data: criticalPerContinent,
+                        backgroundColor: "orange",
+                        stack: "0",
                       },
-                    },
-                  ],
-                  yAxes: [
-                    {
-                      // type: "logarithmic",
-                      ticks: {
-                        // min: 0,
-                        // max: 3,
-                        // stepWidth: 100,
-                        stepSize: 1000,
-                      },
-                    },
-                  ],
-                },
-              }}
-              data={{
-                labels: continentNames,
-                datasets: [
-               
-                  {
-                    label: "Deaths",
-                    data: deathsPerContinent,
-                    backgroundColor: colorCases,
-                    stack: "0",
-                  },
-                
-                  // {
-                  //   label: "Tests",
-                  //   data: recoveredPerContinent,
-                  //   backgroundColor: 'teal',
-                  //   stack: "0",
-                  // },
-                  {
-                    label: "Critical",
-                    data: criticalPerContinent,
-                    backgroundColor: 'orange',
-                    stack: "0",
-                  },
-                ],
-              }}
-            />
-          </Row>
+                    ],
+                  }}
+                />
+              </Row>
 
-          <Row className="mt-2">
-            <Col >
-            {/* <Row className="box mb-2">
+              <Row className="mt-2">
+                <Col>
+                  {/* <Row className="box mb-2">
             <div
                 className="py-2 ml-4"
               >
                 Global Statistics
               </div>
               </Row> */}
-   
-              <Row className="subtitle">
-                <Col className="box py-4 mr-2">
-                  Critical
-                  {((criticalGlobal / casesGlobal) * 100).toFixed(2) <= .025 ? (
-                    <Badge variant="success" text="dark" className="badge">
-                      LOW
-                    </Badge>
-                  ) : (criticalGlobal / casesGlobal) * 100 >=
-                    .045 ? (
-                    <Badge variant="danger" text="dark" className="badge">
-                      HIGH
-                    </Badge>
-                  ) : (
-                    " "
-                  )}
-                  <strong>
-                    {((criticalGlobal / casesGlobal) * 100).toFixed(2)}%
-                  </strong>
-                </Col>
-                <Col className="box py-4">
-                  Today
-                  {(criticalMillion[index] / casesMillion[index]) * 100 <=
-                  0.005 ? (
-                    <Badge variant="success" text="dark" className="badge">
-                      LOW
-                    </Badge>
-                  ) : (criticalMillion[index] / casesMillion[index]) * 100 >=
-                    0.015 ? (
-                    <Badge variant="danger" text="dark" className="badge">
-                      HIGH
-                    </Badge>
-                  ) : (
-                    " "
-                  )}
-                  <strong>
-                    +
-                    {numberWithCommas(
-                      (todayGlobalDeaths / 1000).toFixed(0) + "k"
-                    )}
-                  </strong>
-                </Col>
-              </Row>
 
-              <Row className="subtitle mt-2">
-                <Col className="box py-4 mr-2">
-                Positive
-                  {(criticalMillion[index] / casesMillion[index]) * 100 <=
-                  0.005 ? (
-                    <Badge variant="success" text="dark" className="badge">
-                      LOW
-                    </Badge>
-                  ) : (criticalMillion[index] / casesMillion[index]) * 100 >=
-                    0.015 ? (
-                    <Badge variant="danger" text="dark" className="badge">
-                      HIGH
-                    </Badge>
-                  ) : (
-                    " "
-                  )}
-                  <strong >
-                    {numberWithCommas(
-                      (casesGlobal / testsGlobal * 100).toFixed(2) + "%"
-                    )}
-                  </strong>
-                  {/* <Doughnut
+                  <Row className="subtitle">
+                    <Col className="box py-4 mr-2">
+                      Critical
+                      {((criticalGlobal / casesGlobal) * 100).toFixed(2) <=
+                      0.025 ? (
+                        <Badge variant="success" text="dark" className="badge">
+                          LOW
+                        </Badge>
+                      ) : (criticalGlobal / casesGlobal) * 100 >= 0.045 ? (
+                        <Badge variant="danger" text="dark" className="badge">
+                          HIGH
+                        </Badge>
+                      ) : (
+                        " "
+                      )}
+                      <strong>
+                        {((criticalGlobal / casesGlobal) * 100).toFixed(2)}%
+                      </strong>
+                    </Col>
+                    <Col className="box py-4">
+                      Today
+                      {(criticalMillion[index] / casesMillion[index]) * 100 <=
+                      0.005 ? (
+                        <Badge variant="success" text="dark" className="badge">
+                          LOW
+                        </Badge>
+                      ) : (criticalMillion[index] / casesMillion[index]) *
+                          100 >=
+                        0.015 ? (
+                        <Badge variant="danger" text="dark" className="badge">
+                          HIGH
+                        </Badge>
+                      ) : (
+                        " "
+                      )}
+                      <strong>
+                        +
+                        {numberWithCommas(
+                          (todayGlobalDeaths / 1000).toFixed(0) + "k"
+                        )}
+                      </strong>
+                    </Col>
+                  </Row>
+
+                  <Row className="subtitle mt-2">
+                    <Col className="box py-4 mr-2">
+                      Positive
+                      {(criticalMillion[index] / casesMillion[index]) * 100 <=
+                      0.005 ? (
+                        <Badge variant="success" text="dark" className="badge">
+                          LOW
+                        </Badge>
+                      ) : (criticalMillion[index] / casesMillion[index]) *
+                          100 >=
+                        0.015 ? (
+                        <Badge variant="danger" text="dark" className="badge">
+                          HIGH
+                        </Badge>
+                      ) : (
+                        " "
+                      )}
+                      <strong>
+                        {numberWithCommas(
+                          ((casesGlobal / testsGlobal) * 100).toFixed(2) + "%"
+                        )}
+                      </strong>
+                      {/* <Doughnut
                     width={170}
                     options={{
                       elements: {
@@ -893,136 +896,142 @@ const Menu = ({
                       ],
                     }}
                   ></Doughnut> */}
+                    </Col>
+                    <Col className="box py-4">
+                      Tests
+                      {(tests[index] / population[index]) * 100 <= 100 ? (
+                        <Badge variant="danger" text="dark" className="badge">
+                          POOR
+                        </Badge>
+                      ) : (tests[index] / population[index]) * 100 >= 250 ? (
+                        <Badge variant="success" text="dark" className="badge">
+                          GOOD
+                        </Badge>
+                      ) : (
+                        " "
+                      )}
+                      <strong className="">
+                        {(testsG / populationGlobal).toFixed(2)}pp
+                        {/* <i className="fa fa-male"></i> */}
+                      </strong>
+                    </Col>
+                  </Row>
                 </Col>
-                <Col className="box py-4">
-                  Tests
-                  {(tests[index] / population[index]) * 100 <= 100 ? (
-                    <Badge variant="danger" text="dark" className="badge">
-                      POOR
-                    </Badge>
-                  ) : (tests[index] / population[index]) * 100 >= 250 ? (
-                    <Badge variant="success" text="dark" className="badge">
-                      GOOD
-                    </Badge>
-                  ) : (
-                    " "
-                  )}
-                  <strong className="">
-                    {(testsG / populationGlobal).toFixed(2)}pp
-                    {/* <i className="fa fa-male"></i> */}
-                  </strong>
-                </Col>
-              </Row>
-            </Col>
 
-            <Col   className="box ml-2 px-0" style={{ color: "#fff", fontSize: "14px", maxWidth: "50%" }}>
-              {/* <div
+                <Col
+                  className="box ml-2 px-0"
+                  style={{ color: "#fff", fontSize: "14px", maxWidth: "50%" }}
+                >
+                  {/* <div
                 className="pt-2 pb-4 ml-2"
               
               >
                 Continent Analysis
               </div> */}
-              <Doughnut
-              // width={200}
-              height={250}
-          data={{
-            datasets: [
-              {
-                data: [
-                  deaths1.length,
-                  deaths2.length,
-                  deaths3.length,
-                  deaths4.length,
-                  deaths5.length,
-                ],
-                backgroundColor: colorsPie,
-                label: "Deaths",
-                stack: "0",
-              },
-              {
-                data: [
-                  active1.length,
-                  active2.length,
-                  active3.length,
-                  active4.length,
-                  active5.length,
-                ],
-                backgroundColor: colorsPie,
-                label: "Active",
-                stack: "0",
-              },
-            ],
+                  <Doughnut
+                    // width={200}
+                    height={250}
+                    data={{
+                      datasets: [
+                        {
+                          data: [
+                            deaths1.length,
+                            deaths2.length,
+                            deaths3.length,
+                            deaths4.length,
+                            deaths5.length,
+                          ],
+                          backgroundColor: colorsPie,
+                          label: "Deaths",
+                          stack: "0",
+                        },
+                        {
+                          data: [
+                            active1.length,
+                            active2.length,
+                            active3.length,
+                            active4.length,
+                            active5.length,
+                          ],
+                          backgroundColor: colorsPie,
+                          label: "Active",
+                          stack: "0",
+                        },
+                      ],
 
-            labels: ["Lowest", "Lower", "Average", "Higher", "Highest"],
-          }}
-          options={{
-            elements: {
-              arc: {
-                // borderWidth: 0.5,
-                // borderColor: "turquoise",
-                borderColor: "#212529",
-                borderWidth: 1,
-              },
-            },
-            responsive: true,
-            maintainAspectRatio: true,
-            legend: {
-              display: false,
-              position: "",
-            },
-            title: {
-              display: false,
-              text: "",
-            },
-            animation: {
-              animateScale: true,
-              animateRotate: true,
-            },
-            tooltips: {
-              backgroundColor: "#212529",
-              borderColor: "turquoise",
-              borderWidth: 1,
-              cornerRadius: 2,
-              displayColors: true,
-              bodyFontSize: 12,
-              labels: {
-                usePointStyle: true,
-              },
-              callbacks: {
-                label: function (item, data) {
-                  console.log(data.labels, item);
-                  return (
-                    data.datasets[item.datasetIndex].label +
-                    ": " +
-                    data.labels[item.index] +
-                    ": " +
-                    data.datasets[item.datasetIndex].data[item.index]
-                  );
-                },
-              },
-            },
-          }}
-        ></Doughnut>
-            </Col>
-          </Row>
+                      labels: [
+                        "Lowest",
+                        "Lower",
+                        "Average",
+                        "Higher",
+                        "Highest",
+                      ],
+                    }}
+                    options={{
+                      elements: {
+                        arc: {
+                          // borderWidth: 0.5,
+                          // borderColor: "turquoise",
+                          borderColor: "#212529",
+                          borderWidth: 1,
+                        },
+                      },
+                      responsive: true,
+                      maintainAspectRatio: true,
+                      legend: {
+                        display: false,
+                        position: "",
+                      },
+                      title: {
+                        display: false,
+                        text: "",
+                      },
+                      animation: {
+                        animateScale: true,
+                        animateRotate: true,
+                      },
+                      tooltips: {
+                        backgroundColor: "#212529",
+                        borderColor: "turquoise",
+                        borderWidth: 1,
+                        cornerRadius: 2,
+                        displayColors: true,
+                        bodyFontSize: 12,
+                        labels: {
+                          usePointStyle: true,
+                        },
+                        callbacks: {
+                          label: function (item, data) {
+                            console.log(data.labels, item);
+                            return (
+                              data.datasets[item.datasetIndex].label +
+                              ": " +
+                              data.labels[item.index] +
+                              ": " +
+                              data.datasets[item.datasetIndex].data[item.index]
+                            );
+                          },
+                        },
+                      },
+                    }}
+                  ></Doughnut>
+                </Col>
+              </Row>
 
-          <Row className="subtitle box mt-2 px-0">
-            {/* <Col className="box " style={{maxWidth: "50%"}}> */}
-            <div
-              className="py-1"
-              style={{ color: "grey", fontSize: "14px" }}
-            >
-              Cases Trend
-            </div>
-            <LineGraph casesType={casesType} />
-            {/* </Col> */}
-            {/* <Col className="box ml-2" style={{maxWidth: "50%"}}>
+              <Row className="subtitle box mt-2 px-0">
+                {/* <Col className="box " style={{maxWidth: "50%"}}> */}
+                <div
+                  className="py-1"
+                  style={{ color: "grey", fontSize: "14px" }}
+                >
+                  Cases Trend
+                </div>
+                <LineGraph casesType={casesType} />
+                {/* </Col> */}
+                {/* <Col className="box ml-2" style={{maxWidth: "50%"}}>
             </Col> */}
-  
-          </Row>
-
-
-          </Col>
+              </Row>
+            </Col>
           </Row>
         </>
       ),
@@ -1269,7 +1278,7 @@ const Menu = ({
     //                     deaths5.length,
     //                   ],
     //                   backgroundColor: colorsPie,
-                 
+
     //                 },
     //               ],
     //             }}
@@ -1305,7 +1314,7 @@ const Menu = ({
     //             ],
     //           }}
     //         />
-           
+
     //       </Row>
     //     </>
     //   ),
@@ -1922,8 +1931,6 @@ const Menu = ({
       );
     };
 
-
-
     return (
       <Row className="pl-3 pr-1">
         <div className="tabs">
@@ -1953,7 +1960,7 @@ const Menu = ({
         animationOut="fadeOut"
         isVisible={true}
       >
-        <div className="side">
+        <div className="side" style={{width: "300px"}}>
           <Container>
             {/* <div className={!open ? "hidden" : "visible"}> */}
             <Row className="title">
@@ -1996,13 +2003,28 @@ const Menu = ({
               tabItems={tabItems}
             />
             {/* </div> */}
+            <div className="map-overlay">
+              <div className="title mt-3 mb-3 ml-3">Search</div>
+              <div id="geocoder" className="geocoder"></div>
+
+              <div className="title mt-5 mb-2 ml-3">Filter</div>
+              <fieldset className="">
+                <input
+                  id="feature-filter"
+                  type="text"
+                  placeholder="Filter Locations..."
+                />
+              </fieldset>
+
+              <div id="feature-listing" className="listing"></div>
+              {/* <div id="listings" className="listings"></div> */}
+            </div>
           </Container>
         </div>
       </Animated>
     </div>
   );
 };
-
 
 export default Menu;
 

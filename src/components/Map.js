@@ -6,85 +6,30 @@ import "./Map.scss";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { numberWithCommas } from "../utils/numberWithCommas";
 import { Animated } from "react-animated-css";
-import { Button, Col, Row, Container } from "react-bootstrap";
+import { Button, Col, Row, Container, Form } from "react-bootstrap";
 
 import { Chart } from "react-chartjs-2";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoidHJib3QiLCJhIjoiY2s3NmFscm1xMTV0MDNmcXFyOWp1dGhieSJ9.tR2IMHDqBPOf_AeGjHOKFA";
 
-const Map2 = ({ countries, region }) => {
-  const mapboxElRef = useRef(null); // DOM element to render map
+const Map = ({ countries,  region, index }) => {
+  const mapboxElRef = useRef(null);
 
-  // // console.log(countries, "countries");
-  // const populationCountry = countries.map((country) => [
-  //   country.population,
-  //   country.country,
-  // ]);
-  // console.log(populationCountry, "pC");
-  // const mort = countries.map((selectedCountry) =>
-  //   (
-  //     (selectedCountry.deathsPerOneMillion /
-  //       selectedCountry.casesPerOneMillion) *
-  //     100
-  //   ).toFixed(2)
-  // );
-  // // console.log(mort, "mort");
-  // const casesPerOneMillion = countries.map((selectedCountry) =>
-  //   (selectedCountry.casesPerOneMillion / 1000).toFixed(1)
-  // );
-  // // console.log(casesPerOneMillion, "cPOM");
+  const [lng, setLng] = useState(0);
+  const [lat, setLat] = useState(20);
+  const [zoom, setZoom] = useState(1.7);
 
+  // const urls = ["https://disease.sh/v3/covid-19/jhucsse", "https://disease.sh/v3/covid-19/countries",];
 
-
-
-  //Fetch Continents Data
-  // const [data2, setDataMap] = useState([]);
-  // useEffect(() => {
-    
-  //   async function fetchContinents() {
-  //     try {
-  //       const result = await fetch("https://disease.sh/v3/covid-19/jhucsse");
-  //       const data2 = await result.json()
-  //       .then((data) =>
-  //       data.map((point, index) => ({
-  //         type: "Feature",
-  //         geometry: {
-  //           type: "Point",
-  //           coordinates: [
-  //             point.coordinates.longitude,
-  //             point.coordinates.latitude,
-  //           ],
-  //         },
-  //         properties: {
-  //           id: index,
-  //           country: point.country,
-  //           province: point.province,
-  //           cases: point.stats.confirmed,
-  //           deaths: point.stats.deaths,
-  //           mort: point.stats.deaths / point.stats.confirmed,
-  //         },
-  //       }))
-  //     );
-  //       setDataMap([data2]);
-  //       console.log(data2, "DATAmap");
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  //   fetchContinents();
-  // }, []);
-
-  
- 
-  // const pointData =  [cases, country];
-  // console.log(pointData, 'Points')
-
-  const fetcher = (url) =>
-
+  const fetcher = async (url) => 
     fetch(url)
       .then((r) => r.json())
-      .then((data) =>
+  //  await Promise.all(
+  //     urls.map((url) => fetch(url).then((res) => res.json()))
+  //  )
+       .then((data) =>
+
         data.map((point, index) => ({
           type: "Feature",
           geometry: {
@@ -101,46 +46,212 @@ const Map2 = ({ countries, region }) => {
             cases: point.stats.confirmed,
             deaths: point.stats.deaths,
             mort: point.stats.deaths / point.stats.confirmed,
-            // population: merge[0]
-            // casesM: countries.country.casesPerOneMillion,
           },
         }))
       );
-      // console.log(merge, 'merge');
-  const { data } = useSWR("https://disease.sh/v3/covid-19/jhucsse", fetcher);
 
 
 
-  // useEffect(() => {
-  //   data.forEach((id) => {
-  //     getInfo(id)
-  //       .then((response) => {
-  //         getOtherInfo(id).then((otherReponse) => {
-  //           response.otherInfo = otherResponse;
-  //           setItemList((itemList) => [...itemList, response]);
-  //         });
-  //       })
-  //       .catch((error) => console.log("Loading failed: " + error));
-  //   });
-  // }, []);
 
 
-  // console.log(cas, 'CAS')
+//   const fetcher = React.useEffect(() => {
+//     Promise.all([
+//         fetch("https://disease.sh/v3/covid-19/jhucsse"),
+//         // fetch("https://disease.sh/v3/covid-19/countries")
+//     ]).then(function (response) {
+//         // Get a JSON obje ct from each of the responses
+//         return Promise.all(response.map(function (response) {
+//             return response.json();
+//         }));
+//     }).then((data) => {
+//       data.map((point, index) => ({
+//         type: "Feature",
+//         geometry: {
+//           type: "Point",
+//           coordinates: [
+//             point.coordinates.longitude,
+//             point.coordinates.latitude,
+//           ],
+//         },
+//         properties: {
+//           id: index,
+//           country: point.country,
+//           province: point.province,
+//           cases: point.stats.confirmed,
+//           deaths: point.stats.deaths,
+//           mort: point.stats.deaths / point.stats.confirmed,
+//         },
+//       }))
+     
+  
+//         // Log the data to the console
+//         // You would do something with both sets of data here
+//         //     countries.map((itm, index) => ({
+// //   ...data.find((item) => item.properties.country === itm.country && item),
+// //   ...itm,
+//         console.log(data, 'mydata');
+//     }).catch(function (error) {
+//         // if there's an error, log it
+//         console.log(error);
+//     });
+//     },[])
+
+//     const getData = (countries, data) => 
+//     countries.map((itm, index) => ({
+//   ...data.find((item) => item.properties.country === itm.country && item),
+//   ...itm,
+// }));
+    
+// const data1 = getData(countries, data);
+
+const { data } = useSWR("https://disease.sh/v3/covid-19/jhucsse", fetcher);
+
+
+
+  
+
+
+//   const fetcher2 = async (url) => 
+//   fetch(url)
+//     .then((r) => r.json())
+// //  await Promise.all(
+// //     urls.map((url) => fetch(url).then((res) => res.json()))
+// //  )
+//      .then((data) =>
+
+//       data.map((point, index) => ({
+//         type: "Feature",
+//         geometry: {
+//           type: "Point",
+//           coordinates: [
+//             point.coordinates.longitude,
+//             point.coordinates.latitude,
+//           ],
+//         },
+//         properties: {
+//           id: index,
+//           country: point.country,
+//           province: point.province,
+//           cases: point.stats.confirmed,
+//           deaths: point.stats.deaths,
+//           mort: point.stats.deaths / point.stats.confirmed,
+//         },
+//       }))
+//     );
+
+// const { data1 } = useSWR("https://disease.sh/v3/covid-19/countries", fetcher2);
+
+      
+
+  // const [loading, setLoading] = useState(false);
+  // const [dataOne, setDataOne] = useState([]);
+  // const [dataTwo, setDataTwo] = useState([]);
+
+
+
+  // const urls = ["https://disease.sh/v3/covid-19/jhucsse", "https://disease.sh/v2/countries",];
+
+  // const getData = async () => {
+  //   setLoading(true);
+  //   const [result1, result2] = await Promise.all(
+  //     urls.map((url) => fetch(url).then((res) => res.json()))
+  //  );
+  //   setLoading(false);
+  //   setDataOne(result1);
+  //   setDataTwo(result2);
+
+  //   console.log(data, 'data');
+   
+  // };
+
+
+    //Fetch Countries Data
+    // const [countries, setCountries] = useState([]);
+    // const [data1, setData] = useState([]);
+    // useEffect(() => {
+    //   async function fetchCountries() {
+    //     try {
+    //       const [countries, data1] = await Promise.all(
+    //         urls.map((url) => fetch(url).then((res) => res.json()))
+            
+    //      ).then((data1) =>
+    //      data1.map((point, index) => ({
+    //        type: "Feature",
+    //        geometry: {
+    //          type: "Point",
+    //          coordinates: [
+    //            point.coordinates.longitude,
+    //            point.coordinates.latitude,
+    //          ],
+    //        },
+    //        properties: {
+    //          id: index,
+    //          country: point.country,
+    //          province: point.province,
+    //          cases: point.stats.confirmed,
+    //          deaths: point.stats.deaths,
+    //          mort: point.stats.deaths / point.stats.confirmed,
+    //        },
+    //      })));
+
+
+    //       setCountries(countries);
+    //       setData(data1);
+
+    //     } catch (error) {
+    //       console.log(error);
+    //     }
+    //   }
+    //   fetchCountries();
+    // }, []);
+    //Map Country Data
+    // const getCountries = (key) => {
+    //   return countries.map((country) => country[key]);
+    // };
+
+
+
+   
+
+    // data1.map((point, index) => ({
+    //   type: "Feature",
+    //   geometry: {
+    //     type: "Point",
+    //     coordinates: [
+    //       point.coordinates.longitude,
+    //       point.coordinates.latitude,
+    //     ],
+    //   },
+    //   properties: {
+    //     id: index,
+    //     country: point.country,
+    //     province: point.province,
+    //     cases: point.stats.confirmed,
+    //     deaths: point.stats.deaths,
+    //     mort: point.stats.deaths / point.stats.confirmed,
+    //     population: point.population,
+    //   },
+    // }))
+
+
+
+
+    // const  = [...countries, ...data1];
+
  
-//  const newdata = [...point.stats.cases, ...merge]
-//  console.log(newdata, 'newdata')
-  // const [merge, setMerge] = useState([]);
+  // const globalCases = getCountries("casesPerOneMillion");
 
-  // merge array1 and array2
-//  console.log(data, 'data')
+  // console.log(all, 'countriesCASES')
+  // const getData = (key) => {
+  //   return countries.map((country) => country[key]);
+  // };
 
-// const data2 = {data}.push(...countries)
-// console.log(data2, 'DATA2')
-
+  // console.log( data1, 'data1')
 
   // Initialize our map
   useEffect(() => {
     if (data) {
+      // console.log(data1, 'ok');
       const average =
         data.reduce((total, next) => total + next.properties.cases, 0) /
         data.length;
@@ -157,38 +268,38 @@ const Map2 = ({ countries, region }) => {
       const maxD = Math.max(...data.map((item) => item.properties.deaths));
       //173,000
 
-      console.log(countries, 'COUNTRIES')
-      const merge = countries.map((country, key) => country.population);
-      const cas = data.map((item) => item.properties.cases);
-      console.log(cas, 'CAS')
-      console.log(merge, 'MER')
-      const m = [...cas, ...merge]
-      console.log(m, 'M')
+   
+      // console.log(data1, 'data1');
+      // console.log(data, 'data');
+      // const merge = countries.map((country, key) => country.population);
+      // const cas = data.map((item) => item.properties.cases);
+      // console.log(cas, 'CAS')
+      // console.log(merge, 'MER')
+      // const m = [...cas, ...merge]
+      // console.log(m, 'M')
 
-      console.log(average, min, max, "stats");
-      console.log(averageD, minD, maxD, "statsD");
+      // console.log(average, min, max, "stats");
+      // console.log(averageD, minD, maxD, "statsD");
 
       const amr = averageD / average;
       // const minmr = 1 / max;
       // const maxmr = maxD / 1;
       // console.log(amr, minmr, maxmr, 'amr')
 
-      // ...data.map((item) => item.properties.cases, 
+      // ...data.map((item) => item.properties.cases,
       // const countryname = data.map((item) => item.properties.country);
       // console.log(countryname, 'countryname')
 
       const map = new mapboxgl.Map({
         container: mapboxElRef.current,
         style: "mapbox://styles/mapbox/dark-v10",
-        center: [99, 20], // Asia - intial geo location
-        zoom: 3, // initial zoom
+        center: [lng, lat],
+        zoom: zoom,
+        pitch: 20,
       });
 
-
-
-
       //DOUGHNUT
-      // filters for classifying earthquakes into five categories based on magnitude
+
       const cases1 = ["<", ["get", "cases"], 50000];
       const cases2 = [
         "all",
@@ -207,7 +318,7 @@ const Map2 = ({ countries, region }) => {
       ]; //32,000,000
       const cases5 = [">=", ["get", "cases"], 1600000];
 
-      // filters for classifying earthquakes into five categories based on magnitude
+
       const deaths1 = ["<", ["get", "deaths"], 2500];
       const deaths2 = [
         "all",
@@ -248,24 +359,43 @@ const Map2 = ({ countries, region }) => {
       // console.log(deaths1, "d/c");
       // colors to use for the categories
       const colors = [
-        // "#444e86",
-        // "#955196",
-        // "#ffa600",
-        // "#ff6e54",
-        // "#dd5182",
+        "#444e86",
+        "#955196",
+        "#ffa600",
+        "#ff6e54",
+        "#dd5182",
 
-//         "#ffaf1d",
-//  "#ff9435",
-//  "#ff7744",
-//  "#ff534f",
-//  "#ff1558",
+        //   "#ffaf1d",
+        //  "#ff9435",
+        //  "#ff7744",
+        //  "#ff534f",
+        //  "#ff1558",
 
-// "#2770b4",
-// "#6d68c1",
-// "#ae54b8",
-// "#e23295",
-// "#ff1560",
-"#5748ff", "#a13ed5", "#ca32ad", "#e72585", "#ff125e"
+        // "#2770b4",
+        // "#6d68c1",
+        // "#ae54b8",
+        // "#e23295",
+        // "#ff1560",
+
+        // "#6a5dfc",
+        // "#a13ed5",
+        // "#ca32ad",
+        // "#e72585",
+        // "#ff125e",
+
+//"  #a20d06",
+// "#e54e17",
+// "#e98410",
+// "#d1b421",
+// "#6ba34d"
+
+// "#3a9456",
+// "#217c54",
+// "#358581",
+// "#90b5e7",
+// "#6e75d7"
+
+
 
         // "rgb(212, 23, 83)",
         // "rgb(45, 182, 130)",
@@ -277,26 +407,28 @@ const Map2 = ({ countries, region }) => {
         // "#ffa600",
         // "#ff6e54",
         // "#dd5182",
-//         "#ffaf1d",
-//  "#ff9435",
-//  "#ff7744",
-//  "#ff534f",
-//  "#ff1558"
+        //         "#ffaf1d",
+        //  "#ff9435",
+        //  "#ff7744",
+        //  "#ff534f",
+        //  "#ff1558"
 
-// "#2770b4",
-// "#6d68c1",
-// "#ae54b8",
-// "#e23295",
-// "#ff1560",
+        // "#2770b4",
+        // "#6d68c1",
+        // "#ae54b8",
+        // "#e23295",
+        // "#ff1560",
 
-"#5748ff", "#a13ed5", "#ca32ad", "#e72585", "#ff125e"
+        // "#5748ff", "#a13ed5", "#ca32ad", "#e72585", "#ff125e"
+        "#ff7200",
+        "#ff8300",
+        "#ff9400",
+        "#ffa400",
+        "#ffb300",
 
         // "rgb(212, 23, 83)",
         // "rgb(45, 182, 130)",
       ];
-
-
-
 
       //DOT
       const size = 150;
@@ -358,15 +490,26 @@ const Map2 = ({ countries, region }) => {
           return true;
         },
       };
-
-
-
-
-
-
-
+      var hoverId = null;
       //LAYERS
       map.on("load", () => {
+
+        // map.addSource("mapbox-dem", {
+        //   type: "raster-dem",
+        //   url: "mapbox://mapbox.mapbox-terrain-dem-v1",
+        //   tileSize: 512,
+        //   maxZoom: 16,
+        // })
+        // // map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 })
+        // map.addLayer({
+        //   id: "sky",
+        //   type: "sky",
+        //   paint: {
+        //     "sky-type": "atmosphere",
+        //     "sky-atmosphere-sun": [0.0, 90.0],
+        //     "sky-atmosphere-sun-intensity": 15,
+        //   },
+        // })
         // add a clustered GeoJSON source for a sample set of earthquakes
         map.addImage("pulsing-dot", pulsingDot, { pixelRatio: 2 });
 
@@ -414,24 +557,6 @@ const Map2 = ({ countries, region }) => {
           },
         });
 
-        // map.addLayer({
-
-        //   "id": "clusters-label",
-        //   "type": "symbol",
-        //   "source": "points",
-        //   "layout": {
-        //     "text-anchor": "top-left",
-        //     "text-field": "{country}",
-        //     "text-font": [
-        //       "DIN Offc Pro Medium",
-        //       "Arial Unicode MS Bold"
-        //     ],
-        //     "text-size": 12,
-        //   },
-        //    'paint': {
-        //        'text-color': 'white'}
-        //    });
-
         // circle and symbol layers for rendering individual earthquakes (unclustered points)
         map.addLayer({
           id: "Deaths",
@@ -443,14 +568,14 @@ const Map2 = ({ countries, region }) => {
             "circle-color": [
               "case",
               deaths1,
-              colors2[0],
+              colors[0],
               deaths2,
-              colors2[1],
+              colors[1],
               deaths3,
-              colors2[2],
+              colors[2],
               deaths4,
-              colors2[3],
-              colors2[4],
+              colors[3],
+              colors[4],
             ],
             "circle-opacity": 0.5,
             // 'circle-radius': 6,
@@ -466,11 +591,22 @@ const Map2 = ({ countries, region }) => {
           },
         });
         // circle and symbol layers for rendering individual earthquakes (unclustered points)
+
+        // map.addLayer({
+        //   id: "track",
+        //   type: "fill-extrusion",
+        //   source: "points",
+        //   paint: {
+        //     'fill-extrusion-opacity': 0.75,
+        //     'fill-extrusion-color': "red",
+        //     'fill-extrusion-height': ["get", "cases"],
+        //   }
+        // });
         map.addLayer({
           id: "Cases",
           type: "circle",
           source: "points",
-          filter: ["!=", "cluster", true],
+          // filter: ["!=", "cluster", true],
 
           // 'layout': {
           //   'text-field': [
@@ -482,8 +618,28 @@ const Map2 = ({ countries, region }) => {
           //   'text-size': 10,
           //   'visibility': 'visible'
           // },
+        
 
-          paint: {
+        //   paint: {
+        //     'fill-extrusion-color': {
+        //         property: 'cases',
+        //         type: 'interval',
+        //         stops: [
+        //             [337780, '#ffffd9'],
+        //             [5754356, '#edf8b1'],
+        //             [11364372, '#c7e9b4'],
+        //             [32885991, '#7fcdbb'],
+        //             [46017766, '#41b6c4'],
+        //             [66573504, '#1d91c0'],
+        //             [127185332, '#225ea8'],
+        //             [143964709, '#253494'],
+        //             [143964709, '#081d58']
+        //         ]
+        //     },
+        //     'fill-extrusion-height': ['/', ['get', 'cases'], 50],
+        //     'fill-extrusion-base': 0,
+        //     'fill-extrusion-opacity': .9
+        // },
             "circle-color": [
               "case",
               cases1,
@@ -509,8 +665,505 @@ const Map2 = ({ countries, region }) => {
               max,
               36,
             ],
-          },
+          
         });
+
+
+
+
+
+
+
+
+        const stores = {
+          'type': 'FeatureCollection',
+          'features': [
+          {
+          'type': 'Feature',
+          'geometry': {
+          'type': 'Point',
+          'coordinates': [-77.034084142948, 38.909671288923]
+          },
+          'properties': {
+          'phoneFormatted': '(202) 234-7336',
+          'phone': '2022347336',
+          'address': '1471 P St NW',
+          'city': 'Washington DC',
+          'country': 'United States',
+          'crossStreet': 'at 15th St NW',
+          'postalCode': '20005',
+          'state': 'D.C.'
+          }
+          },
+          {
+          'type': 'Feature',
+          'geometry': {
+          'type': 'Point',
+          'coordinates': [-77.049766, 38.900772]
+          },
+          'properties': {
+          'phoneFormatted': '(202) 507-8357',
+          'phone': '2025078357',
+          'address': '2221 I St NW',
+          'city': 'Washington DC',
+          'country': 'United States',
+          'crossStreet': 'at 22nd St NW',
+          'postalCode': '20037',
+          'state': 'D.C.'
+          }
+          },
+          {
+          'type': 'Feature',
+          'geometry': {
+          'type': 'Point',
+          'coordinates': [-77.043929, 38.910525]
+          },
+          'properties': {
+          'phoneFormatted': '(202) 387-9338',
+          'phone': '2023879338',
+          'address': '1512 Connecticut Ave NW',
+          'city': 'Washington DC',
+          'country': 'United States',
+          'crossStreet': 'at Dupont Circle',
+          'postalCode': '20036',
+          'state': 'D.C.'
+          }
+          },
+          {
+          'type': 'Feature',
+          'geometry': {
+          'type': 'Point',
+          'coordinates': [-77.0672, 38.90516896]
+          },
+          'properties': {
+          'phoneFormatted': '(202) 337-9338',
+          'phone': '2023379338',
+          'address': '3333 M St NW',
+          'city': 'Washington DC',
+          'country': 'United States',
+          'crossStreet': 'at 34th St NW',
+          'postalCode': '20007',
+          'state': 'D.C.'
+          }
+          },
+          {
+          'type': 'Feature',
+          'geometry': {
+          'type': 'Point',
+          'coordinates': [-77.002583742142, 38.887041080933]
+          },
+          'properties': {
+          'phoneFormatted': '(202) 547-9338',
+          'phone': '2025479338',
+          'address': '221 Pennsylvania Ave SE',
+          'city': 'Washington DC',
+          'country': 'United States',
+          'crossStreet': 'btwn 2nd & 3rd Sts. SE',
+          'postalCode': '20003',
+          'state': 'D.C.'
+          }
+          },
+          {
+          'type': 'Feature',
+          'geometry': {
+          'type': 'Point',
+          'coordinates': [-76.933492720127, 38.99225245786]
+          },
+          'properties': {
+          'address': '8204 Baltimore Ave',
+          'city': 'College Park',
+          'country': 'United States',
+          'postalCode': '20740',
+          'state': 'MD'
+          }
+          },
+          {
+          'type': 'Feature',
+          'geometry': {
+          'type': 'Point',
+          'coordinates': [-77.097083330154, 38.980979]
+          },
+          'properties': {
+          'phoneFormatted': '(301) 654-7336',
+          'phone': '3016547336',
+          'address': '4831 Bethesda Ave',
+          'cc': 'US',
+          'city': 'Bethesda',
+          'country': 'United States',
+          'postalCode': '20814',
+          'state': 'MD'
+          }
+          },
+          {
+          'type': 'Feature',
+          'geometry': {
+          'type': 'Point',
+          'coordinates': [-77.359425054188, 38.958058116661]
+          },
+          'properties': {
+          'phoneFormatted': '(571) 203-0082',
+          'phone': '5712030082',
+          'address': '11935 Democracy Dr',
+          'city': 'Reston',
+          'country': 'United States',
+          'crossStreet': 'btw Explorer & Library',
+          'postalCode': '20190',
+          'state': 'VA'
+          }
+          },
+          {
+          'type': 'Feature',
+          'geometry': {
+          'type': 'Point',
+          'coordinates': [-77.10853099823, 38.880100922392]
+          },
+          'properties': {
+          'phoneFormatted': '(703) 522-2016',
+          'phone': '7035222016',
+          'address': '4075 Wilson Blvd',
+          'city': 'Arlington',
+          'country': 'United States',
+          'crossStreet': 'at N Randolph St.',
+          'postalCode': '22203',
+          'state': 'VA'
+          }
+          },
+          {
+          'type': 'Feature',
+          'geometry': {
+          'type': 'Point',
+          'coordinates': [-75.28784, 40.008008]
+          },
+          'properties': {
+          'phoneFormatted': '(610) 642-9400',
+          'phone': '6106429400',
+          'address': '68 Coulter Ave',
+          'city': 'Ardmore',
+          'country': 'United States',
+          'postalCode': '19003',
+          'state': 'PA'
+          }
+          },
+          {
+          'type': 'Feature',
+          'geometry': {
+          'type': 'Point',
+          'coordinates': [-75.20121216774, 39.954030175164]
+          },
+          'properties': {
+          'phoneFormatted': '(215) 386-1365',
+          'phone': '2153861365',
+          'address': '3925 Walnut St',
+          'city': 'Philadelphia',
+          'country': 'United States',
+          'postalCode': '19104',
+          'state': 'PA'
+          }
+          },
+          {
+          'type': 'Feature',
+          'geometry': {
+          'type': 'Point',
+          'coordinates': [-77.043959498405, 38.903883387232]
+          },
+          'properties': {
+          'phoneFormatted': '(202) 331-3355',
+          'phone': '2023313355',
+          'address': '1901 L St. NW',
+          'city': 'Washington DC',
+          'country': 'United States',
+          'crossStreet': 'at 19th St',
+          'postalCode': '20036',
+          'state': 'D.C.'
+          }
+          }
+          ]
+          };
+           
+          /**
+          * Assign a unique id to each store. You'll use this `id`
+          * later to associate each point on the map with a listing
+          * in the sidebar.
+          */
+          stores.features.forEach((store, i) => {
+          store.properties.id = i;
+          });
+           
+          /**
+          * Wait until the map loads to make changes to the map.
+          */
+          map.on('load', () => {
+          /**
+          * This is where your '.addLayer()' used to be, instead
+          * add only the source without styling a layer
+          */
+          map.addSource('places', {
+          'type': 'geojson',
+          'data': stores
+          });
+           
+          /**
+          * Add all the things to the page:
+          * - The location listings on the side of the page
+          * - The markers onto the map
+          */
+          buildLocationList(stores);
+          addMarkers();
+          });
+           
+          /**
+          * Add a marker to the map for every store listing.
+          **/
+          function addMarkers() {
+          /* For each feature in the GeoJSON object above: */
+          for (const marker of stores.features) {
+          /* Create a div element for the marker. */
+          const el = document.createElement('div');
+          /* Assign a unique `id` to the marker. */
+          el.id = `marker-${marker.properties.id}`;
+          /* Assign the `marker` class to each marker for styling. */
+          el.className = 'marker';
+           
+          /**
+          * Create a marker using the div element
+          * defined above and add it to the map.
+          **/
+          new mapboxgl.Marker(el, { offset: [0, -23] })
+          .setLngLat(marker.geometry.coordinates)
+          .addTo(map);
+           
+          /**
+          * Listen to the element and when it is clicked, do three things:
+          * 1. Fly to the point
+          * 2. Close all other popups and display popup for clicked store
+          * 3. Highlight listing in sidebar (and remove highlight for all other listings)
+          **/
+          el.addEventListener('click', (e) => {
+          /* Fly to the point */
+          flyToStore(marker);
+          /* Close all other popups and display popup for clicked store */
+          createPopUp(marker);
+          /* Highlight listing in sidebar */
+          const activeItem = document.getElementsByClassName('active');
+          e.stopPropagation();
+          if (activeItem[0]) {
+          activeItem[0].classList.remove('active');
+          }
+          const listing = document.getElementById(
+          `listing-${marker.properties.id}`
+          );
+          listing.classList.add('active');
+          });
+          }
+          }
+           
+          /**
+          * Add a listing for each store to the sidebar.
+          **/
+          function buildLocationList(stores) {
+          for (const store of stores.features) {
+          /* Add a new listing section to the sidebar. */
+          const listings = document.getElementById('listings');
+          const listing = listings.appendChild(document.createElement('div'));
+          /* Assign a unique `id` to the listing. */
+          listing.id = `listing-${store.properties.id}`;
+          /* Assign the `item` class to each listing for styling. */
+          listing.className = 'item';
+           
+          /* Add the link to the individual listing created above. */
+          const link = listing.appendChild(document.createElement('a'));
+          link.href = '#';
+          link.className = 'title';
+          link.id = `link-${store.properties.id}`;
+          link.innerHTML = `${store.properties.address}`;
+           
+          /* Add details to the individual listing. */
+          const details = listing.appendChild(document.createElement('div'));
+          details.innerHTML = `${store.properties.city}`;
+          if (store.properties.phone) {
+          details.innerHTML += ` &middot; ${store.properties.phoneFormatted}`;
+          }
+           
+          /**
+          * Listen to the element and when it is clicked, do four things:
+          * 1. Update the `currentFeature` to the store associated with the clicked link
+          * 2. Fly to the point
+          * 3. Close all other popups and display popup for clicked store
+          * 4. Highlight listing in sidebar (and remove highlight for all other listings)
+          **/
+          link.addEventListener('click', function () {
+          for (const feature of stores.features) {
+          if (this.id === `link-${feature.properties.id}`) {
+          flyToStore(feature);
+          createPopUp(feature);
+          }
+          }
+          const activeItem = document.getElementsByClassName('active');
+          if (activeItem[0]) {
+          activeItem[0].classList.remove('active');
+          }
+          this.parentNode.classList.add('active');
+          });
+          }
+          }
+           
+          /**
+          * Use Mapbox GL JS's `flyTo` to move the camera smoothly
+          * a given center point.
+          **/
+          function flyToStore(currentFeature) {
+          map.flyTo({
+          center: currentFeature.geometry.coordinates,
+          zoom: 15
+          });
+          }
+           
+          /**
+          * Create a Mapbox GL JS `Popup`.
+          **/
+          function createPopUp(currentFeature) {
+          const popUps = document.getElementsByClassName('mapboxgl-popup');
+          if (popUps[0]) popUps[0].remove();
+          const popup = new mapboxgl.Popup({ closeOnClick: false })
+          .setLngLat(currentFeature.geometry.coordinates)
+          .setHTML(
+          `<h3>Sweetgreen</h3><h4>${currentFeature.properties.address}</h4>`
+          )
+          .addTo(map);
+          }
+
+
+
+
+
+  //       map.addSource('stadiumsData', {
+  //         type: 'geojson',
+  //         data: {
+  //                 type: 'FeatureCollection',
+  //                 features: [{
+  //                     type: 'Feature',
+  //                     geometry: {
+  //                         type: 'Point',
+  //                         coordinates: [37.44025, 55.817861]
+  //                     },
+  //                     properties: {
+  //                         stadium: 'Otkritie Arena',
+  //                         short: 'otkritie'
+  //                     },
+  //                     id: 1
+  //                 }, {
+  //                     type: 'Feature',
+  //                     geometry: {
+  //                         type: 'Point',
+  //                         coordinates: [44.548611, 48.734444]
+  //                     },
+  //                     properties: {
+  //                         stadium: 'Volgograd Arena',
+  //                         short: 'volgograd'
+  //                     },
+  //                     id: 2
+  //                 }, {
+  //                     type: 'Feature',
+  //                     geometry: {
+  //                         type: 'Point',
+  //                         coordinates: [39.737778, 47.209444]
+  //                     },
+  //                     properties: {
+  //                         stadium: 'Rostov Arena',
+  //                         short:'rostov'
+  //                     },
+  //                     id: 3
+  //                 }]
+  //             }
+  //     });
+
+  //     map.addLayer({
+  //       id: 'stadium-halo',
+  //       type: 'circle',
+  //       source: 'stadiumsData',
+  //       paint: {
+  //           'circle-color': '#162026',
+  //           'circle-radius': 10,
+  //           'circle-stroke-color': '#f1dbb9',
+  //           'circle-stroke-width': 1,
+  //           'circle-opacity': 0.25
+  //       }
+  //   });
+
+  //   map.addLayer({
+  //       id: 'stadium-circle',
+  //       type: 'circle',
+  //       source: 'stadiumsData',
+  //       paint: {
+  //           'circle-color': ['case',
+  //               ['boolean', ['feature-state', 'hover'], false],
+  //               '#f1dbb9',
+  //               '#162026'
+  //           ],
+  //           'circle-radius': 10,
+  //           'circle-stroke-color': '#f1dbb9',
+  //           'circle-stroke-width': 1,
+  //           'circle-opacity': 1
+  //       }
+  //   });
+
+
+
+
+
+
+  // map.on('mouseenter', 'stadium-circle', function(e) {
+  //     if (e.features.length) {
+  //         map.getCanvas().style.cursor = 'pointer';
+  //         if (hoverId) {
+  //             map.setFeatureState({source: 'stadiumsData', id: hoverId}, { hover: false});
+  //         }
+  //         hoverId = e.features[0].id;
+  //         map.setFeatureState({source: 'stadiumsData', id: hoverId}, { hover: true});
+  //         // $(`#stadium${hoverId}`).mouseenter();
+  //     }
+  // });
+
+  // map.on('mouseleave', 'stadium-circle', function() {
+  //     map.getCanvas().style.cursor = '';
+  //     if (hoverId) {
+  //         map.setFeatureState({source: 'stadiumsData', id: hoverId}, { hover: false});
+  //         // (`#stadium${hoverId}`).mouseleave();
+  //     }
+  //     hoverId =  null;
+  // });
+
+  // map.on('mousemove', 'Cases', function(e) {
+  //   // this.css('background-color', '#415766');
+  //   map.setFeatureState({source: 'stadiumsData', id: parseInt(this.id.match(/\d+/)[0])}, { hover: true});
+  // });
+
+  // map.on('mouseleave', 'Cases', function(e) {
+  //   // this.css('background-color', '');
+  //   map.setFeatureState({source: 'stadiumsData', id: parseInt(this.id.match(/\d+/)[0])}, { hover: false});
+  // });
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         map.addLayer({
           id: "Mortality",
@@ -522,14 +1175,14 @@ const Map2 = ({ countries, region }) => {
             "circle-color": [
               "case",
               mr1,
-              colors[0],
+              colors2[0],
               mr2,
-              colors[1],
+              colors2[1],
               mr3,
-              colors[2],
+              colors2[2],
               mr4,
-              colors[3],
-              colors[4],
+              colors2[3],
+              colors2[4],
             ],
             "circle-opacity": 0.5,
             // 'circle-radius': 18,
@@ -569,66 +1222,25 @@ const Map2 = ({ countries, region }) => {
               "black",
               "white",
             ],
-            // 'circle-color': [
-            //     "interpolate",
-            //     ["linear"],
-            //     ["get", "cases"],
-            //     min,
-            //     "#ffffb2",
-            //     max / 32,
-            //     "#fed976",
-            //     max / 16,
-            //     "#feb24c",
-            //     max / 8,
-            //     "#fd8d3c",
-            //     max / 4,
-            //     "#fc4e2a",
-            //     max / 2,
-            //     "#e31a1c",
-            //     max,
-            //     "#b10026"
-            //   ],
-            //   "circle-opacity": 0.75,
-            //       "circle-stroke-width": [
-            //         "interpolate",
-            //         ["linear"],
-            //         ["get", "cases"],
-            //         1,
-            //         1,
-            //         max,
-            //         1.75
-            //       ],
           },
         });
 
-        // map.addLayer({
-        //   id: "clusters2",
-        //   type: "symbol",
-        //   source: "points",
-        //   filter: ["!=", "cluster", true],
-        //   layout: {
-        //     "text-field": [
-        //       "number-format",
-        //       ["get", "points"],
-        //       { "min-fraction-digits": 1, "max-fraction-digits": 1 },
-        //     ],
-        //     "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
-        //     "text-size": 10,
-        //     visibility: "visible",
-        //   },
-        //   paint: {
-        //     "text-color": [
-        //       "case",
-        //       ["<", ["get", "deaths"], 3],
-        //       "black",
-        //       "white",
-        //     ],
-        //   },
-        // });
+
+// // Create marker
+// var marker = new mapboxgl.Marker();
+// // // Append marker to map
+// marker.addTo(map);
+
 
         // objects for caching and keeping track of HTML marker objects (for performance)
         const markers = {};
         let markersOnScreen = {};
+
+
+
+
+
+
 
         function updateMarkers() {
           const newMarkers = {};
@@ -666,11 +1278,6 @@ const Map2 = ({ countries, region }) => {
           updateMarkers();
         });
       }); // map(load) End
-
-
-
-
-
 
       // code for creating an SVG donut chart from feature properties
       function createDonutChart(props) {
@@ -746,13 +1353,6 @@ const Map2 = ({ countries, region }) => {
         </svg>
         </div>`;
 
-        // html2 += `<circle cx="${r2}" cy="${r2}" r="${r02}" fill="#212529" />
-        // <text  dominant-baseline="central" transform="translate(${r2}, ${r2})" fill="#dfdfdf" >
-        // ${total2.toLocaleString()}
-        // </text>
-        // </svg>
-        // </div>`;
-
         const el = document.createElement("div");
         el.innerHTML = html;
         return el.firstChild;
@@ -780,27 +1380,8 @@ const Map2 = ({ countries, region }) => {
 
       // inspect a cluster on click
       map.on("click", "Cases", function (e) {
-        // var features = map.queryRenderedFeatures(e.point, {
-        //   layers: ["clusters"],
-        // });
-        // var clusterId = features[0].properties.cluster_id;
-
-        // map
-        //   .getSource("clusters")
-        //   .getClusterExpansionZoom(clusterId, function (err, zoom) {
-        //     if (err) return;
-
-            const coordinates = e.features[0].geometry.coordinates.slice();
-
-            map.flyTo({ center:coordinates, zoom: 6 });
-
-            // map.easeTo({
-            
-            //   center: features[0].geometry.coordinates,
-            //   zoom: 4
-            // });
-            // console.log(clusterId, 'clusterID', features, 'features', features[0].properties.cluster_id)
-          // });
+        const coordinates = e.features[0].geometry.coordinates.slice();
+        map.flyTo({ center: coordinates, zoom: 6 });
       });
 
       //TOGGLE
@@ -869,116 +1450,72 @@ const Map2 = ({ countries, region }) => {
 
       //CIRCLES
       map.once("load", function () {
-        //POPUP
-
-        // const popup = new mapboxgl.Popup({
-        //   closeButton: false,
-        //   closeOnClick: false,
-        //   className: "popup",
-        // });
-
-        // let lastId;
-
-        // map.on("mousemove", "Cases", (e) => {
-        //   const id = e.features[0].properties.id;
-
-        //   if (id !== lastId) {
-        //     lastId = id;
-        //     const { cases, deaths, country, province, mort } =
-        //       e.features[0].properties;
-
-        //     // Change the pointer type on mouseenter
-        //     map.getCanvas().style.cursor = "pointer";
-
-        //     const coordinates = e.features[0].geometry.coordinates.slice();
-
-        //     const countryISO =
-        //       lookup.byCountry(country)?.iso2 ||
-        //       lookup.byInternet(country)?.iso2;
-        //     const countryFlag = `https://raw.githubusercontent.com/stefangabos/world_countries/master/data/flags/64x64/${countryISO?.toLowerCase()}.png`;
-        //     const provinceHTML =
-        //       province !== "null" ? `<p>Province: <b>${province}</b></p>` : "";
-        //     const mortalityRate = ((deaths / cases) * 100).toFixed(2);
-        //     const countryFlagHTML = Boolean(countryISO)
-        //       ? `<img src="${countryFlag}"></img>`
-        //       : "";
-
-        //     const HTML = `  ${countryFlagHTML}<p>Country: <b>${country}</b></p>
-        //         ${provinceHTML}
-        //         <p>Cases: <b>${numberWithCommas(cases)}</b></p>
-        //         <p>Deaths: <b>${numberWithCommas(deaths)}</b></p>
-        //         <p>Mortality Rate: <b>${mortalityRate}%</b></p>
-
-        //         `;
-
-        //     // Ensure that if the map is zoomed out such that multiple
-        //     // copies of the feature are visible, the popup appears
-        //     // over the copy being pointed to.
-        //     while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-        //       coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        //     }
-
-        //     popup.setLngLat(coordinates).setHTML(HTML).addTo(map);
-        //   }
-        // });
-
 
         const popup = new mapboxgl.Popup({
-        className: "popup"})
-     
+          className: "popup",
+        });
 
         var i = 0;
         let lastId;
         map.on("mousemove", "Cases", function (e) {
           const id = e.features[0].properties.id;
 
-            if (id !== lastId) {
-              lastId = id;
+//                   // Create link
+// var links = document.createElement('a');
+// // Append link to body
+// document.body.appendChild(links);
 
-              map.getCanvas().style.cursor = "pointer";
-
-          var coordinates = e.features[0].geometry.coordinates.slice();
-          // var cases = e.features[0].properties.cases;
-
-          let colorsCases = [
-            // " #006390",
-            " #7668b4",
-            " #ffa500",
-            // " #ff6a67",
-            // "#d75ea4",
-           ];
-
-  
-  
-
-          const { cases, deaths, country, province } =
-          e.features[0].properties;
-
-          while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-          }
+// // Reference eachother:
+// links.markers = markers;
+// markers.links = links;
 
 
 
-          const colorCase = [];
-          const statusCase = [];
-          const classText = [];
-            if (cases  < 50000) {
+          if (id !== lastId) {
+            lastId = id;
+
+            map.getCanvas().style.cursor = "pointer";
+            // map.getCanvas().style.backgroundColor = 'red';
+
+            var coordinates = e.features[0].geometry.coordinates.slice();
+            // var cases = e.features[0].properties.cases;
+
+            // let colorsCases = [
+            //   // " #006390",
+            //   " #7668b4",
+            //   " #ffa500",
+            //   // " #ff6a67",
+            //   // "#d75ea4",
+            // ];
+
+            const { cases, deaths, country, province} =
+              e.features[0].properties;
+
+
+      
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+              coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
+
+            const colorCase = [];
+            const statusCase = [];
+            const classText = [];
+            if (cases < 50000) {
               colorCase.push("#5d67a1");
               statusCase.push("Mild");
               classText.push("mild");
             }
-            if (cases >= 50000 && cases  < 100000) {
+            if (cases >= 50000 && cases < 100000) {
               colorCase.push("#955196");
               statusCase.push("Limited");
               classText.push("limited");
             }
-            if (cases  >= 100000 && cases  < 400000) {
+            if (cases >= 100000 && cases < 400000) {
               colorCase.push("#ffa600");
               statusCase.push("Moderate");
               classText.push("moderate");
             }
-            if (cases  >= 400000 && cases  < 16000000) {
+            if (cases >= 400000 && cases < 16000000) {
               colorCase.push("#ff6e54");
               statusCase.push("Serious");
               classText.push("serious");
@@ -993,24 +1530,24 @@ const Map2 = ({ countries, region }) => {
             const colorDeath = [];
             const statusDeath = [];
             const classText2 = [];
-       
-            if (deaths  < 2500) {
+
+            if (deaths < 2500) {
               colorDeath.push("#5d67a1");
               statusDeath.push("Mild");
               classText2.push("mild");
               //   blue
             }
-            if (deaths >= 2500 && deaths  < 5000) {
+            if (deaths >= 2500 && deaths < 5000) {
               colorDeath.push("#955196");
               statusDeath.push("Limited");
               classText2.push("limited");
             }
-            if (deaths  >= 5000 && deaths < 20000) {
+            if (deaths >= 5000 && deaths < 20000) {
               colorDeath.push("#cf8c11");
               statusDeath.push("Moderate");
               classText2.push("moderate");
             }
-            if (deaths  >= 20000 && deaths  < 80000) {
+            if (deaths >= 20000 && deaths < 80000) {
               colorDeath.push("#ff6e54");
               statusDeath.push("Serious");
               classText2.push("serious");
@@ -1021,120 +1558,118 @@ const Map2 = ({ countries, region }) => {
               classText2.push("extreme");
               //   pink
             }
-       
-       
 
-
-          const countryISO =
-                lookup.byCountry(country)?.iso2 ||
-                lookup.byInternet(country)?.iso2;
-              const countryFlag = `https://raw.githubusercontent.com/stefangabos/world_countries/master/data/flags/64x64/${countryISO?.toLowerCase()}.png`;
-              const provinceHTML =
-                province !== "null" ? `<p>Province: <b>${province}</b></p>` : "";
-              const mortalityRate = ((deaths / cases) * 100).toFixed(2);
-              const countryFlagHTML = Boolean(countryISO)
-                ? `<img src="${countryFlag}"></img>`
-                : "";
-  
-              const HTML = ` <p>Country: <b>${country}</b></p>
+            const countryISO =
+              lookup.byCountry(country)?.iso2 ||
+              lookup.byInternet(country)?.iso2;
+            const countryFlag = `https://raw.githubusercontent.com/stefangabos/world_countries/master/data/flags/64x64/${countryISO?.toLowerCase()}.png`;
+            const provinceHTML =
+              province !== "null" ? `<p>Province: <b>${province}</b></p>` : "";
+            const mortalityRate = ((deaths / cases) * 100).toFixed(2);
+            const countryFlagHTML = Boolean(countryISO)
+              ? `<img src="${countryFlag}"></img>`
+              : "";
+         
+            const HTML = ` <p>Country: <b>${country}</b></p>
                   ${provinceHTML}
-                  <p>Cases: <b>${numberWithCommas(cases)}</b><span class="${classText}">(${statusCase})</span></p>
-                  <p>Deaths: <b>${numberWithCommas(deaths)}</b><span class="${classText2}"}>(${statusDeath})</span></p>
+                  <p>Cases: <b>${numberWithCommas(
+                    cases
+                  )}</b><span class="${classText}">(${statusCase})</span></p>
+                  <p>Deaths: <b>${numberWithCommas(
+                    deaths
+                  )}</b><span class="${classText2}"}>(${statusDeath})</span></p>
                   <p>Mortality Rate: <b>${mortalityRate}%</b></p>
+                  
                
                   `;
 
+            popup
+              .setLngLat(coordinates)
+              .setHTML(
+                '<canvas className="info" id="foo' + country + '"></canvas>' + HTML
+              )
+              .addTo(map);
 
-         
+            // map.flyTo({ center: e.features[0].geometry.coordinates, zoom: 4 });
 
-                  popup.setLngLat(coordinates)
-                  .setHTML(  '<canvas className="info" id="foo' + i + '"></canvas>' + HTML)
-                  .addTo(map);
+            var ctx = document.getElementById("foo" + country).getContext("2d");
 
-                  // map.flyTo({ center: e.features[0].geometry.coordinates, zoom: 4 });
+            // document
+            // .getElementById(ctx)
+            // .addEventListener("click", function () {
+            //   map.flyTo({
+            //     zoom: 3,
+            //     center: [3.2, 1.8],
+            //     essential: true,
+            //   });
+            // });
 
+            console.log(ctx);
+            var chart = new Chart(ctx, {
+              type: "doughnut",
+              options: {
+                elements: {
+                  arc: {
+                    borderColor: "#212529",
+                    borderWidth: 1,
+                  },
+                },
 
-             
-      
-
-
-        
-          var ctx = document.getElementById("foo" + i).getContext("2d");
-
-          console.log(ctx);
-          var chart = new Chart(ctx, {
-            type: "doughnut",
-            options: {
-              elements: {
-                arc: {
-                  borderColor: "#212529",
+                responsive: true,
+                maintainAspectRatio: true,
+                legend: {
+                  display: false,
+                  position: "",
+                },
+                title: {
+                  display: false,
+                  text: "",
+                },
+                animation: {
+                  animateScale: true,
+                  animateRotate: true,
+                },
+                tooltips: {
+                  backgroundColor: "#212529",
+                  borderColor: "turquoise",
                   borderWidth: 1,
-                },
-              },
-           
-              responsive: true,
-              maintainAspectRatio: true,
-              legend: {
-                display: false,
-                position: "",
-              },
-              title: {
-                display: false,
-                text: "",
-              },
-              animation: {
-                animateScale: true,
-                animateRotate: true,
-              },
-              tooltips: {
-                backgroundColor: "#212529",
-                borderColor: "turquoise",
-                borderWidth: 1,
-                cornerRadius: 2,
-                displayColors: true,
-                bodyFontSize: 12,
-                labels: {
-                  usePointStyle: true,
-                },
-                callbacks: {
-                  label: function (item, data) {
-                    console.log(data.labels, item);
-                    return (
-                      data.datasets[item.datasetIndex].label +
-                      ": " +
-                      data.labels[item.index] +
-                      ": " +
-                      data.datasets[item.datasetIndex].data[item.index]
-                    );
+                  cornerRadius: 2,
+                  displayColors: true,
+                  bodyFontSize: 12,
+                  labels: {
+                    usePointStyle: true,
+                  },
+                  callbacks: {
+                    label: function (item, data) {
+                      console.log(data.labels, item);
+                      return (
+                        data.datasets[item.datasetIndex].label +
+                        ": " +
+                        data.labels[item.index] +
+                        ": " +
+                        data.datasets[item.datasetIndex].data[item.index]
+                      );
+                    },
                   },
                 },
               },
-            },
-            data: {
-              labels: [
-                "Cases",
-                "Deaths",
-              ],
-              datasets: [
-                {
-                  label: "Distribution",
-                  backgroundColor: [colorDeath, colorCase],
-                  borderColor: colorCase,
-                  // data: caseChart,
-                  // data: [12, 34, 16, 52, 13]
-                  data: [ deaths*2, cases],
-                },
-              ],
-            },
-
-          });
-          i++;
-
-      
+              data: {
+                labels: ["Cases", "Deaths"],
+                datasets: [
+                  {
+                    label: "Distribution",
+                    backgroundColor: [colorDeath, colorCase],
+                    borderColor: colorCase,
+                    // data: caseChart,
+                    // data: [12, 34, 16, 52, 13]
+                    data: [deaths * 2, cases],
+                  },
+                ],
+              },
+            });
+            i++;
           }
         });
-
-
 
         map.on("mouseleave", "Cases", function () {
           lastId = undefined;
@@ -1142,20 +1677,10 @@ const Map2 = ({ countries, region }) => {
           popup.remove();
         });
 
-
-      
-
-
-
-      
-
-
-
-
-
-
         // map.doubleClickZoom.enable();
         //IDS
+
+
         document
           .getElementById("africa")
           .addEventListener("click", function () {
@@ -1192,8 +1717,8 @@ const Map2 = ({ countries, region }) => {
               essential: true,
             });
           });
-        document.getElementById("asia")
-        .addEventListener("click", function () {
+
+        document.getElementById("asia").addEventListener("click", function () {
           map.flyTo({
             zoom: 3.1,
             center: [100, 17],
@@ -1210,45 +1735,68 @@ const Map2 = ({ countries, region }) => {
             });
           });
 
-        document
-          .getElementById("global")
-          .addEventListener("click", function () {
-            map.flyTo({
-              zoom: 1.7,
-              center: [0, 20],
-              essential: true,
-            });
-          });
 
-         
+          // document
+          // .getElementById("")
+          // .addEventListener("click", function () {
+          //   map.flyTo({
+          //     zoom: 3.7,
+          //     center: [131, -28],
+          //     essential: true,
+          //   });
+          // });
+
+        // const handleFly = () => {
+        //   this.map.state.map.flyTo({ center: [-118.4107187, 33.9415889] });
+        // };
+
+
+      //   $('.button').mouseenter(function() {
+      //     console.log('button')
+      //     $(this).css('background-color', '#415766');
+      //     map.setFeatureState({source: 'points', id: parseInt(this.id.button(/\d+/)[0])}, { hover: true});
+      // });
+      
+      // $('.button').mouseleave(function() {
+      //     $(this).css('background-color', '');
+      //     map.setFeatureState({source: 'points', id: parseInt(this.id.button(/\d+/)[0])}, { hover: false});
+      // });
 
     
-      
-
-   
 
 
+        map.on("move", () => {
+          setLng(map.getCenter().lng.toFixed(4));
+          setLat(map.getCenter().lat.toFixed(4));
+          setZoom(map.getZoom().toFixed(2));
+        });
+        // Clean up on unmount
+        return () => map.remove();
       }); //map(once) End
     } //id Data End
   }, [data]);
   //useEffect End
 
 
-
-
-
-  // console.log((countries[1].country[1]), 'count1')
-
   return (
-    <div className="App">
-  
-
-      <div className="mapContainer">
-
-        <div className="mapBox" ref={mapboxElRef} /> 
-      </div> 
+    <div className="mapContainer">
+      <div className="sb">
+<div className="heading">
+<h1>Our locations</h1>
+</div>
+<div id="listings" className="listings"></div>
+</div>
+<div id="map" className="map"></div>
+         
+      <div className="mapBox" ref={mapboxElRef} zoom={zoom} />
+   
+   
     </div>
   );
 };
 //Map End
-export default Map2;
+export default Map;
+
+
+
+

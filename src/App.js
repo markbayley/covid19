@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ContinentButtons from "./components/ContinentButtons";
-import Map from "./components/Map";
+import Map2 from "./components/Map2";
 import GlobalMenu from "./components/GlobalMenu";
 import Menu from "./components/Menu";
 import "./App.css";
-import { Button } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 
 import { CONTINENT_URL, COUNTRY_URL, GLOBAL_URL } from "./api/api";
 
@@ -16,7 +16,6 @@ const initialState = {
 };
 
 const App = () => {
-    
   //Fetch Continents Data
   const [globaldata, setGlobal] = useState([]);
   useEffect(() => {
@@ -25,7 +24,7 @@ const App = () => {
         const result = await fetch(GLOBAL_URL);
         const globaldata = await result.json();
         setGlobal([globaldata]);
-        console.log(globaldata, "globalDATA");
+        // console.log(globaldata, "globalDATA");
       } catch (error) {
         console.log(error);
       }
@@ -44,7 +43,7 @@ const App = () => {
   const globalCritical = getGlobal("criticalPerOneMillion");
   const globalTests = getGlobal("testsPerOneMillion");
   const globalRecovered = getGlobal("recoveredPerOneMillion");
-  console.log(globalCases, "globalCases");
+  // console.log(globalCases, "globalCases");
   const populationGlobal = getGlobal("population");
   const testsGlobal = getGlobal("tests");
   const todayGlobalCases = getGlobal("todayCases");
@@ -91,7 +90,7 @@ const App = () => {
 
   const continentNames = getContinents("continent");
 
-  console.log(continentNames, "continentNames");
+  // console.log(continentNames, "continentNames");
 
   const mortality = deaths / cases;
 
@@ -102,8 +101,12 @@ const App = () => {
     async function fetchCountries() {
       try {
         const res = await fetch(COUNTRY_URL);
+      
         const countries = await res.json();
-        setCountries([...countries.filter((country) => country.country.length <= 12)]);
+        // console.log({countries}, 'res')
+        setCountries([
+          ...countries.filter((country) => country.country.length <= 12),
+        ]);
         // console.log(countries, 'countries')
         for (let i = 0; i < countries.length; i++) {
           countryNames.push(String(countries[i].country));
@@ -119,9 +122,15 @@ const App = () => {
     return countries.map((country) => country[key]);
   };
 
-  const populationCountries = getCountries("population");
+  const cont = { countries }
+  // console.log(cont, 'cont')
+
+  // const populationCountries = getCountries("population");
 
   const [state, setState] = useState([initialState]);
+
+  const [zoom, setZoom ] = useState([3])
+  const [center, setCenter ] = useState([90, 20])
 
   const toggle = ({ region, index }) => {
     setState({
@@ -200,7 +209,23 @@ const App = () => {
     setState(!state);
   }
 
-  console.log(initialState, "initialState", state, "state");
+  const handleZoom = () => {
+    setZoom({
+     zoom: 6,
+    });
+  }
+
+  // const Places = () => {
+  //   return (
+  //   <div style={{position: "absolute", zIndex: 10 }}>
+  //     {countries.map((country, index) => (
+  //      <div><Button size="sm" key={index} id={country.country}>{country.country}</Button><br/></div>
+  //   ))}
+  //   </div>
+  //   );
+  
+  // }
+
 
   return (
     <>
@@ -214,6 +239,7 @@ const App = () => {
         toggleNorthAmerica={toggleNorthAmerica}
         toggleOceania={toggleOceania}
       />
+      {/* <Places /> */}
 
       <div className="sidebar">
         <Menu
@@ -239,7 +265,7 @@ const App = () => {
           todayCases={todayCases}
           todayDeaths={todayDeaths}
           todayRecovered={todayRecovered}
-       
+          toggleEurope={toggleEurope}
         />
         <GlobalMenu
           state={state.global}
@@ -272,7 +298,17 @@ const App = () => {
         />
       </div>
    
-      <Map countries={countries} region={state.region}/>
+
+      <Map2
+        countries={countries}
+        region={state.region}
+        zoom={zoom}
+        center={center}
+        handleZoom={handleZoom}
+        setCenter={setCenter}
+        cont={cont}
+    
+      />
     </>
   );
 };
