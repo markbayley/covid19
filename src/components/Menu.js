@@ -34,10 +34,10 @@ const Menu = ({
   todayDeaths,
   todayRecovered,
   handleClose,
-  toggleEurope,
+  toggleGlobal,
 }) => {
 
-  
+  console.log(testsMillion, 'testsMillion')
   // Filter Countries in Region
   const continentCountries = countries
   // console.log(countries, 'countries');
@@ -344,23 +344,29 @@ const Menu = ({
   const colorCase = [];
   for (let i = 0; i < casesMillion.length; i++) {
     if (casesMillion[i] / 1000 < 50) {
-      colorCase.push("#5d67a1");
+      colorCase.push("#6a5dfc");
       //   blue
     }
     if (casesMillion[i] / 1000 >= 50 && casesMillion[i] / 1000 < 100) {
-      colorCase.push("#955196");
+      colorCase.push("#a13ed5");
     }
     if (casesMillion[i] / 1000 >= 100 && casesMillion[i] / 1000 < 150) {
-      colorCase.push("#cf8c11");
+      colorCase.push("#ca32ad");
     }
     if (casesMillion[i] / 1000 >= 150 && casesMillion[i] / 1000 < 350) {
-      colorCase.push("#ff6e54");
+      colorCase.push("#e72585");
     }
     if (casesMillion[i] / 1000 >= 350) {
-      colorCase.push("#dd5182");
+      colorCase.push("#ff125e");
       //   pink
     }
   }
+
+  // "#6a5dfc",
+  // "#a13ed5",
+  // "#ca32ad",
+  // "#e72585",
+  // "#ff125e",
 
   const colorDeath = [];
   for (let i = 0; i < deathsMillion.length; i++) {
@@ -460,20 +466,23 @@ const Menu = ({
     {
       id: 1,
       title: "",
+      icon: "",
       content: (
         <>
        
         {/* <HandleSort /> */}
        
-          <Row style={{ height: "95vh", border: "" }} className="px-3">
+          <Row style={{ height: "95vh", border: "" }} className="pl-2 pr-2">
             {/* COLUMN ONE */}
-
-            <Col className="subtitle" style={{ maxWidth: "50%" }}>
+        
+            <Col className="subtitle" style={{ maxWidth: "100%",   overflowY: "scroll",  
+                height: "100%", }}>
  
               <Row
-                className="box mb-2 pt-4 pb-4 "
+                className="box-left mb-2 pt-4 pb-4 "
                 style={{
                   color: "#ccc",
+                 
                   //   border: "2px solid",
                   //   borderColor: colorCase[index],
                   //   borderRadius: "5px",
@@ -496,18 +505,8 @@ const Menu = ({
                       ></i>
                     )}
                   </h1>
-                  <h6 style={{ color: colorCase[index] }}>Cases/1k</h6>
-                </div>
-                <Animated animationIn="fadeInUp" isVisible={true}>
-                  <div style={{ color: colorActive[index] }}>Today&nbsp;</div>
-                  <strong className="mb-0">
-                    +
-                    {numberWithCommas(
-                      (todayCases[index] / 1000).toFixed(0) + "k"
-                    )}
-                  </strong>
-                </Animated>
-                {casesMillion[index] / 1000 <= 50 ? (
+                  <h6 style={{ color: colorCase[index] }}>Total Cases/1k</h6>
+                  {casesMillion[index] / 1000 <= 50 ? (
                   <Badge
                     variant="success"
                     text="dark"
@@ -549,6 +548,17 @@ const Menu = ({
                     EXTREME
                   </Badge>
                 )}
+                </div>
+                <Animated animationIn="fadeInUp" isVisible={true}>
+                  <div style={{ color: "#fff" }}>Today&nbsp;</div>
+                  <strong className="mb-0">
+                    +
+                    {numberWithCommas(
+                      (todayCases[index] / 1000).toFixed(1) + "k"
+                    )}
+                  </strong>
+                </Animated>
+              
               </Row>
               {/* <Row
                 style={{
@@ -651,7 +661,17 @@ const Menu = ({
 
               <Row className="subtitle mt-2">
                 <Col className="box pb-4 pt-3 px-2 mr-2">
-                  <div style={{ color: colorActive[index] }}>Active&nbsp;</div>
+                  <div style={{ color: "slategrey" }}>Mortality&nbsp;</div>
+                  <strong className="">
+                    {(
+                      (deathsMillion[index] / casesMillion[index]) *
+                      100
+                    ).toFixed(2)}
+                    %
+                  </strong>
+                </Col>
+                <Col className="box pb-4 pt-3 px-2 mr-2">
+                  <div style={{ color: "#ff9400" }}>Active&nbsp;</div>
                   <strong className="">
                     {(
                       (activeMillion[index] / casesMillion[index]) *
@@ -727,7 +747,7 @@ const Menu = ({
                         data: casesPerOneMillion,
                         fill: true,
                         backgroundColor: "rgba(75,192,192,0.05)",
-                        borderColor: "#ca32ad",
+                        borderColor: colorCase[index],
                       },
                       {
                         label: "Tests",
@@ -742,26 +762,44 @@ const Menu = ({
               </Row>
 
               <Row className="mt-2">
+              <Col className="box px-2 pt-4 pb-3 mr-2">
+                  <h4 className="mb-0">
+                    {(deathsMillion[index] / 1000).toFixed(2)}
+                    {deathsPerOneMillion[0] / 1000 <=
+                    deathsPerOneMillion[5] / 1000 ? (
+                      <i
+                        style={{ fontSize: "0.7em", color: "slategrey" }}
+                        className="fa fa-arrow-up"
+                      ></i>
+                    ) : (
+                      <i
+                        style={{ fontSize: "0.7em", color: "slategrey" }}
+                        className="fa fa-arrow-down"
+                      ></i>
+                    )}
+                  </h4>
+                  <h6 style={{ color: "slategrey" }}>Deaths/1k</h6>
+                </Col>
                 <Col className="box px-2 pt-4 pb-3 mr-2">
                   <h4 className="mb-0">
                     {(activeMillion[index] / 1000).toFixed(2)}
                     {activePerOneMillion[0] / 1000 <=
                     activePerOneMillion[5] / 1000 ? (
                       <i
-                        style={{ fontSize: "0.7em", color: colorActive[index] }}
+                        style={{ fontSize: "0.7em", color: "#ff9400" }}
                         className="fa fa-arrow-up"
                       ></i>
                     ) : (
                       <i
-                        style={{ fontSize: "0.7em", color: colorActive[index] }}
+                        style={{ fontSize: "0.7em", color: "#ff9400" }}
                         className="fa fa-arrow-down"
                       ></i>
                     )}
                   </h4>
-                  <h6 style={{ color: colorActive[index] }}>Active/1k</h6>
+                  <h6 style={{ color: "#ff9400" }}>Active/1k</h6>
 
                   <h6>
-                    {" "}
+                    {/* {" "}
                     {activeMillion[index] / 1000 <= 5 ? (
                       <Badge
                         variant="success"
@@ -818,7 +856,7 @@ const Menu = ({
                       >
                         EXTREME
                       </Badge>
-                    )}
+                    )} */}
                   </h6>
                 </Col>
                 <Col className="box px-2 pt-4 pb-3">
@@ -841,16 +879,35 @@ const Menu = ({
                 </Col>
               </Row>
 
+              <Row
+      className={"box mt-2 pb-1"}
+
+      style={{
+        color: "#ccc",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      //  width: "75%"
+      }}
+    >
+
               <DoughnutCases
                 casesMillion={casesMillion}
                 activeMillion={activeMillion}
                 index={index}
                 colorsPie={colorsPie}
                 continentCountries={continentCountries}
+                region={region}
               />
+            
 
-              <Row className="box subtitle mt-2 pt-1">
-                {casesMillion[index] / 1000 < 50 ? (
+
+
+
+
+              <Row className="subtitle mt-2 pt-1 px-2">
+           
+                {/* {casesMillion[index] / 1000 < 50 ? (
                   <h6>&nbsp;Mild</h6>
                 ) : casesMillion[index] / 1000 < 100 ? (
                   <h6>&nbsp;Limited</h6>
@@ -862,20 +919,20 @@ const Menu = ({
                   <h6>&nbsp;Extreme</h6>
                 )}
 
-                <h6>&nbsp;cases and </h6>
-
+                <h6>&nbsp;cases and </h6> */}
+     
                 {activeMillion[index] / 1000 < 5 ? (
-                  <h6>&nbsp;mild </h6>
+                  <h6>&nbsp;Mild </h6>
                 ) : activeMillion[index] / 1000 < 10 ? (
-                  <h6>&nbsp;limited </h6>
+                  <h6>&nbsp;Limited </h6>
                 ) : activeMillion[index] / 1000 < 15 ? (
-                  <h6>&nbsp;moderate </h6>
+                  <h6>&nbsp;Moderate </h6>
                 ) : activeMillion[index] / 1000 < 35 ? (
-                  <h6>&nbsp;serious </h6>
+                  <h6>&nbsp;Serious </h6>
                 ) : (
-                  <h6>&nbsp;extreme </h6>
+                  <h6>&nbsp;Extreme </h6>
                 )}
-                <h6>&nbsp;activity with&nbsp;</h6>
+                <h6>&nbsp;active cases with&nbsp;</h6>
 
                 {testsMillion[index] / 1000 < 100 ? (
                   <h6>very low</h6>
@@ -890,6 +947,7 @@ const Menu = ({
                 )}
                 <h6>&nbsp;testing.</h6>
               </Row>
+              </Row>
 
               {/* <Row className="subtitle mt-2 ">
                 <Col className="box py-3 px-2 mr-2" >
@@ -902,17 +960,21 @@ const Menu = ({
                     {(tests[index] / population[index]).toFixed(2)}pp
                   </strong>
                 </Col>
-                </Row> */}
-            </Col>
 
+
+
+                </Row> */}
+
+<Row id="bar-chart"  >
             {/* COLUMN TWO */}
 
             <Col
-              className="ml-2"
+              className="mt-2"
+           
               style={{
-                overflowY: "scroll",
-                height: "100%",
-                maxWidth: "50%",
+                // overflowY: "scroll",
+                // height: "100%",
+                maxWidth: "100%",
                 // marginRight: "5px",
               }}
             >
@@ -968,6 +1030,21 @@ const Menu = ({
               </Row> */}
            
             </Col>
+
+
+
+
+
+
+
+            </Row>
+
+
+            </Col>
+
+       
+
+          
           </Row>
         </>
       ),
@@ -1244,6 +1321,7 @@ const Menu = ({
                 index={index}
                 colorsPie={colorsPie}
                 continentCountries={continentCountries}
+                colorActive={colorActive}
               />
 
               <Row className="subtitle mt-2">
@@ -2844,7 +2922,8 @@ const Menu = ({
     };
 
     return (
-      <Row className="pl-3 pr-1">
+      // <Row className="pl-3 pr-1">
+      <>
         <div className="tabs" >
           {tabItems.map(({ id, icon, title }) => (
             <TabItem
@@ -2861,7 +2940,8 @@ const Menu = ({
             return tab === id ? content : "";
           })}
         </div>
-      </Row>
+        </>
+      // </Row>
     );
   };
 
@@ -2875,8 +2955,8 @@ const Menu = ({
         <div className="side">
           <Container>
             {/* <div className={!open ? "hidden" : "visible"}> */}
-            <Row className="title">
-              <Col xs={9} className="mt-1 pl-3">
+            <Row className="title mt-1">
+              <Col xs="auto" className="pb-1 pl-3 pr-0">
                 <Animated
                   animationIn="fadeInLeft"
                   animationOut="fadeOut"
@@ -2884,22 +2964,45 @@ const Menu = ({
                   className=""
                 >
                   {" "}
-                  {region}
+                  {region}&nbsp; 
+                  {/* <i className="fa fa-bar-chart ml-6 mb-2 mild"></i> */}
+       
+        <Button
+               style={{}}
+          className="button close mt-2 mb-1 "
+          onClick={toggleGlobal}
+          id="global"
+          variant="outline-info"
+        >
+          <h5> <i className="fa fa-filter"></i></h5>
+        </Button>
+           {/* <Button
+               style={{}}
+          className="button close mt-2 mb-1 "
+          onClick={toggleGlobal}
+          id="global"
+          variant="outline-info"
+        >
+          <h5><a href="bar-chart"> <i className="fa fa-bar-chart"></i></a></h5>
+        </Button> */}
+
                 </Animated>
               </Col>
               
 
-              <Col className="mt-2 mb-1 pr-2">
+              <Col className=" pr-2 pl-0">
+                
                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                  
                   <Button
                     // onClick={toggleAsia}
                     onClick={handleClose}
                     // size="lg"
                     variant="outline-info"
                     // style={{ margin: "10px", padding: "0px 10px 3px 10px" }}
-                    className="close button"
+                    className="close button mt-2"
                   >
-                    <h6>x</h6>
+                      <h5> <i className="fa fa-close"></i></h5>
                   </Button>
                 </div>
               </Col>
@@ -2930,13 +3033,8 @@ const Menu = ({
 export default Menu;
 
 let colorsPie = [
-  // "#444e86",
-  // "#955196",
-  // "#ffa600",
-  // "#ff6e54",
-  // "#dd5182",
-  // "#5748ff",
- " #6a5dfc",
+
+ "#6a5dfc",
   "#a13ed5",
   "#ca32ad",
   "#e72585",

@@ -20,15 +20,17 @@ const ContinentButtons = ({
           position: "absolute",
           background: "#212529",
           zIndex: 1,
-          opacity: 0.9,
+          opacity: 0.95,
           display: "flex",
           flexDirection: "column", //row mobile
           justifyContent: "center",
           alignItems: "center",
+          
           // flexWrap: "wrap" //mobile
+          boxShadow: "rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px",
         }}
       >
-            <div id="" className="legend" style={{ color: "grey", marginBottom: "45px" }}>
+            <div id="" className="legend" style={{ color: "grey", marginBottom: "0px" }}>
           <h5
             href="https://inblockdesign.com"
             style={{ marginTop: "0px", marginBottom: "0px" }}
@@ -37,19 +39,19 @@ const ContinentButtons = ({
           </h5>
           <h5
             href="https://inblockdesign.com"
-            style={{ marginTop: "0px", marginBottom: "0px" }}
+            style={{ marginTop: "0px", marginBottom: "10px" }}
           >
             DATAMAP
           </h5>
         </div>
                <Button
-               style={{position: "absolute", top: 80}}
-          className=" px-3 py-0 mr-5"
+               style={{position: "absolute", top: 7}}
+          className="mr-5 close button"
           onClick={toggleGlobal}
           id="global"
           variant="outline-info"
         >
-          <h5> <i className="fa fa-search pt-2"></i></h5>
+          <h5> <i className="fa fa-search"></i></h5>
         </Button>
         {/* <Button
                style={{position: "absolute", top: 10, left: 20}}
@@ -68,7 +70,7 @@ const ContinentButtons = ({
       </div> */}
    
      
-        <nav id="menu"></nav>
+      
         {/* <div id="state-legend" className="legend pl-1 pr-2" >
       
         
@@ -93,11 +95,11 @@ const ContinentButtons = ({
         </div> */}
 
         <Row>
-          <Col className="box px-0 mx-0">
-          <div id="" className="legend" >
+          <Col className="box px-0 mx-0 mb-4" >
+          <div id="" className="legend py-0" >
             <div className="mb-2 mt-0">Extreme</div>
           <div >
-         <span style={{ backgroundColor: "#ff125e", height: "22px", width: "22px"}} ></span>
+         <span style={{ border: "3px solid #ff8300", height: "22px", width: "22px", backgroundColor: "#ff125e"}} ></span>
           </div>
           <div>
         <span style={{ backgroundColor: "#e72585", height: "19px", width: "19px" }}></span>
@@ -188,13 +190,13 @@ const ContinentButtons = ({
         >
           <h6>Global</h6>
         </Button> */}
-    
+     
 
         <div id="" className="" style={{ color: "grey", lineHeight: 1 }}>
           {/* <p href="https://inblockdesign.com" >   <i className="fa fa-info-circle"></i> Inblock</p> */}
           <p
             href="https://inblockdesign.com"
-            style={{ marginTop: "10px", marginBottom: "0px" }}
+            style={{ marginTop: "65px", marginBottom: "0px" }}
             className="pb-0"
           >
             Inblock

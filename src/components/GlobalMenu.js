@@ -2008,6 +2008,7 @@ const Menu = ({
               <div id="geocoder" className="geocoder"></div>
 
               <div className="title mt-5 mb-2 ml-3">Filter</div>
+              <div id="menu" className="pl-2"></div>
               <fieldset className="">
                 <input
                   id="feature-filter"

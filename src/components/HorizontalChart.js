@@ -208,12 +208,17 @@ const HorizontalChart = ({
       style={{
         color: "#fff",
         display: "flex",
-        justifyContent: "center",
+        // justifyContent: "space-evenly",
         alignItems: "center",
       }}
     >
       <Row className="">
+   
         <strong style={{ color: "", fontSize: "14px" }} className="pt-1 ">
+        {/* <Button    size="sm"
+            variant="outline-dark"
+            style={{ color: "#fff" }}
+            className="sort p-1 mt-0">SORT</Button> */}
           <Button
             size="sm"
             variant="outline-dark"
@@ -273,6 +278,21 @@ const HorizontalChart = ({
               <i className="fa fa-arrow-up"></i>
             )}
             &nbsp;Death
+          </Button>
+          <Button
+            size="sm"
+            variant="outline-dark"
+            className="sort p-1 mt-0"
+            onClick={handleSortTests}
+            style={{ color: "#fff" }}
+            // style={{color: "", borderColor: "turquoise"}}
+          >
+            {sorted3 ? (
+              <i className="fa fa-arrow-down"></i>
+            ) : (
+              <i className="fa fa-arrow-up"></i>
+            )}
+            &nbsp;Tests
           </Button>
         </strong>
       </Row>
@@ -371,14 +391,14 @@ const HorizontalChart = ({
             //   stack: "0",
             // },
 
-            // {
-            //   label: "Tests",
-            //   data: testsPerMil,
-            //   backgroundColor: "teal",
-            //   borderColor: "#212529",
-            //   borderWidth: 1,
-            //   stack: "0",
-            // },
+            {
+              label: "Tests",
+              data: testsPerMil,
+              backgroundColor: "teal",
+              borderColor: "#212529",
+              borderWidth: 1,
+              stack: "0",
+            },
             // {
             //   label: "Mortality",
             //   data: mortalityRate,
@@ -389,7 +409,7 @@ const HorizontalChart = ({
             // },
           ],
         }}
-        height={countryNames.length * 40}
+        height={countryNames.length * 25}
         options={{
           onClick: function (evt, element) {
             if (element.length > 0) {

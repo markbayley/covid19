@@ -1,6 +1,7 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
-import { Row } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
+import Badge from "react-bootstrap/Badge";
 
 const DoughnutCases = ({
   casesMillion,
@@ -8,6 +9,8 @@ const DoughnutCases = ({
   index,
   colorsPie,
   continentCountries,
+  colorActive,
+  region
 }) => {
   // Create strata for Cases
   const cases1 = continentCountries.filter(
@@ -56,17 +59,9 @@ const DoughnutCases = ({
   );
 
   return (
-    <Row
-      className={"box mt-2 pb-3"}
-      style={{
-        color: "#ccc",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+<>
       <div
-        className="pt-5"
+        className=""
         style={{
           position: "absolute",
           display: "flex",
@@ -78,7 +73,7 @@ const DoughnutCases = ({
         {activeMillion[index] / 1000 < 5 ? (
           <h6>Mild</h6>
         ) : activeMillion[index] / 1000 < 10 ? (
-          <h6>Limited</h6>
+          <h6 >Limited</h6>
         ) : activeMillion[index] / 1000 < 15 ? (
           <h6>Moderate</h6>
         ) : activeMillion[index] / 1000 < 35 ? (
@@ -88,9 +83,14 @@ const DoughnutCases = ({
         )}
       </div>
 
-      <div className="py-2 " style={{ color: "#ccc", fontSize: "14px" }}>
-       <strong>Regional Status</strong>
-      </div>
+      {/* <div className="py-2 " style={{ color: "#ccc", fontSize: "14px" }}>
+       {region} Analysis: {continentCountries.length}
+      </div> */}
+
+      <Row className="px-2 pt-2" >
+      <h6 className="pb-0">Current Status of {region}. </h6>  
+     
+                </Row>
       <div style={{ zIndex: 1 }}>
         <Doughnut
           data={{
@@ -171,8 +171,9 @@ const DoughnutCases = ({
             },
           }}
         ></Doughnut>
+     
       </div>
-    </Row>
+    </>
   );
 };
 

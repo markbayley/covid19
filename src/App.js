@@ -6,6 +6,7 @@ import Menu from "./components/Menu";
 import "./App.css";
 import { Button, Form } from "react-bootstrap";
 
+
 import { CONTINENT_URL, COUNTRY_URL, GLOBAL_URL } from "./api/api";
 
 const initialState = {
@@ -165,7 +166,7 @@ const App = () => {
       ...initialState,
       open: true,
       region: "Europe",
-      index: 3,
+      index: 2,
       global: false,
     });
   };
@@ -183,7 +184,7 @@ const App = () => {
       ...initialState,
       open: true,
       region: "South America",
-      index: 2,
+      index: 3,
       global: false,
     });
   };
@@ -265,7 +266,7 @@ const App = () => {
           todayCases={todayCases}
           todayDeaths={todayDeaths}
           todayRecovered={todayRecovered}
-          toggleEurope={toggleEurope}
+          toggleGlobal={toggleGlobal}
         />
         <GlobalMenu
           state={state.global}
