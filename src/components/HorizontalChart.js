@@ -219,6 +219,21 @@ const HorizontalChart = ({
             variant="outline-dark"
             style={{ color: "#fff" }}
             className="sort p-1 mt-0">SORT</Button> */}
+                <Button
+            size="sm"
+            variant="outline-dark"
+            className="sort p-1 mt-0"
+            onClick={handleSortDeaths}
+            style={{ color: "#fff" }}
+            // style={{color: "", borderColor: "turquoise"}}
+          >
+            {sorted4 ? (
+              <i className="fa fa-arrow-down"></i>
+            ) : (
+              <i className="fa fa-arrow-up"></i>
+            )}
+            &nbsp;Death
+          </Button>
           <Button
             size="sm"
             variant="outline-dark"
@@ -248,37 +263,8 @@ const HorizontalChart = ({
             )}
             &nbsp;Cases
           </Button>
-          {/* <span >&nbsp;Tests</span> */}
-          {/* <Button
-            size="sm"
-            variant="outline-dark"
-            className="sort mt-0"
-            onClick={handleSortTests}
-            style={{ color: "#fff" }}
-            // style={{color: "", borderColor: "turquoise"}}
-          >
-            {sorted3 ? (
-              <i className="fa fa-arrow-down"></i>
-            ) : (
-              <i className="fa fa-arrow-up"></i>
-            )}
-            &nbsp;Tests
-          </Button> */}
-          <Button
-            size="sm"
-            variant="outline-dark"
-            className="sort p-1 mt-0"
-            onClick={handleSortDeaths}
-            style={{ color: "#fff" }}
-            // style={{color: "", borderColor: "turquoise"}}
-          >
-            {sorted4 ? (
-              <i className="fa fa-arrow-down"></i>
-            ) : (
-              <i className="fa fa-arrow-up"></i>
-            )}
-            &nbsp;Death
-          </Button>
+
+      
           <Button
             size="sm"
             variant="outline-dark"

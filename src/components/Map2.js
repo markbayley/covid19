@@ -178,6 +178,7 @@ const Map2 = ({ region, cont }) => {
               const el = document.createElement("div");
               const elcases = document.createElement("div");
               const el3 = document.createElement("div");
+ 
               // el.innerHTML = `i`;
 
         
@@ -246,13 +247,13 @@ const Map2 = ({ region, cont }) => {
                 map.getCanvas().style.cursor = "pointer";
 
             
-
+                // <p class="deaths">Mortality: <b>${numberWithCommas(mortality)}%</b>&nbsp;</p>
             
                  // 
                 //  <button class="close"><h6>x</h6></button>
                 // <p>Population: <b>${numberWithCommas(population)}m </b>&nbsp;</p>
                 // <p>Recovered: <b>+${numberWithCommas(todayRecovered)}</b>&nbsp;</p>
-                const popup = "mouseenter" === true ? "" : new mapboxgl.Popup({
+                const popup =  "mouseenter" === true ? "" : new mapboxgl.Popup({
                   offset: 5,
                   closeButton: true,
                   closeOnClick: true,
@@ -265,22 +266,23 @@ const Map2 = ({ region, cont }) => {
                     `<div class="right">
                   
                     <p><img src=${flag} alt="flag" /></p>
-                    <p><b>${title}</b>&nbsp;<span>Today</span>&nbsp;&nbsp;</p>
+                    <p><b>${title}</b>&nbsp;&nbsp;</p>
                   
-                    <p class="cases">Cases: <b>+${numberWithCommas(todayCases)}</b>&nbsp;</p>
+                
                     <p class="deaths">Deaths: <b>+${numberWithCommas(todayDeaths)}</b>&nbsp;</p>
-                 
-                    <p>Critical: <b>${numberWithCommas(critical)} </b>&nbsp;&nbsp;</p>
+                    <p class="deaths">Deaths/1k: <b>${numberWithCommas(deaths)}</b>&nbsp</p>
+                    <p class="deaths">Mortality: <b>${numberWithCommas(mortality)}%</b>&nbsp;&nbsp;&nbsp;</p>
 
-                    <p class="cases">Cases/1k: <b>${numberWithCommas(cases)}</b>&nbsp;</p>
-                    <p class="deaths">Deaths/1k: <b>${numberWithCommas(deaths)}</b>&nbsp;</p>
-                    <p class="active">Active/1k: <b>${numberWithCommas(active)}</b>&nbsp;</p>
-                    <p class="tests">Tests/1k: <b >${numberWithCommas(tests)}</b>&nbsp;&nbsp;&nbsp;</p>
-                    
-                 
-                    <p class="deaths">Mortality: <b>${numberWithCommas(mortality)}%</b>&nbsp;</p>
                     <p class="active">Active: <b>${numberWithCommas(activity)}%</b>&nbsp;</p>
-                    <p class="tests">Positive: <b>${numberWithCommas(positive)}%</b>&nbsp;</p>
+                    <p class="active">Active/1k: <b>${numberWithCommas(active)}</b>&nbsp;</p>
+                    <p>Critical: <b>${numberWithCommas(critical)} </b>&nbsp;&nbsp;&nbsp;</p>
+
+                    <p class="cases">Cases: <b>+${numberWithCommas(todayCases)}</b>&nbsp;</p>
+                    <p class="cases">Cases/1k: <b>${numberWithCommas(cases)}</b>&nbsp;&nbsp;&nbsp;</p>
+              
+                  
+                    <p class="tests">Tests/1k: <b >${numberWithCommas(tests)}</b>&nbsp;</p>
+                    <p class="tests">Positive: <b>${numberWithCommas(positive)}%</b></p>
 
                   
                 
@@ -365,13 +367,14 @@ const Map2 = ({ region, cont }) => {
         point.properties.id = i;
       });
 
-      // Holds visible airport features for filtering
+      // Holds visible features for filtering
       let points = [];
 
       // Create a popup, but don't add it to the map yet.
       const popup = new mapboxgl.Popup({
         closeButton: false,
-        className: "popup animated fadeIn",
+        className: "popup",
+        // offset: [0, 30]
       });
 
       const filterEl = document.getElementById("feature-filter");
@@ -754,6 +757,19 @@ const Map2 = ({ region, cont }) => {
           },
         });
 
+
+        map.addLayer({
+          id: "Pop",
+          source: "points",
+            filter: ["!=", "cluster", true],
+          type: "circle",
+          paint: {
+            "circle-color": "transparent",
+            "circle-radius": 30
+            
+          },
+        });
+
      
 
 
@@ -1029,7 +1045,7 @@ const Map2 = ({ region, cont }) => {
 
         var i = 0;
 
-        map.on("mousemove", "Cases", (e) => {
+        map.on("mouseenter", "Pop", (e) => {
           // Change the cursor style as a UI indicator.
           map.getCanvas().style.cursor = "pointer";
 
@@ -1100,10 +1116,10 @@ const Map2 = ({ region, cont }) => {
           }
 
           //POPUP
-          const countryISO =
-            lookup.byCountry(feature.properties.country)?.iso2 ||
-            lookup.byInternet(feature.properties.country)?.iso2;
-          const countryFlag = `https://raw.githubusercontent.com/stefangabos/world_countries/master/data/flags/64x64/${countryISO?.toLowerCase()}.png`;
+          // const countryISO =
+          //   lookup.byCountry(feature.properties.country)?.iso2 ||
+          //   lookup.byInternet(feature.properties.country)?.iso2;
+          // const countryFlag = `https://raw.githubusercontent.com/stefangabos/world_countries/master/data/flags/64x64/${countryISO?.toLowerCase()}.png`;
           const provinceHTML =
             feature.properties.province !== "null"
               ? `<p>Province: <b>${feature.properties.province}</b></p>`
@@ -1112,9 +1128,9 @@ const Map2 = ({ region, cont }) => {
             (feature.properties.deaths / feature.properties.cases) *
             100
           ).toFixed(2);
-          const countryFlagHTML = Boolean(countryISO)
-            ? `<img src="${countryFlag}"></img>`
-            : "";
+          // const countryFlagHTML = Boolean(countryISO)
+          //   ? `<img src="${countryFlag}"></img>`
+          //   : "";
 
           const HTML = ` 
         
@@ -1218,7 +1234,7 @@ const Map2 = ({ region, cont }) => {
           i++;
         });
 
-        map.on("mouseleave", "Cases", () => {
+        map.on("mouseleave", "Pop", () => {
           map.getCanvas().style.cursor = "";
           popup.remove();
         });

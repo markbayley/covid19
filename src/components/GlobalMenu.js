@@ -1985,7 +1985,10 @@ const Menu = ({
                     // style={{ margin: "10px", padding: "0px 10px 3px 10px" }}
                     className="close button"
                   >
-                    <h6>x</h6>
+                     <h5>
+                      {" "}
+                      <i className="fa fa-close"></i>
+                    </h5>
                   </Button>
                 </div>
               </Col>
