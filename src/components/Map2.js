@@ -5,7 +5,7 @@ import lookup from "country-code-lookup";
 import { numberWithCommas } from "../utils/numberWithCommas";
 import "./Map2.scss";
 import "mapbox-gl/dist/mapbox-gl.css";
-
+import Badge from "react-bootstrap/Badge";
 import { Button } from 'react-bootstrap';
 import { Chart } from "react-chartjs-2";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
@@ -107,8 +107,8 @@ const Map2 = ({ region, cont }) => {
         style: "mapbox://styles/mapbox/dark-v10",
         center: [131, -28],
         zoom: 3.5,
-        pitch: 10,
-        // projection: 'globe'
+        // pitch: 10,
+        // projection: 'globe',
       });
 
       // Update map on first load
@@ -689,6 +689,31 @@ const Map2 = ({ region, cont }) => {
           },
         });
 
+
+        // map.addLayer({
+        //   id: "Cases",
+        //   type: "heatmap",
+        //   source: "points",
+        //   filter: ["!=", "cluster", true],
+        //   paint: {
+        //     'heatmap-intensity': .7,
+        //     'heatmap-weight': 3,
+        //     'heatmap-radius': [ 'interpolate', [ 'linear' ], [ 'get', 'cases' ],    
+        //     1,
+        //     10,
+        //     1000000,
+        //     200, ],
+        //     'heatmap-opacity': 0.2,
+        //   },
+       
+        // });   
+        
+        //initialize choropleth colors
+
+
+
+
+
   
 
         map.addLayer({
@@ -1138,10 +1163,10 @@ const Map2 = ({ region, cont }) => {
           ${provinceHTML}
           <p>Cases: <b>${numberWithCommas(
             cases
-          )}</b><span class="${classText}">(${statusCase})</span></p>
+          )}</b><span class="${classText}">${statusCase}</span></p>
           <p>Deaths: <b>${numberWithCommas(
             deaths
-          )}</b><span class="${classText2}"}>(${statusDeath})</span></p>
+          )}</b><span class="${classText2}"}>${statusDeath}</span></p>
           <p>Mortality Rate: <b>${mortalityRate}%</b></p>
          
           `;

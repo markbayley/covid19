@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 // import { MenuItem, FormControl, Select, Card, CardContent } from '@material-ui/core';
 // import InfoBox from './InfoBox';
-import Map2 from './misc/Map2';
+import Map2 from './Map2';
 // import Table from './Table';
 import './App.css';
-import { PrintStat, sortData } from "./utils/util";
+import { PrintStat, sortData } from "../utils/util";
 // import LineGraph from './LineGraph';
 // import 'leaflet/dist/leaflet.css'; 
-import ContinentButtons from "./components/ContinentButtons";
+import ContinentButtons from "../components/ContinentButtons";
 
 import { Form } from 'react-bootstrap';
 

@@ -30,18 +30,18 @@ const Menu = ({
   todayDeaths,
   todayRecovered,
   handleClose,
-  toggleGlobal,
+  toggleSearch,
 }) => {
   console.log(testsMillion, "testsMillion");
   // Filter Countries in Region
-  const continentCountries = countries
-
-    .filter((country) => country.continent === region);
+  const continentCountries = countries.filter(
+    (country) => country.continent === region
+  );
   // Map Country Names && country.population > 1000000
 
-  const countryNames = continentCountries
-
-    .map((selectedCountry) => selectedCountry.country);
+  const countryNames = continentCountries.map(
+    (selectedCountry) => selectedCountry.country
+  );
 
   const [continentCountrys, setSampleData] = useState(continentCountries);
   const [sorted, setSorted] = useState(false);
@@ -305,7 +305,7 @@ const Menu = ({
               style={{ maxWidth: "100%", overflowY: "scroll", height: "100%" }}
             >
               <Row
-                className="box-left mb-2 pt-4 pb-4 "
+                className="box-left mb-2 pt-2 pb-4 "
                 style={{
                   color: "#ccc",
                 }}
@@ -327,7 +327,7 @@ const Menu = ({
                     )}
                   </h1>
                   <h6 style={{ color: colorCase[index] }}>Total Cases/1k</h6>
-                  {casesMillion[index] / 1000 <= 50 ? (
+                  {/* {casesMillion[index] / 1000 <= 50 ? (
                     <Badge
                       variant="success"
                       text="dark"
@@ -368,7 +368,7 @@ const Menu = ({
                     >
                       EXTREME
                     </Badge>
-                  )}
+                  )} */}
                 </div>
                 <Animated animationIn="fadeInUp" isVisible={true}>
                   <div style={{ color: "#fff" }}>Today&nbsp;</div>
@@ -381,47 +381,10 @@ const Menu = ({
                 </Animated>
               </Row>
 
-              <Row className="subtitle mt-2">
-                <Col className="box pb-4 pt-3 px-2 mr-2">
-                  <div style={{ color: "slategrey" }}>Mortality&nbsp;</div>
-                  <strong className="">
-                    {(
-                      (deathsMillion[index] / casesMillion[index]) *
-                      100
-                    ).toFixed(2)}
-                    %
-                  </strong>
-                </Col>
-                <Col className="box pb-4 pt-3 px-2 mr-2">
-                  <div style={{ color: "#ff9400" }}>Active&nbsp;</div>
-                  <strong className="">
-                    {(
-                      (activeMillion[index] / casesMillion[index]) *
-                      100
-                    ).toFixed(2)}
-                    %
-                  </strong>
-                </Col>
-
-                <Col className="box pb-4 pt-3 px-2">
-                  <div className="" style={{ color: "teal" }}>
-                    Positive&nbsp;
-                  </div>
-                  <strong>
-                    {numberWithCommas(
-                      (
-                        (casesMillion[index] / testsMillion[index]) *
-                        100
-                      ).toFixed(2) + "%"
-                    )}
-                  </strong>
-                </Col>
-              </Row>
-
-              <Row className="subtitle box pt-1 mt-2">
+              <Row className="subtitle pt-1 mt-2">
                 <Line
                   width={160}
-                  height={120}
+                  height={110}
                   options={{
                     legend: {
                       display: false,
@@ -483,9 +446,53 @@ const Menu = ({
                 />
               </Row>
 
-              <Row className="mt-2">
-                <Col className="box px-2 pt-4 pb-3 mr-2">
-                  <h4 className="mb-0">
+              <Row
+                className="subtitle pt-4"
+                style={{ display: "flex", justifyContent: "space-around" }}
+              >
+                {/* {deathsMillion[index] / 1000 < 0.5 ? (
+                  <Badge className="mild">Mild </Badge>
+                ) : deathsMillion[index] / 1000 < 1 ? (
+                  <Badge className="limited">Limited </Badge>
+                ) : deathsMillion[index] / 1000 < 1.5 ? (
+                  <Badge className="moderate">Moderate </Badge>
+                ) : deathsMillion[index] / 1000 < 3.5 ? (
+                  <Badge className="serious">Serious </Badge>
+                ) : (
+                  <Badge className="extreme">Extreme </Badge>
+                )} */}
+                {/* <h6>deaths.&nbsp;</h6> */}
+
+                {/* {activeMillion[index] / 1000 < 5 ? (
+                  <Badge className="mild">&nbsp;Mild </Badge>
+                ) : activeMillion[index] / 1000 < 10 ? (
+                  <Badge className="limited">&nbsp;Limited </Badge>
+                ) : activeMillion[index] / 1000 < 15 ? (
+                  <Badge className="moderate">&nbsp;Moderate </Badge>
+                ) : activeMillion[index] / 1000 < 35 ? (
+                  <Badge className="serious">&nbsp;Serious </Badge>
+                ) : (
+                  <Badge className="extreme">&nbsp;Extreme </Badge>
+                )} */}
+                {/* <h6>&nbsp;activity.&nbsp;</h6> */}
+
+                {/* {testsMillion[index] / 1000 < 100 ? (
+                  <Badge variant="dark">Very Low</Badge>
+                ) : testsMillion[index] / 1000 < 1000 ? (
+                  <Badge variant="dark">Low</Badge>
+                ) : testsMillion[index] / 1000 < 1500 ? (
+                  <Badge variant="dark">Average</Badge>
+                ) : testsMillion[index] / 1000 < 3500 ? (
+                  <Badge variant="dark">High</Badge>
+                ) : (
+                  <Badge variant="dark">Very High</Badge>
+                )} */}
+                {/* <h6>&nbsp;testing.</h6> */}
+              </Row>
+
+              <Row className="">
+                <Col className="px-2 pt-0 mr-2">
+                  <h3 className="mb-0">
                     {(deathsMillion[index] / 1000).toFixed(2)}
                     {deathsPerOneMillion[0] / 1000 <=
                     deathsPerOneMillion[5] / 1000 ? (
@@ -499,11 +506,11 @@ const Menu = ({
                         className="fa fa-arrow-down"
                       ></i>
                     )}
-                  </h4>
+                  </h3>
                   <h6 style={{ color: "slategrey" }}>Deaths/1k</h6>
                 </Col>
-                <Col className="box px-2 pt-4 pb-3 mr-2">
-                  <h4 className="mb-0">
+                <Col className=" px-2 pt-0 mr-2">
+                  <h3 className="mb-0">
                     {(activeMillion[index] / 1000).toFixed(2)}
                     {activePerOneMillion[0] / 1000 <=
                     activePerOneMillion[5] / 1000 ? (
@@ -517,14 +524,13 @@ const Menu = ({
                         className="fa fa-arrow-down"
                       ></i>
                     )}
-                  </h4>
+                  </h3>
                   <h6 style={{ color: "#ff9400" }}>Active/1k</h6>
 
-                  <h6>
-                  </h6>
+                  <h6></h6>
                 </Col>
-                <Col className="box px-2 pt-4 pb-3">
-                  <h4 className="mb-0">
+                <Col className="px-2 pt-0">
+                  <h3 className="mb-0">
                     {(testsMillion[index] / 1000).toFixed(0)}
                     {testsPerOneMillion[0] / 1000 <=
                     testsPerOneMillion[5] / 1000 ? (
@@ -538,13 +544,13 @@ const Menu = ({
                         className="fa fa-arrow-down"
                       ></i>
                     )}
-                  </h4>
+                  </h3>
                   <h6 style={{ color: "teal" }}>Tests/1k</h6>
                 </Col>
               </Row>
 
               <Row
-                className={"box mt-2 pb-1"}
+                className={" mt-2 pb-1"}
                 style={{
                   color: "#ccc",
                   display: "flex",
@@ -552,6 +558,8 @@ const Menu = ({
                   alignItems: "center",
                 }}
               >
+
+      
                 <DoughnutCases
                   casesMillion={casesMillion}
                   activeMillion={activeMillion}
@@ -560,35 +568,43 @@ const Menu = ({
                   continentCountries={continentCountries}
                   region={region}
                 />
+              </Row>
 
-                <Row className="subtitle mt-2 pt-1 px-2">
+              <Row className="subtitle mt-2">
+                <Col className=" pb-4 pt-3 px-2 mr-2">
+                  <div style={{ color: "slategrey" }}>Mortality&nbsp;</div>
+                  <strong className="">
+                    {(
+                      (deathsMillion[index] / casesMillion[index]) *
+                      100
+                    ).toFixed(2)}
+                    %
+                  </strong>
+                </Col>
+                <Col className=" pb-4 pt-3 px-2 mr-2">
+                  <div style={{ color: "#ff9400" }}>Active&nbsp;</div>
+                  <strong className="">
+                    {(
+                      (activeMillion[index] / casesMillion[index]) *
+                      100
+                    ).toFixed(2)}
+                    %
+                  </strong>
+                </Col>
 
-                  {activeMillion[index] / 1000 < 5 ? (
-                    <h6>&nbsp;Mild </h6>
-                  ) : activeMillion[index] / 1000 < 10 ? (
-                    <h6>&nbsp;Limited </h6>
-                  ) : activeMillion[index] / 1000 < 15 ? (
-                    <h6>&nbsp;Moderate </h6>
-                  ) : activeMillion[index] / 1000 < 35 ? (
-                    <h6>&nbsp;Serious </h6>
-                  ) : (
-                    <h6>&nbsp;Extreme </h6>
-                  )}
-                  <h6>&nbsp;active cases with&nbsp;</h6>
-
-                  {testsMillion[index] / 1000 < 100 ? (
-                    <h6>very low</h6>
-                  ) : testsMillion[index] / 1000 < 1000 ? (
-                    <h6>limited</h6>
-                  ) : testsMillion[index] / 1000 < 1500 ? (
-                    <h6>moderate</h6>
-                  ) : testsMillion[index] / 1000 < 3500 ? (
-                    <h6>high</h6>
-                  ) : (
-                    <h6>very high</h6>
-                  )}
-                  <h6>&nbsp;testing.</h6>
-                </Row>
+                <Col className=" pb-4 pt-3 px-2">
+                  <div className="" style={{ color: "teal" }}>
+                    +Tests&nbsp;
+                  </div>
+                  <strong>
+                    {numberWithCommas(
+                      (
+                        (casesMillion[index] / testsMillion[index]) *
+                        100
+                      ).toFixed(2) + "%"
+                    )}
+                  </strong>
+                </Col>
               </Row>
 
               <Row>
@@ -624,13 +640,9 @@ const Menu = ({
         </>
       ),
     },
-   
-
-  
   ];
 
   const TabsMenu = () => {
-
     const [tab, setTab] = useState(1);
     const TabItem = ({
       icon = "",
@@ -684,7 +696,10 @@ const Menu = ({
       >
         <div className="side">
           <Container>
-            <Row className="title my-1">
+            <Row
+              className="title my-1"
+              style={{ boxShadow: "2px 2px 2px 1px  rgb(0 0 0 / 10%)" }}
+            >
               <Col xs="auto" className="pl-2">
                 <Animated
                   animationIn="fadeInLeft"
@@ -697,7 +712,7 @@ const Menu = ({
                   <Button
                     style={{}}
                     className="button close  "
-                    onClick={toggleGlobal}
+                    onClick={toggleSearch}
                     id="global"
                     variant="outline-info"
                   >
@@ -746,12 +761,4 @@ const Menu = ({
 
 export default Menu;
 
-let colorsPie = [
-  "#6a5dfc",
-  "#a13ed5",
-  "#ca32ad",
-  "#e72585",
-  "#ff125e",
-];
-
-
+let colorsPie = ["#6a5dfc", "#a13ed5", "#ca32ad", "#e72585", "#ff125e"];

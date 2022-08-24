@@ -83,14 +83,15 @@ const DoughnutCases = ({
         )}
       </div>
 
-      {/* <div className="py-2 " style={{ color: "#ccc", fontSize: "14px" }}>
+      {/* <h6 className="py-2 " style={{ color: "#ccc", fontSize: "14px" }}>
        {region} Analysis: {continentCountries.length}
-      </div> */}
-
+      </h6> */}
       <Row className="px-2 pt-2" >
-      <h6 className="pb-0">Current Status of {region}. </h6>  
+      <h6 className="pb-0">Countries in {region} </h6>  
      
                 </Row>
+
+ 
       <div style={{ zIndex: 1 }}>
         <Doughnut
           data={{
@@ -171,8 +172,17 @@ const DoughnutCases = ({
             },
           }}
         ></Doughnut>
+   
+  
+
+    
+  
      
       </div>
+      <Row className="px-2 pt-2" >
+      <h6 className="pb-0">Grouped by Severity</h6>  
+     
+                </Row>
     </>
   );
 };

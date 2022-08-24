@@ -9,6 +9,7 @@ const ContinentButtons = ({
   toggleSouthAmerica,
   toggleAfrica,
   toggleGlobal,
+  toggleSearch
 }) => {
   return (
     <>
@@ -44,7 +45,7 @@ const ContinentButtons = ({
             DATAMAP
           </h5>
         </div>
-               <Button
+               {/* <Button
                style={{position: "absolute", top: 7}}
           className="mr-5 close button"
           onClick={toggleGlobal}
@@ -52,48 +53,19 @@ const ContinentButtons = ({
           variant="outline-info"
         >
           <h5> <i className="fa fa-search"></i></h5>
-        </Button>
-        {/* <Button
-               style={{position: "absolute", top: 10, left: 20}}
-          className=" px-3 ml-5"
-          onClick={toggleGlobal}
+        </Button> */}
+        <Button
+               style={{position: "absolute", top: 10, left: 15}}
+          className="pb-0"
+          onClick={toggleSearch}
           id="global"
           variant="outline-info"
         >
-          <h5> <i className="fa fa-star pt-2"></i></h5>
-        </Button> */}
+          <h5> <i className="fa fa-search "></i></h5>
+        </Button>
         
     
-        {/* <div id="" className="" style={{marginTop: '20px', zIndex: '2'}}>
-        <h5>Covid-19</h5>
-        <h6 >Data Map</h6>
-      </div> */}
-   
-     
-      
-        {/* <div id="state-legend" className="legend pl-1 pr-2" >
-      
-        
-          <div >
-         <span style={{ backgroundColor: "#ff125e", height: "20px", width: "20px"}} ></span>Extreme
-          </div>
-          <div>
-        <span style={{ backgroundColor: "#e72585", height: "17px", width: "17px" }}></span>Serious
-          </div>
-          <div>
-          <span style={{ backgroundColor: "#ca32ad", height: "14px", width: "14px" }}></span>Moderate
-          </div>
-          <div>
-          &nbsp;<span style={{ backgroundColor: "#a13ed5", height: "11px", width: "11px" }}></span>Limited
-          </div>
-          <div>
-            &nbsp;<span style={{ backgroundColor: "#6a5dfc", height: "8px", width: "8px" }}></span>Mild
-          </div>
-          <div >
-            <span style={{ backgroundColor: "orange" }} ></span>Active
-          </div>
-        </div> */}
-
+ 
         <Row>
           <Col className="box px-0 mx-0 mb-4" >
           <div id="" className="legend py-0" >
@@ -123,14 +95,7 @@ const ContinentButtons = ({
 
         </Row>
 
-        {/* <Button
-          className="button"
-          id="Afghanistan"
-          onClick={toggleAsia}
-          variant="outline-info"
-        >
-          <h6>Afghanistan</h6>
-        </Button> */}
+
         <Button
           className="button"
           id="asia"
@@ -182,21 +147,21 @@ const ContinentButtons = ({
         >
           <h6>Oceania</h6>
         </Button>
-        {/* <Button
+         <Button
           className="button"
           onClick={toggleGlobal}
           id="global"
           variant="outline-info"
         >
           <h6>Global</h6>
-        </Button> */}
+        </Button> 
      
 
         <div id="" className="" style={{ color: "grey", lineHeight: 1 }}>
           {/* <p href="https://inblockdesign.com" >   <i className="fa fa-info-circle"></i> Inblock</p> */}
           <p
             href="https://inblockdesign.com"
-            style={{ marginTop: "65px", marginBottom: "0px" }}
+            style={{ marginTop: "25px", marginBottom: "0px" }}
             className="pb-0"
           >
             Inblock

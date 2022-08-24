@@ -38,8 +38,10 @@ body {
 .right {
   display: flex;
   justify-content: start;
-  width: 88vw;
+  width: 85vw;
 }
+
+
 
 .popup2 .mapboxgl-popup-content {
   background-color: #212529;
@@ -52,7 +54,7 @@ body {
   color: #ffffff;
   margin-left: 20vw;
 
-  width: 76.5vw;
+  width: 85vw;
 
   p {
     border-bottom: 1px solid rgba(black, 0.2);
@@ -89,14 +91,16 @@ body {
   }
 }
 
-.popup3 {
 
-  border-radius: 50%;
-  height: 5rem;
-  width: 5rem;
-  background-color: rgb(252, 165, 5);
+
+// .popup3 {
+
+//   border-radius: 50%;
+//   height: 5rem;
+//   width: 5rem;
+//   background-color: rgb(252, 165, 5);
   
-}
+// }
 
 
 
@@ -247,7 +251,7 @@ body {
 }
 
 .mapboxgl-popup {
-  font-family: "Baloo Thambi 2", cursive;
+  // font-family: "Baloo Thambi 2", cursive;
   font-size: 12px;
   padding: 0;
   margin: 0;
@@ -286,23 +290,28 @@ body {
     span {
       font-size: 1rem;
       color: #fff;
-      padding: 0 5px;
+      // padding: 0 5px;
+      border-radius: 2px;
+      padding: 1px 5px;
     }
     span.mild {
       // color: #fff;
-      color: #6a5dfc;
+      background-color: #6a5dfc;
+      // border: 2px solid #6a5dfc;
+
+
     }
     span.limited {
-      color: #a13ed5;
+      background-color: #a13ed5;
     }
     span.moderate {
-      color: #ca32ad;
+      background-color: #ca32ad;
     }
     span.serious {
-      color: #e72585;
+      background-color: #e72585;
     }
     span.extreme {
-      color: #ff125e;
+      background-color: #ff125e;
     }
   }
 
@@ -348,7 +357,7 @@ svg:hover {
   color: #fff;
   border-radius: 3px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  // font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
 
   padding: 10px;
   // position: absolute;
@@ -850,7 +859,7 @@ a:hover {
 
 .map-overlay {
   position: absolute;
-  width: 100%;
+  width: 20vw;
   top: 0;
   bottom: 0;
   left: 0;
@@ -921,6 +930,7 @@ a:hover {
 }
 .mapboxgl-ctrl-geocoder {
   // min-width: 50%;
+  width: 240px;
 }
 
 .mapboxgl-ctrl-geocoder--icon-search {
@@ -930,4 +940,18 @@ a:hover {
 .mapboxgl-ctrl-geocoder--input {
   height: 35px;
   font-size: 11px !important;
+}
+
+
+
+
+@media only screen and (min-width: 1560px) {
+
+  .popup2 .mapboxgl-popup-content {
+    margin-left: 15vw;
+    width: 85vw;
+  // .map-overlay {
+  //   width: 15vw;
+  // }
+  }
 }

@@ -204,11 +204,11 @@ const HorizontalChart = ({
 
   return (
     <Row
-      className={"box"}
+      className={""}
       style={{
         color: "#fff",
         display: "flex",
-        // justifyContent: "space-evenly",
+        justifyContent: "space-evenly",
         alignItems: "center",
       }}
     >

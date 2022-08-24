@@ -3,17 +3,20 @@ import ContinentButtons from "./components/ContinentButtons";
 import Map2 from "./components/Map2";
 import GlobalMenu from "./components/GlobalMenu";
 import Menu from "./components/Menu";
+import Search from "./components/Search";
 import "./App.css";
-import { Button, Form } from "react-bootstrap";
+
 
 
 import { CONTINENT_URL, COUNTRY_URL, GLOBAL_URL } from "./api/api";
+
 
 const initialState = {
   global: false,
   open: false,
   region: "",
   index: "",
+  search: false
 };
 
 const App = () => {
@@ -91,9 +94,7 @@ const App = () => {
 
   const continentNames = getContinents("continent");
 
-  // console.log(continentNames, "continentNames");
-
-  const mortality = deaths / cases;
+ 
 
   //Fetch Countries Data
   const [countries, setCountries] = useState([]);
@@ -124,7 +125,7 @@ const App = () => {
   };
 
   const cont = { countries }
-  // console.log(cont, 'cont')
+ 
 
   // const populationCountries = getCountries("population");
 
@@ -206,6 +207,16 @@ const App = () => {
     });
   };
 
+  const toggleSearch = () => {
+    setState({
+      ...initialState,
+      search: true,
+      region: "Global",
+      index: 7,
+      global: false
+    });
+  };
+
   function handleClose() {
     setState(!state);
   }
@@ -239,6 +250,7 @@ const App = () => {
         toggleSouthAmerica={toggleSouthAmerica}
         toggleNorthAmerica={toggleNorthAmerica}
         toggleOceania={toggleOceania}
+        toggleSearch={toggleSearch}
       />
       {/* <Places /> */}
 
@@ -266,14 +278,14 @@ const App = () => {
           todayCases={todayCases}
           todayDeaths={todayDeaths}
           todayRecovered={todayRecovered}
-          toggleGlobal={toggleGlobal}
+          toggleSearch={toggleSearch}
         />
         <GlobalMenu
           state={state.global}
           toggleGlobal={toggleGlobal}
           handleClose={handleClose}
           index={state.index}
-          global={state.global}
+          // global={state.global}
           region={state.region}
           countries={countries}
           continents={continents}
@@ -296,6 +308,11 @@ const App = () => {
           testsG={testsGlobal}
           todayGlobalCases={todayGlobalCases}
           todayGlobalDeaths={todayGlobalDeaths}
+          toggleSearch={toggleSearch}
+        />
+        <Search 
+        state={state.search}
+        handleClose={handleClose}
         />
       </div>
    
