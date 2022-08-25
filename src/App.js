@@ -129,20 +129,20 @@ const App = () => {
 
   // const populationCountries = getCountries("population");
 
-  const [state, setState] = useState([initialState]);
+  const [state, setState] = useState("Asia");
 
   const [zoom, setZoom ] = useState([3])
   const [center, setCenter ] = useState([90, 20])
 
-  const toggle = ({ region, index }) => {
-    setState({
-      ...initialState,
-      open: true,
-      region: region,
-      index: index,
-      global: false,
-    });
-  };
+  // const toggle = ({ region, index }) => {
+  //   setState({
+  //     ...initialState,
+  //     open: true,
+  //     region: region,
+  //     index: index,
+  //     global: false,
+  //   });
+  // };
 
   const toggleAsia = () => {
     setState({
@@ -151,6 +151,7 @@ const App = () => {
       region: "Asia",
       index: 1,
       global: false,
+      search: false
     });
   };
   const toggleOceania = () => {
@@ -160,6 +161,7 @@ const App = () => {
       region: "Australia-Oceania",
       index: 4,
       global: false,
+      search: false
     });
   };
   const toggleEurope = () => {
@@ -169,6 +171,7 @@ const App = () => {
       region: "Europe",
       index: 2,
       global: false,
+      search: false
     });
   };
   const toggleAfrica = () => {
@@ -178,6 +181,7 @@ const App = () => {
       region: "Africa",
       index: 5,
       global: false,
+      search: false
     });
   };
   const toggleSouthAmerica = () => {
@@ -187,6 +191,7 @@ const App = () => {
       region: "South America",
       index: 3,
       global: false,
+      search: false
     });
   };
   const toggleNorthAmerica = () => {
@@ -196,6 +201,7 @@ const App = () => {
       region: "North America",
       index: 0,
       global: false,
+      search: false
     });
   };
   const toggleGlobal = () => {
@@ -204,6 +210,7 @@ const App = () => {
       global: true,
       region: "Global",
       index: 6,
+      search: false
     });
   };
 
@@ -244,7 +251,7 @@ const App = () => {
       <ContinentButtons
         toggleAsia={toggleAsia}
         toggleEurope={toggleEurope}
-        toggle={toggle}
+        // toggle={toggle}
         toggleGlobal={toggleGlobal}
         toggleAfrica={toggleAfrica}
         toggleSouthAmerica={toggleSouthAmerica}

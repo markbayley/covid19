@@ -312,7 +312,7 @@ const Menu = ({
               </Row>
 
 
-              <Row className="subtitle mt-2">
+              <Row className="subtitle mt-2 ">
                 {/* <Col className="box " style={{maxWidth: "50%"}}> */}
                 {/* <div
                   className="py-1"

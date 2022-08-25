@@ -69,26 +69,29 @@ const ContinentButtons = ({
         <Row>
           <Col className="box px-0 mx-0 mb-4" >
           <div id="" className="legend py-0" >
-            <div className="mb-2 mt-0">Extreme</div>
+            <div className="mb-0 mt-0">Cases&nbsp;&nbsp;</div>
           <div >
-         <span style={{ border: "3px solid #ff8300", height: "22px", width: "22px", backgroundColor: "#ff125e"}} ></span>
+          <span style={{ height: "10px", width: "9px", backgroundColor: "#6a5dfc", marginBottom: "2px"}} ></span>&nbsp;<span style={{ height: "12px", width: "12px", backgroundColor: "#ca32ad", marginBottom: "1px"}} ></span> <span style={{ height: "15px", width: "15px", backgroundColor: "#ff125e"}} ></span>
           </div>
+          <div className="mb-0 mt-1">Active&nbsp;&nbsp;</div>
           <div>
-        <span style={{ backgroundColor: "#e72585", height: "19px", width: "19px" }}></span>
+        <span style={{ backgroundColor: "#ff8300", height: "15px", width: "15px" }}></span>
           </div>
+          <div className="mb-0 mt-1">Tests&nbsp;&nbsp;</div>
           <div>
-          <span style={{ backgroundColor: "#ca32ad", height: "16px", width: "16px" }}></span>
+          <span style={{ backgroundColor: "teal", height: "15px", width: "15px" }}></span>
           </div>
+          <div className="mb-0 mt-1">Deaths&nbsp;&nbsp;</div>
           <div>
-       <span style={{ backgroundColor: "#a13ed5", height: "13px", width: "13px" }}></span>
+       <span style={{ backgroundColor: "slategrey", height: "15px", width: "15px" }}></span>
           </div>
-          <div>
+          {/* <div>
          <span style={{ backgroundColor: "#6a5dfc", height: "11px", width: "11px" }}></span>
-          </div>
+          </div> */}
           {/* <div >
             <span style={{ backgroundColor: "orange" }} ></span>
           </div> */}
-              <div className="mb-0 mt-1">Mild</div>
+             
           </div>
           </Col>
   

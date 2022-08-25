@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import numeral from "numeral";
+import {  Col, Row } from "react-bootstrap";
 
 
 
@@ -40,11 +41,11 @@ function LineGraph({ casesType, ...props }) {
   // console.log(data[178], 'DATA178')
 
   return (
-    <div className={props.className}>
+    <Col className="px-0">
       {data?.length > 0 && (
         <Line
-          width={300}
-          height={200}
+          width={160}
+          height={110}
         //   options={options}
 
         options={{
@@ -95,7 +96,7 @@ function LineGraph({ casesType, ...props }) {
           }}
         />
       )}
-    </div>
+    </Col>
   );
 }
 

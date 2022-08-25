@@ -106,7 +106,8 @@ const Map2 = () => {
         container: mapboxElRef.current,
         style: "mapbox://styles/mapbox/dark-v10",
         center: [131, -28],
-        zoom: 3.5,
+        zoom: 3,
+        minZoom: 2.5
         // pitch: 10,
         // projection: 'globe',
       });
@@ -164,10 +165,10 @@ const Map2 = () => {
               const todayRecovered = (country.todayRecovered).toFixed(0);
               const critical = (country.critical).toFixed(0);
 
-              const active = (country.activePerOneMillion / 1000).toFixed(2);
+              const active = (country.active / 1000).toFixed(2);
               const deaths = (country.deathsPerOneMillion / 1000).toFixed(2);
               const cases = (country.casesPerOneMillion / 1000).toFixed(2);
-              const tests = (country.testsPerOneMillion / 1000).toFixed(0);
+              const tests = (country.tests / 1000).toFixed(0);
               // const tests = (country.tests / 1000).toFixed(0);
               const mortality = (deaths/cases * 100).toFixed(2);
               const activity = (active/cases * 100).toFixed(2);
@@ -226,9 +227,9 @@ const Map2 = () => {
                 .addTo(map);
 
             
-                new mapboxgl.Marker(elcases)
-                .setLngLat([longitude, latitude])
-                .addTo(map);
+                // new mapboxgl.Marker(elcases)
+                // .setLngLat([longitude, latitude])
+                // .addTo(map);
              
 
 
@@ -242,7 +243,7 @@ const Map2 = () => {
                 //   map.getCanvas().style.cursor = "pointer";
                 // })
 
-              elcases.addEventListener("mouseenter", function () {
+              el3.addEventListener("mouseenter", function () {
                 // Change the cursor style as a UI indicator.
                 map.getCanvas().style.cursor = "pointer";
 
@@ -292,7 +293,7 @@ const Map2 = () => {
                   .addTo(map);
             
 
-                elcases.addEventListener("click", function () {
+                el3.addEventListener("click", function () {
                   map.getCanvas().style.cursor = "";
                   popup.remove();
                 });
@@ -351,7 +352,7 @@ const Map2 = () => {
       });
       document.getElementById("oceania").addEventListener("click", function () {
         map.flyTo({
-          zoom: 3.7,
+          zoom: 3,
           center: [131, -28],
           essential: true,
         });

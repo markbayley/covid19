@@ -64,6 +64,9 @@ const Search = ({
 
               <div className="title mt-4 mb-2 ml-3">Filter</div>
               <div id="menu" className="pl-2"></div>
+
+              <div id="toggle" className="pl-2"></div>
+              
               <fieldset className="mb-2"  style={{  boxShadow: "2px 2px 2px 1px  rgb(0 0 0 / 10%)"}}>
                 <input
                   id="feature-filter"
