@@ -297,20 +297,15 @@ const Menu = ({
       icon: "",
       content: (
         <>
-          <Row style={{ height: "95vh", border: "" }} className="pl-2 pr-2">
+          <Row style={{ height: "95vh", border: "" }} className="pl-1 pr-2">
             {/* COLUMN ONE */}
 
             <Col
               className="subtitle"
               style={{ maxWidth: "100%", overflowY: "scroll", height: "100%" }}
             >
-              <Row
-                className="box-left mb-2 pt-2 pb-4 "
-                style={{
-                  color: "#ccc",
-                }}
-              >
-                <div className="pr-3 pl-0" style={{}}>
+               <Row className="mb-2">
+                <Col className="pt-3 mr-2">
                   <h1 className="mb-0">
                     {(casesMillion[index] / 1000).toFixed(1)}
                     {casesPerOneMillion[0] / 1000 <=
@@ -369,16 +364,19 @@ const Menu = ({
                       EXTREME
                     </Badge>
                   )} */}
-                </div>
+                </Col>
+       <Col className="pt-4">
                 <Animated animationIn="fadeInUp" isVisible={true}>
-                  <div style={{ color: "#fff" }}>Today&nbsp;</div>
-                  <strong className="mb-0">
+                  <h6 style={{ color: "#fff" }}>Today&nbsp;</h6>
+                  <h3 className="mb-0">
                     +
                     {numberWithCommas(
                       (todayCases[index] / 1000).toFixed(1) + "k"
                     )}
-                  </strong>
+                  </h3>
                 </Animated>
+                </Col>
+             
               </Row>
 
               <Row className="subtitle pt-1 mt-2">
@@ -492,7 +490,7 @@ const Menu = ({
 
               <Row className="">
                 <Col className="px-2 pt-0 mr-2">
-                  <h3 className="mb-0">
+                  <h3 className="">
                     {(deathsMillion[index] / 1000).toFixed(2)}
                     {deathsPerOneMillion[0] / 1000 <=
                     deathsPerOneMillion[5] / 1000 ? (
@@ -510,7 +508,7 @@ const Menu = ({
                   <h6 style={{ color: "slategrey" }}>Deaths/1k</h6>
                 </Col>
                 <Col className=" px-2 pt-0 mr-2">
-                  <h3 className="mb-0">
+                  <h3 className="">
                     {(activeMillion[index] / 1000).toFixed(2)}
                     {activePerOneMillion[0] / 1000 <=
                     activePerOneMillion[5] / 1000 ? (
@@ -530,7 +528,7 @@ const Menu = ({
                   <h6></h6>
                 </Col>
                 <Col className="px-2 pt-0">
-                  <h3 className="mb-0">
+                  <h3 className="">
                     {(testsMillion[index] / 1000).toFixed(0)}
                     {testsPerOneMillion[0] / 1000 <=
                     testsPerOneMillion[5] / 1000 ? (
@@ -550,7 +548,7 @@ const Menu = ({
               </Row>
 
               <Row
-                className={" mt-2 pb-1"}
+                className={" mt-3 pb-1"}
                 style={{
                   color: "#ccc",
                   display: "flex",
@@ -572,38 +570,38 @@ const Menu = ({
 
               <Row className="subtitle mt-2">
                 <Col className=" pb-4 pt-3 px-2 mr-2">
-                  <div style={{ color: "slategrey" }}>Mortality&nbsp;</div>
-                  <strong className="">
+                  <h6 style={{ color: "slategrey" }}>Mortality&nbsp;</h6>
+                  <h3 className="">
                     {(
                       (deathsMillion[index] / casesMillion[index]) *
                       100
                     ).toFixed(2)}
                     %
-                  </strong>
+                  </h3>
                 </Col>
                 <Col className=" pb-4 pt-3 px-2 mr-2">
-                  <div style={{ color: "#ff9400" }}>Active&nbsp;</div>
-                  <strong className="">
+                  <h6 style={{ color: "#ff9400" }}>Active&nbsp;</h6>
+                  <h3 className="">
                     {(
                       (activeMillion[index] / casesMillion[index]) *
                       100
                     ).toFixed(2)}
                     %
-                  </strong>
+                  </h3>
                 </Col>
 
                 <Col className=" pb-4 pt-3 px-2">
-                  <div className="" style={{ color: "teal" }}>
-                    +Tests&nbsp;
-                  </div>
-                  <strong>
+                  <h6 className="" style={{ color: "teal" }}>
+                    Positive&nbsp;
+                  </h6>
+                  <h3>
                     {numberWithCommas(
                       (
                         (casesMillion[index] / testsMillion[index]) *
                         100
                       ).toFixed(2) + "%"
                     )}
-                  </strong>
+                  </h3>
                 </Col>
               </Row>
 
@@ -700,7 +698,7 @@ const Menu = ({
               className="title my-1"
               style={{ boxShadow: "2px 2px 2px 1px  rgb(0 0 0 / 10%)" }}
             >
-              <Col xs="auto" className="pl-2">
+              <Col xs="auto" className="pl-3">
                 <Animated
                   animationIn="fadeInLeft"
                   animationOut="fadeOut"

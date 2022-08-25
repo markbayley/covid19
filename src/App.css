@@ -280,10 +280,7 @@
   background-color: #a13ed5 ;
 }
 
-.active {
-  color: orange;
-  /* background-color: #ca32ad; */
-}
+
 
 .serious {
   color: #fff;
@@ -295,6 +292,7 @@
   background-color: #ff125e;
 }
 
+
 .tests {
   color:rgb(31, 174, 160);
 }
@@ -303,3 +301,11 @@
   color: #e72585;
 }
 
+.deaths {
+  color: slategrey;
+}
+
+.active {
+  color: orange;
+  /* background-color: #ca32ad; */
+}

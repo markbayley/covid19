@@ -16,6 +16,7 @@ const DoughnutCases = ({
   const cases1 = continentCountries.filter(
     (selectedCountry) => selectedCountry.casesPerOneMillion / 1000 < 50
   );
+  // const c1 = data.datasets[item.datasetIndex].data[item.index];
   const cases2 = continentCountries.filter(
     (selectedCountry) =>
       selectedCountry.casesPerOneMillion / 1000 >= 50 &&
@@ -87,7 +88,7 @@ const DoughnutCases = ({
        {region} Analysis: {continentCountries.length}
       </h6> */}
       <Row className="px-2 pt-2" >
-      <h6 className="pb-0">Countries in {region} </h6>  
+      <h6 className="pb-0">{region} </h6>  
      
                 </Row>
 
@@ -141,7 +142,8 @@ const DoughnutCases = ({
             },
             title: {
               display: false,
-              text: "",
+              text: " "
+             
             },
             animation: {
               animateScale: true,
@@ -180,7 +182,7 @@ const DoughnutCases = ({
      
       </div>
       <Row className="px-2 pt-2" >
-      <h6 className="pb-0">Grouped by Severity</h6>  
+      <h6 className="pb-0">Countries Grouped by Severity</h6>  
      
                 </Row>
     </>
@@ -189,11 +191,4 @@ const DoughnutCases = ({
 
 export default DoughnutCases;
 
-let colorsCases = [
- " #006390",
- " #7668b4",
- " #ffa500",
- " #ff6a67",
- "#d75ea4",
-];
-let colorsActive = ["#0082be", "#ad93f9", "#ffa500", "#ff7872", "#ff76c8"];
+

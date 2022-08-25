@@ -27,8 +27,7 @@ const Search = ({
       >
         <div className="side" >
           <Container>
-            {/* <div className={!open ? "hidden" : "visible"}> */}
-            <Row className="title my-1">
+            <Row className="title my-1" >
               <Col xs="auto" className="pl-2">
                 <Animated
                   animationIn="fadeInLeft"
@@ -38,23 +37,12 @@ const Search = ({
                 >
                   {" "}
                   {region}&nbsp;
-                  <Button
-                    style={{}}
-                    className="button close  "
-  
-                    id="global"
-                    variant="outline-info"
-                  >
-                    <h5>
-                      {" "}
-                      <i className="fa fa-filter"></i>
-                    </h5>
-                  </Button>
+           
                 </Animated>
               </Col>
 
-              <Col className="ml-2 pr-1">
-                <div style={{ display: "flex", justifyContent: "flex-end"}}>
+              <Col className="ml-2 pr-1 mt-1">
+                <div  style={{ display: "flex", justifyContent: "end"}}>
                   <Button
                     onClick={handleClose}
                     variant="outline-info"

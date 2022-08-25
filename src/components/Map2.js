@@ -16,7 +16,7 @@ import { Animated } from "react-animated-css";
 mapboxgl.accessToken =
   "pk.eyJ1IjoidHJib3QiLCJhIjoiY2s3NmFscm1xMTV0MDNmcXFyOWp1dGhieSJ9.tR2IMHDqBPOf_AeGjHOKFA";
 
-const Map2 = ({ region, cont }) => {
+const Map2 = () => {
   const mapboxElRef = useRef(null);
 
   const fetcher = async (url) =>

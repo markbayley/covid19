@@ -944,6 +944,13 @@ a:hover {
 
 
 
+@media only screen and (max-width: 560px) {
+  .map-overlay {
+    width: 100vw;
+  }
+}
+
+
 
 @media only screen and (min-width: 1560px) {
 

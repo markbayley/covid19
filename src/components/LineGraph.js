@@ -44,7 +44,7 @@ function LineGraph({ casesType, ...props }) {
       {data?.length > 0 && (
         <Line
           width={300}
-          height={150}
+          height={200}
         //   options={options}
 
         options={{
@@ -86,7 +86,7 @@ function LineGraph({ casesType, ...props }) {
             datasets: [
               {
                 backgroundColor: "rgba(75,192,192,0.2)",
-                borderColor: "rgba(75,192,192,1)",
+                borderColor: "#e72585",
                 // data: data,
                 data: [data[30], data[60], data[90], data[120], data[150], data[178]],
               

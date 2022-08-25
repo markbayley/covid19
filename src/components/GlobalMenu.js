@@ -104,13 +104,13 @@ const Menu = ({
   const cases1 = continents.filter(
     (selectedContinent) => selectedContinent.casesPerOneMillion / 1000 < 50
   );
-  console.log((cases1[6]), 'cases1')
+  // console.log((cases1[6]), 'cases1')
   const cases2 = continents.filter(
     (selectedContinent) =>
       selectedContinent.casesPerOneMillion / 1000 >= 50 &&
       selectedContinent.casesPerOneMillion / 1000 < 100
   );
-  console.log(cases2.countries, 'cases2')
+  // console.log(cases2.countries, 'cases2')
   const cases3 = continents.filter(
     (selectedCountry) =>
       selectedCountry.casesPerOneMillion / 1000 >= 100 &&
@@ -274,7 +274,7 @@ const Menu = ({
               style={{ maxWidth: "100%", overflowY: "scroll", height: "100%" }}
             >
               <Row className="mb-2">
-                <Col className="box pt-4 mr-2">
+                <Col className="pt-3 mr-2">
                   <h1>
                     {" "}
                    {casesGlobal}
@@ -282,45 +282,44 @@ const Menu = ({
                  
                     {casesGlobal[0] / 1000 >= casesGlobal[5] / 1000 ? (
                       <i
-                        style={{ fontSize: "0.7em", color: colorCases[index] }}
-                        className="fa fa-arrow-up"
+                        style={{ fontSize: "0.7em"}}
+                        className="fa fa-arrow-up cases"
                       ></i>
                     ) : (
                       <i
-                        style={{ fontSize: "0.7em", color: colorCases[index] }}
-                        className="fa fa-arrow-down"
+                        style={{ fontSize: "0.7em" }}
+                        className="fa fa-arrow-down cases"
                       ></i>
                     )}{" "}
                     <h6 className="cases">Global Cases/1k</h6>
                     
                   </h1>
+         
                 </Col>
 
-                <Col className="">
-                  <Row style={{}} className="box pt-3 pb-2 ">
-                    {" "}
-                    <h3 className="">{testsGlobal}
-                    <h6 className="pt-0 tests">Tests/1k</h6>
-                    </h3>&nbsp;
-                  </Row>
-                  <Row style={{}} className="box mt-2 pt-3 pb-2">
-                    {" "}
-                    <h3>{activeGlobal}
-                    <h6 className="pt-0 active">Active/1k</h6>
-                    </h3>&nbsp;
-                  </Row>
+                <Col className="pt-4">
+                <Animated animationIn="fadeInUp" isVisible={true}>
+                  <h6 style={{ color: "#fff" }}>Today&nbsp;</h6>
+                  <h3 className="mb-0">
+                    +
+                    {numberWithCommas(
+                      (todayGlobalCases /1000).toFixed(1) + 'k'
+                    )}
+                  </h3>
+                </Animated>
+           
                 </Col>
               </Row>
 
 
-              <Row className="subtitle box mt-2 px-0">
+              <Row className="subtitle mt-2">
                 {/* <Col className="box " style={{maxWidth: "50%"}}> */}
-                <div
+                {/* <div
                   className="py-1"
                   style={{ color: "grey", fontSize: "14px" }}
                 >
                   Cases Trend
-                </div>
+                </div> */}
                 <LineGraph casesType={casesType} />
                 {/* </Col> */}
                 {/* <Col className="box ml-2" style={{maxWidth: "50%"}}>
@@ -328,12 +327,72 @@ const Menu = ({
             */}
               </Row>
 
+              <Row className="mt-4">
+                <Col className="px-3 pt-0 mr-2">
+                  <h3 className="">
+                    {deathsGlobal}
+                    {deathsPerOneMillion[0] / 1000 <=
+                    deathsPerOneMillion[5] / 1000 ? (
+                      <i
+                        style={{ fontSize: "0.7em", color: "slategrey" }}
+                        className="fa fa-arrow-up"
+                      ></i>
+                    ) : (
+                      <i
+                        style={{ fontSize: "0.7em", color: "slategrey" }}
+                        className="fa fa-arrow-down"
+                      ></i>
+                    )}
+                  </h3>
+                  <h6 style={{ color: "slategrey" }}>Deaths/1k</h6>
+                </Col>
+                <Col className=" px-2 pt-0 mr-2">
+                  <h3 className="">
+                    {activeGlobal}
+                    {activePerOneMillion[0] / 1000 <=
+                    activePerOneMillion[5] / 1000 ? (
+                      <i
+                        style={{ fontSize: "0.7em", color: "#ff9400" }}
+                        className="fa fa-arrow-up"
+                      ></i>
+                    ) : (
+                      <i
+                        style={{ fontSize: "0.7em", color: "#ff9400" }}
+                        className="fa fa-arrow-down"
+                      ></i>
+                    )}
+                  </h3>
+                  <h6 style={{ color: "#ff9400" }}>Active/1k</h6>
+
+                  <h6></h6>
+                </Col>
+                <Col className="px-2 pt-0">
+                  <h3 className="">
+                    {testsGlobal}
+                    {testsPerOneMillion[0] / 1000 <=
+                    testsPerOneMillion[5] / 1000 ? (
+                      <i
+                        style={{ fontSize: "0.7em", color: "teal" }}
+                        className="fa fa-arrow-up"
+                      ></i>
+                    ) : (
+                      <i
+                        style={{ fontSize: "0.7em", color: "teal" }}
+                        className="fa fa-arrow-down"
+                      ></i>
+                    )}
+                  </h3>
+                  <h6 style={{ color: "teal" }}>Tests/1k</h6>
+                </Col>
+              </Row>
+
+
              
 
 
               
 
-              <Row className="box my-2 py-2">
+              <Row className=" my-2 py-3">
                
 
 
@@ -342,12 +401,12 @@ const Menu = ({
                   className="box ml-2 px-0"
                   style={{ color: "#fff", fontSize: "14px", maxWidth: "50%" }}
                 > */}
-                  <div
-                className="pt-2 pb-2 ml-2"
+                  <h6 style={{display: "flex", justifyContent:"center",   alignItems: "center", width: "100%"}}
+                className=" pt-2 pb-1 ml-2"
               
               >
-                Continent Analysis
-              </div>
+                {region}
+              </h6>
                   <Doughnut
                     // width={200}
                     height={160}
@@ -401,7 +460,7 @@ const Menu = ({
                         position: "",
                       },
                       title: {
-                        display: true,
+                        display: false,
                         text: '' 
                         
 
@@ -436,7 +495,50 @@ const Menu = ({
                       },
                     }}
                   ></Doughnut>
+                        <h6 style={{display: "flex", justifyContent:"center",   alignItems: "center", width: "100%"}}
+                className=" pt-2 pb-2 ml-2"
+              
+              >
+                Continents Grouped by Severity
+              </h6>
                 {/* </Col> */}
+              </Row>
+
+              <Row className="subtitle pb-4">
+                <Col className="px-2 mr-2">
+                  <h6 style={{ color: "slategrey" }}>Mortality&nbsp;</h6>
+                  <h3 className="">
+                    {(
+                      (deathsGlobal / casesGlobal) *
+                      100
+                    ).toFixed(2)}
+                    %
+                  </h3>
+                </Col>
+                <Col className="px-2 mr-2">
+                  <h6 style={{ color: "#ff9400" }}>Active&nbsp;</h6>
+                  <h3 className="">
+                    {(
+                      (activeGlobal / casesGlobal) *
+                      100
+                    ).toFixed(2)}
+                    %
+                  </h3>
+                </Col>
+
+                <Col className="px-2">
+                  <h6 className="" style={{ color: "teal" }}>
+                    Positive&nbsp;
+                  </h6>
+                  <h3>
+                    {numberWithCommas(
+                      (
+                        (casesGlobal / testsGlobal) *
+                        100
+                      ).toFixed(2) + "%"
+                    )}
+                  </h3>
+                </Col>
               </Row>
 
    {/* <BarGraph /> */}
@@ -546,119 +648,7 @@ const Menu = ({
               </div>
               </Row> */}
 
-                  <Row className="subtitle">
-                    <Col className="box py-4  mb-2">
-                      Active
-                      {((activeGlobal / casesGlobal) * 100).toFixed(2) <=
-                      2.5 ? (
-                        <Badge variant="success" text="dark" className="badge">
-                          LOW
-                        </Badge>
-                      ) : (activeMillion[index] / casesMillion[index]) * 100 >=
-                        4.5 ? (
-                        <Badge variant="danger" text="dark" className="badge">
-                          HIGH
-                        </Badge>
-                      ) : (
-                        " "
-                      )}
-                      <strong>
-                        {((activeGlobal / casesGlobal) * 100).toFixed(2)}%
-                      </strong>
-                    </Col>
-                    <Col className="box py-4">
-                      Today
-                      {(criticalMillion[index] / casesMillion[index]) * 100 <=
-                      0.005 ? (
-                        <Badge variant="success" text="dark" className="badge">
-                          LOW
-                        </Badge>
-                      ) : (criticalMillion[index] / casesMillion[index]) *
-                          100 >=
-                        0.015 ? (
-                        <Badge variant="danger" text="dark" className="badge">
-                          HIGH
-                        </Badge>
-                      ) : (
-                        " "
-                      )}
-                      <strong>
-                        +
-                        {numberWithCommas(
-                          (todayGlobalCases / 1000).toFixed(0) + "k"
-                        )}
-                      </strong>
-                    </Col>
-                  </Row>
-
-                  <Row className="subtitle mt-2">
-                    <Col className="box py-4 ">
-                      Positive
-                      {(criticalMillion[index] / casesMillion[index]) * 100 <=
-                      0.005 ? (
-                        <Badge variant="success" text="dark" className="badge">
-                          LOW
-                        </Badge>
-                      ) : (criticalMillion[index] / casesMillion[index]) *
-                          100 >=
-                        0.015 ? (
-                        <Badge variant="danger" text="dark" className="badge">
-                          HIGH
-                        </Badge>
-                      ) : (
-                        " "
-                      )}
-                      <strong>
-                        {numberWithCommas(
-                          ((casesGlobal / testsGlobal) * 100).toFixed(2) + "%"
-                        )}
-                      </strong>
-                      {/* <Doughnut
-                    width={170}
-                    options={{
-                      elements: {
-                        arc: {
-                          borderWidth: 0,
-                        },
-                      },
-                      legend: {
-                        display: false,
-                        position: "",
-                      },
-                    }}
-                    data={{
-                      labels: ["Tested", "Untested"],
-                      datasets: [
-                        {
-                          data: [
-                            testsG,
-                          casesGlobal,
-                          ],
-                          backgroundColor: colorCases,
-                        },
-                      ],
-                    }}
-                  ></Doughnut> */}
-                    </Col>
-                    <Col className="box py-4 mt-2">
-                      Tests
-                      {(tests[index] / population[index]) * 100 <= 100 ? (
-                        <Badge variant="danger" text="dark" className="badge">
-                          POOR
-                        </Badge>
-                      ) : (tests[index] / population[index]) * 100 >= 250 ? (
-                        <Badge variant="success" text="dark" className="badge">
-                          GOOD
-                        </Badge>
-                      ) : (
-                        " "
-                      )}
-                      <strong className="">
-                        {(testsG / populationGlobal).toFixed(2)}pp
-                        {/* <i className="fa fa-male"></i> */}
-                      </strong>
-                    </Col>
-                  </Row>
+          
                 </Col>
 
             </Col>
@@ -1120,8 +1110,8 @@ const Menu = ({
       >
         <div className="side">
           <Container>
-            <Row className="title my-1">
-              <Col xs="auto" className="pl-2">
+            <Row className="title my-1"  style={{ boxShadow: "2px 2px 2px 1px  rgb(0 0 0 / 10%)" }}>
+              <Col xs="auto" className="pl-3">
                 <Animated
                   animationIn="fadeInLeft"
                   animationOut="fadeOut"
