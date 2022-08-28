@@ -11,13 +11,7 @@ import CountUp from "react-countup";
 import BarGraph from "../misc/BarGraph";
 import LineGraph from "./LineGraph";
 
-const Search = ({
-  region,
-  state,
-  handleClose,
-}) => {
-
-
+const Search = ({ region, state, handleClose }) => {
   return (
     <div className={state ? "visible" : "hidden"}>
       <Animated
@@ -25,24 +19,23 @@ const Search = ({
         animationOut="fadeOut"
         isVisible={true}
       >
-        <div className="side" >
+        <div className="side">
           <Container>
-            <Row className="title my-1" >
-              <Col xs="auto" className="pl-2">
+            <Row className="title my-1">
+              <Col xs="auto" className="pl-3">
                 <Animated
                   animationIn="fadeInLeft"
                   animationOut="fadeOut"
                   isVisible={true}
-                  className=""
+                  className="pl-1 pb-2"
                 >
                   {" "}
-                  {region}&nbsp;
-           
+                  Search&nbsp;
                 </Animated>
               </Col>
 
-              <Col className="ml-2 pr-1 mt-1">
-                <div  style={{ display: "flex", justifyContent: "end"}}>
+              <Col className=" pr-2 ">
+                <div style={{ display: "flex", justifyContent: "flex-end" }}>
                   <Button
                     onClick={handleClose}
                     variant="outline-info"
@@ -56,29 +49,27 @@ const Search = ({
                 </div>
               </Col>
             </Row>
+            <Row className="map-overlay" style={{ height: "94vh", border: "" }}>
+              <Col style={{ overflowY: "scroll", height: "100%" }}>
+                <div id="geocoder" className="geocoder"></div>
 
-            {/* </div> */}
-            <div className="map-overlay">
-              <div className="title mt-3 mb-3 ml-3">Search</div>
-              <div id="geocoder" className="geocoder"></div>
+                <div className="title mt-4 mb-2 ">Filter</div>
+                <div id="menu" className=""></div>
 
-              <div className="title mt-4 mb-2 ml-3">Filter</div>
-              <div id="menu" className="pl-2"></div>
+                <div id="toggle" className=""></div>
 
-              <div id="toggle" className="pl-2"></div>
-              
-              <fieldset className="mb-2"  style={{  boxShadow: "2px 2px 2px 1px  rgb(0 0 0 / 10%)"}}>
-                <input
-                  id="feature-filter"
-                  type="text"
-                  placeholder="Filter Locations..."
-                  className="mb-2" 
-                />
-              </fieldset>
+                <fieldset className="mb-2">
+                  <input
+                    id="feature-filter"
+                    type="text"
+                    placeholder="Filter Locations..."
+                    className="mb-2"
+                  />
+                </fieldset>
 
-              <div id="feature-listing" className="listing"></div>
-              {/* <div id="listings" className="listings"></div> */}
-            </div>
+                <div id="feature-listing" className="listing"></div>
+              </Col>
+            </Row>
           </Container>
         </div>
       </Animated>
@@ -87,4 +78,3 @@ const Search = ({
 };
 
 export default Search;
-

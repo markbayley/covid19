@@ -605,8 +605,14 @@ const Menu = ({
                 </Col>
               </Row>
 
-              <Row>
+              <Row style={{ display: "flex", justifyContent: "center"}}>
                 {/* COLUMN TWO */}
+                <h6
+                  className="pt-1 pb-1"
+               
+                >
+                 Countries Per/1k 
+                </h6>
 
                 <Col
                   className="mt-2"

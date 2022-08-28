@@ -62,7 +62,7 @@ const DoughnutCases = ({
   return (
 <>
       <div
-        className=""
+        className="pb-5"
         style={{
           position: "absolute",
           display: "flex",
@@ -87,10 +87,7 @@ const DoughnutCases = ({
       {/* <h6 className="py-2 " style={{ color: "#ccc", fontSize: "14px" }}>
        {region} Analysis: {continentCountries.length}
       </h6> */}
-      <Row className="px-2 pt-2" >
-      <h6 className="pb-0">{region} </h6>  
-     
-                </Row>
+   
 
  
       <div style={{ zIndex: 1 }}>
@@ -181,7 +178,7 @@ const DoughnutCases = ({
   
      
       </div>
-      <Row className="px-2 pt-2" >
+      <Row className="px-2 pt-4" >
       <h6 className="pb-0">Countries Grouped by Severity</h6>  
      
                 </Row>

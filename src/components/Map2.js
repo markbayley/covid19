@@ -118,8 +118,7 @@ const Map2 = () => {
       // updateMap function - Updates data and marks cases on the map
 
       function updateMap() {
-        // Update data
-        console.log("Updating Map with realtime data");
+ 
 
         // Fetch data from API
         fetch("https://disease.sh/v3/covid-19/countries")
@@ -165,11 +164,11 @@ const Map2 = () => {
               const todayRecovered = (country.todayRecovered).toFixed(0);
               const critical = (country.critical).toFixed(0);
 
-              const active = (country.active / 1000).toFixed(2);
+              const active = country.activePerOneMillion > 0 ? (country.activePerOneMillion / 1000).toFixed(0) : (country.active / 3000).toFixed(0);
               const deaths = (country.deathsPerOneMillion / 1000).toFixed(2);
               const cases = (country.casesPerOneMillion / 1000).toFixed(2);
-              const tests = (country.tests / 1000).toFixed(0);
-              // const tests = (country.tests / 1000).toFixed(0);
+              // const tests = country.testsPerOneMillion > 0 ? (country.testsPerOneMillion / 1000).toFixed(0) : (country.tests / 100000).toFixed(0);
+              const tests = (country.tests / 100000).toFixed(0);
               const mortality = (deaths/cases * 100).toFixed(2);
               const activity = (active/cases * 100).toFixed(2);
               const positive = (cases/tests * 100).toFixed(2);
@@ -215,28 +214,57 @@ const Map2 = () => {
                 ? (el3.className = "tests4")
                 : (el3.className = "tests5");
 
-             
+            //  function Toggle(e) {
+            //    { el3.className ? new mapboxgl.Marker(el3)
+            //     .setLngLat([longitude, latitude])
+            //     .addTo(map)
+
+            //    :
+        
+
                 new mapboxgl.Marker(el3)
                 .setLngLat([longitude, latitude])
-                .addTo(map);
+                .addTo(map)
 
-           
 
                 new mapboxgl.Marker(el)
                 .setLngLat([longitude, latitude])
                 .addTo(map);
 
+            //    }
+            //   }
+
             
-                // new mapboxgl.Marker(elcases)
-                // .setLngLat([longitude, latitude])
-                // .addTo(map);
+          
              
-
-
-                // el.addEventListener("mouseenter", function () {
+                // elcases.addEventListener("mouseenter", function () {
                 //   // Change the cursor style as a UI indicator.
                 //   map.getCanvas().style.cursor = "pointer";
-                // })
+
+                //    "mouseenter" ? 
+                   
+                //    new mapboxgl.Marker(el3)
+                //     .setLngLat([longitude, latitude])
+                //     .addTo(map)
+
+                //   :
+
+         
+                //   mapboxgl.Marker(el3)
+                //   .setLngLat([longitude, latitude])
+                //   .remove()
+
+
+
+                // });
+
+
+                // elcases.addEventListener("mouseleave", function () {
+                //   map.getCanvas().style.cursor = "";
+                //   mapboxgl.Marker(el3).remove();
+                // });
+
+        
 
                 // el3.addEventListener("mouseenter", function () {
                 //   // Change the cursor style as a UI indicator.
@@ -247,15 +275,15 @@ const Map2 = () => {
                 // Change the cursor style as a UI indicator.
                 map.getCanvas().style.cursor = "pointer";
 
-            
+          
                 // <p class="deaths">Mortality: <b>${numberWithCommas(mortality)}%</b>&nbsp;</p>
             
                  // 
                 //  <button class="close"><h6>x</h6></button>
                 // <p>Population: <b>${numberWithCommas(population)}m </b>&nbsp;</p>
                 // <p>Recovered: <b>+${numberWithCommas(todayRecovered)}</b>&nbsp;</p>
-                const popup =  "mouseenter" === true ? "" : new mapboxgl.Popup({
-                  offset: 5,
+                const popup = "mouseenter" === true ? "" : new mapboxgl.Popup({
+                  // offset: 5,
                   closeButton: true,
                   closeOnClick: true,
                   closeOnMove: false,
@@ -293,7 +321,7 @@ const Map2 = () => {
                   .addTo(map);
             
 
-                el3.addEventListener("click", function () {
+                el3.addEventListener("mouseleave", function () {
                   map.getCanvas().style.cursor = "";
                   popup.remove();
                 });
@@ -376,6 +404,9 @@ const Map2 = () => {
         closeButton: false,
         className: "popup",
         // offset: [0, 30]
+        // className: "pop",
+      
+        offset: 12,
       });
 
       const filterEl = document.getElementById("feature-filter");
@@ -389,12 +420,12 @@ const Map2 = () => {
           for (const feature of features) {
             const label =
               feature.properties.province !== "null"
-                ? `${feature.properties.province}, ${feature.properties.country}. (hover to view more...)`
-                : `${feature.properties.country}. (hover to view more...)`;
+                ? `Hover over marker to view...  ${feature.properties.province}, ${feature.properties.country}  `
+                : `Hover over marker to view...  ${feature.properties.country}.`;
 
             // itemLink.href = feature.properties.wikipedia;
             // itemLink.target = '_blank';
-
+       
             /* Add the link to the individual listing created above. */
             const itemLink = listingEl.appendChild(document.createElement("a"));
             itemLink.href = "#";
@@ -402,8 +433,8 @@ const Map2 = () => {
             itemLink.id = `link-${feature.properties.id}`;
             itemLink.innerHTML =
               feature.properties.province !== "null"
-                ? `<b>${feature.properties.province}, ${feature.properties.country}.</b> View details...</b>`
-                : `<b>${feature.properties.country}.</b> View details...`;
+                ? `<b>${feature.properties.province}, ${feature.properties.country}.</b><em> View details...</em></b>`
+                : `<b>${feature.properties.country}.</b><em> View details...</em>`;
 
             // itemLink.textContent = label;
             /* Add dbetails to the individual listing. */
@@ -711,7 +742,7 @@ const Map2 = () => {
         
         //initialize choropleth colors
 
-
+     
 
 
 
@@ -723,20 +754,7 @@ const Map2 = () => {
           source: "points",
           filter: ["!=", "cluster", true],
           paint: {
-            // "circle-color": 
-            "circle-color": "black",
-            //  [
-            //   "case",
-            //   deaths1,
-            //   colors[0],
-            //   deaths2,
-            //   colors[1],
-            //   deaths3,
-            //   colors[2],
-            //   deaths4,
-            //   colors[3],
-            //   colors[4],
-            // ],
+            "circle-color": "grey",
             "circle-radius": [
               "interpolate",
               ["linear"],
@@ -753,7 +771,7 @@ const Map2 = () => {
         map.addLayer({
           id: "Cases",
           source: "points",
-          //   filter: ["!=", "cluster", true],
+            filter: ["!=", "cluster", true],
           type: "circle",
           paint: {
             "circle-color": [
@@ -769,6 +787,7 @@ const Map2 = () => {
               colors[4],
             ],
             "circle-opacity": 0.25,
+      
             
     
             "circle-radius": [
@@ -787,7 +806,7 @@ const Map2 = () => {
         map.addLayer({
           id: "Pop",
           source: "points",
-            filter: ["!=", "cluster", true],
+            // filter: ["!=", "cluster", true],
           type: "circle",
           paint: {
             "circle-color": "transparent",
@@ -805,7 +824,7 @@ const Map2 = () => {
         //   id: "clusters",
         //   type: "symbol",
         //   source: "points",
-        //   filter: ["!=", "cluster", true],
+        //   // filter: ["!=", "cluster", true],
         //   layout: {
         //     "text-field": [
         //       "number-format",
@@ -970,8 +989,14 @@ const Map2 = () => {
         // inspect a cluster on click
         map.on("click", "Cases", function (e) {
           const coordinates = e.features[0].geometry.coordinates.slice();
-          map.flyTo({ center: coordinates, zoom: 8 });
+          map.flyTo({ center: coordinates, zoom: 6 });
         });
+
+        map.on("click", "Pop", function (e) {
+          const coordinates = e.features[0].geometry.coordinates.slice();
+          map.flyTo({ center: coordinates, zoom: 6 });
+        });
+
 
 
 
@@ -1158,7 +1183,7 @@ const Map2 = () => {
           //   ? `<img src="${countryFlag}"></img>`
           //   : "";
 
-          const HTML = ` 
+          const HTML =  country ? ` 
         
           <p>Country: <b>${country}</b></p>
           ${provinceHTML}
@@ -1170,17 +1195,28 @@ const Map2 = () => {
           )}</b><span class="${classText2}"}>${statusDeath}</span></p>
           <p>Mortality Rate: <b>${mortalityRate}%</b></p>
          
-          `;
+          ` : 
 
-          popup
+          ` 
+          <p class=""><em>Click on the cluster to zoom in...</em></p>
+       
+         
+          `
+
+
+          
+          ;
+
+         popup
             .setLngLat(feature.geometry.coordinates)
             .setHTML(
               '<canvas className="info" id="foo' +
                 feature.properties.country +
-                '"></canvas>' +
-                HTML
-            )
+                '"></canvas>' + HTML 
+               
+         )
             .addTo(map);
+         
 
           var ctx = document.getElementById("foo" + country).getContext("2d");
 
@@ -1259,6 +1295,7 @@ const Map2 = () => {
           });
           i++;
         });
+      
 
         map.on("mouseleave", "Pop", () => {
           map.getCanvas().style.cursor = "";

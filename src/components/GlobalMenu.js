@@ -395,7 +395,7 @@ const Menu = ({
               <Row className=" my-2 py-3">
                
 
-
+    
 
                 {/* <Col
                   className="box ml-2 px-0"
@@ -437,7 +437,6 @@ const Menu = ({
                           stack: "0",
                         },
                       ],
-
                       labels: [
                         "Lowest",
                         "Lower",
@@ -461,10 +460,7 @@ const Menu = ({
                       },
                       title: {
                         display: false,
-                        text: '' 
-                        
-
-                        
+                        text: ''    
                       },
                       animation: {
                         animateScale: true,
@@ -496,7 +492,7 @@ const Menu = ({
                     }}
                   ></Doughnut>
                         <h6 style={{display: "flex", justifyContent:"center",   alignItems: "center", width: "100%"}}
-                className=" pt-2 pb-2 ml-2"
+                className=" pt-4 pb-2 ml-2"
               
               >
                 Continents Grouped by Severity
@@ -542,22 +538,22 @@ const Menu = ({
               </Row>
 
    {/* <BarGraph /> */}
-   <Row className="box px-3">
-                <div
-                  className="pt-1 pb-1"
-                  style={{ color: "grey", fontSize: "14px" }}
+   <Row className="px-3" style={{ display: "flex", justifyContent: "center"}}>
+                <h6
+                  className=" pb-1"
+               
                 >
-                  Cases Per Continent
-                </div>
+                 Continents Per/1k 
+                </h6>
 
-                <Bar
+                <HorizontalBar
                   // pointStyle="star"
                   height={190}
                   width={300}
                   options={{
                     legend: {
                       display: true,
-                      position: "bottom",
+                      position: "top",
                       labels: {
                         usePointStyle: true,
                       },
@@ -617,9 +613,21 @@ const Menu = ({
                     labels: continentNames,
                     datasets: [
                       {
+                        label: "Deaths",
+                        data: deathsPerContinent,
+                        backgroundColor: "grey",
+                        stack: "0",
+                      },
+                      {
+                        label: "Active",
+                        data: activePerContinent,
+                        backgroundColor: "orange",
+                        stack: "0",
+                      },
+                      {
                         label: "Cases",
                         data: casesPerContinent,
-                        backgroundColor: colorCases,
+                        backgroundColor: [colorsPie[4], colorsPie[0], colorsPie[3], colorsPie[1], colorsPie[2], colorsPie[0]],
                         stack: "0",
                       },
 
@@ -629,12 +637,7 @@ const Menu = ({
                         backgroundColor: "teal",
                         stack: "0",
                       },
-                      {
-                        label: "Active",
-                        data: activePerContinent,
-                        backgroundColor: "orange",
-                        stack: "0",
-                      },
+                   
                     ],
                   }}
                 />
@@ -718,7 +721,7 @@ const Menu = ({
                   Deaths Per Continent
                 </div>
 
-                <Bar
+                <HorizontalBar
                   // pointStyle="star"
                   height={150}
                   width={300}
