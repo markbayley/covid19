@@ -31,7 +31,7 @@ const ContinentButtons = ({
           boxShadow: "rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px",
         }}
       >
-            <div id="" className="legend" style={{ color: "grey", marginBottom: "0px" }}>
+            <div id="" className="legend mb-0 mt-5" style={{ color: "grey"}}>
           <h5
             href="https://inblockdesign.com"
             style={{ marginTop: "0px", marginBottom: "0px" }}
@@ -40,7 +40,7 @@ const ContinentButtons = ({
           </h5>
           <h5
             href="https://inblockdesign.com"
-            style={{ marginTop: "0px", marginBottom: "10px" }}
+            style={{ marginTop: "0px", marginBottom: "0px" }}
           >
             DATAMAP
           </h5>
@@ -56,19 +56,19 @@ const ContinentButtons = ({
         </Button> */}
         <Button
                style={{position: "absolute", top: 10, left: 15}}
-          className="pb-0"
+          className=" pb-0 "
           onClick={toggleSearch}
           id="global"
           variant="outline-info"
         >
-          <h5> <i className="fa fa-search "></i></h5>
+          <h5 className=""> <i className="fa fa-search"></i></h5>
         </Button>
         
     
  
         <Row>
-          <Col className="box px-0 mx-0 mb-4" >
-          <div id="" className="legend py-0" >
+          <Col className="box px-0 mx-0 mb-3" >
+          <div id="" className="legend pb-0" >
             <div className="mb-0 mt-0">Cases&nbsp;&nbsp;</div>
           <div >
           <span style={{ height: "10px", width: "9px", backgroundColor: "#6a5dfc", marginBottom: "2px"}} ></span>&nbsp;<span style={{ height: "12px", width: "12px", backgroundColor: "#ca32ad", marginBottom: "1px"}} ></span> <span style={{ height: "15px", width: "15px", backgroundColor: "#ff125e"}} ></span>
@@ -94,8 +94,6 @@ const ContinentButtons = ({
              
           </div>
           </Col>
-  
-
         </Row>
 
 
@@ -160,11 +158,11 @@ const ContinentButtons = ({
         </Button> 
      
 
-        <div id="" className="" style={{ color: "grey", lineHeight: 1 }}>
+        <div id="" className="pt-3" style={{ color: "grey", lineHeight: 1}}>
           {/* <p href="https://inblockdesign.com" >   <i className="fa fa-info-circle"></i> Inblock</p> */}
           <p
             href="https://inblockdesign.com"
-            style={{ marginTop: "25px", marginBottom: "0px" }}
+            style={{ marginTop: "0px", marginBottom: "0px" }}
             className="pb-0"
           >
             Inblock

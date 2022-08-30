@@ -6,12 +6,13 @@ import { numberWithCommas } from "../utils/numberWithCommas";
 import "./Map2.scss";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Badge from "react-bootstrap/Badge";
-import { Button } from 'react-bootstrap';
+import { Button } from "react-bootstrap";
 import { Chart } from "react-chartjs-2";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import { Animated } from "react-animated-css";
 
+import MapboxChoropleth from "mapbox-choropleth";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoidHJib3QiLCJhIjoiY2s3NmFscm1xMTV0MDNmcXFyOWp1dGhieSJ9.tR2IMHDqBPOf_AeGjHOKFA";
@@ -107,7 +108,7 @@ const Map2 = () => {
         style: "mapbox://styles/mapbox/dark-v10",
         center: [131, -28],
         zoom: 3,
-        minZoom: 2.5
+        minZoom: 2.5,
         // pitch: 10,
         // projection: 'globe',
       });
@@ -118,8 +119,6 @@ const Map2 = () => {
       // updateMap function - Updates data and marks cases on the map
 
       function updateMap() {
- 
-
         // Fetch data from API
         fetch("https://disease.sh/v3/covid-19/countries")
           .then((response) => response.json())
@@ -136,7 +135,6 @@ const Map2 = () => {
             //   },
             // });
 
-
             // map.addLayer({
             //   id: "ok",
             //   source: "ok",
@@ -149,7 +147,6 @@ const Map2 = () => {
             //   },
             // });
 
-
             rsp.forEach((country) => {
               // Latitude
               const latitude = country.countryInfo.lat;
@@ -159,169 +156,241 @@ const Map2 = () => {
               const flag = country.countryInfo.flag;
               const title = country.country;
 
-              const todayCases = (country.todayCases).toFixed(0);
-              const todayDeaths = (country.todayDeaths).toFixed(0);
-              const todayRecovered = (country.todayRecovered).toFixed(0);
-              const critical = (country.critical).toFixed(0);
+              const todayCases = country.todayCases.toFixed(0);
+              const todayDeaths = country.todayDeaths.toFixed(0);
+              const todayRecovered = country.todayRecovered.toFixed(0);
 
-              const active = country.activePerOneMillion > 0 ? (country.activePerOneMillion / 1000).toFixed(0) : (country.active / 3000).toFixed(0);
-              const deaths = (country.deathsPerOneMillion / 1000).toFixed(2);
-              const cases = (country.casesPerOneMillion / 1000).toFixed(2);
-              // const tests = country.testsPerOneMillion > 0 ? (country.testsPerOneMillion / 1000).toFixed(0) : (country.tests / 100000).toFixed(0);
-              const tests = (country.tests / 100000).toFixed(0);
-              const mortality = (deaths/cases * 100).toFixed(2);
-              const activity = (active/cases * 100).toFixed(2);
-              const positive = (cases/tests * 100).toFixed(2);
+              const critical = country.critical.toFixed(0);
 
-              const population = (country.population/1000000).toFixed(1);
-             
-              const el = document.createElement("div");
+              const tests = (country.tests / 1000000).toFixed(2);
+              const cases = country.cases.toFixed(0);
+              const active = country.active.toFixed(0);
+              const deaths = country.deaths.toFixed(0);
+
+              const active1k = (country.activePerOneMillion / 1000).toFixed(2);
+              const deaths1k = (country.deathsPerOneMillion / 1000).toFixed(2);
+              const cases1k = (country.casesPerOneMillion / 1000).toFixed(2);
+              const tests1k =
+                country.population > 0
+                  ? (country.testsPerOneMillion / 1000).toFixed(0)
+                  : (country.tests / 1000).toFixed(0);
+
+              const mortality = ((deaths / cases) * 100).toFixed(2);
+              const activity = ((active / cases) * 100).toFixed(2);
+              const positive = ((cases / tests) * 100).toFixed(2);
+
+              const population = (country.population / 1000000).toFixed(1);
+
+              const elactive = document.createElement("div");
               const elcases = document.createElement("div");
-              const el3 = document.createElement("div");
- 
+              const eltests = document.createElement("div");
+
+              const statusActive =
+                active1k < 5
+                  ? `Mild`
+                  : active1k < 10
+                  ? `Limited`
+                  : active1k < 15
+                  ? `Moderate`
+                  : active1k < 35
+                  ? `Serious`
+                  : `Extreme`;
+
+              const statusCases =
+                cases1k < 50
+                  ? `Mild`
+                  : cases1k < 100
+                  ? `Limited`
+                  : cases1k < 150
+                  ? `Moderate`
+                  : cases1k < 350
+                  ? `Serious`
+                  : `Extreme`;
+
+              const statusDeaths =
+                deaths1k < 0.5
+                  ? `Mild`
+                  : deaths1k < 1.0
+                  ? `Limited`
+                  : deaths1k < 1.5
+                  ? `Moderate`
+                  : deaths1k < 3.5
+                  ? `Serious`
+                  : `Extreme`;
               // el.innerHTML = `i`;
 
-        
-              active < .05
-              ? (el.className = "") 
-              : active < 50
-              ? (el.className = "active1")              
-              : active < 100
-              ? (el.className = "active2")
-              : active < 150
-              ? (el.className = "active3")
-              : active < 350
-              ? (el.className = "active4")
-              : (el.className = "active5");
+              // active < .05
+              // ? (elactive.className = "")
+              // :
 
-              cases <= 50 
-              ? (elcases.className = "cases1")              
-              : cases <= 100
-              ? (elcases.className = "cases2")
-              : cases <= 150
-              ? (elcases.className = "cases3")
-              : cases <= 350
-              ? (elcases.className = "cases4")
-              : (elcases.className = "cases5");
-         
-                tests < 500
-                ? (el3.className = "tests1")              
-                : tests < 1000
-                ? (el3.className = "tests2")
-                : tests < 1500
-                ? (el3.className = "tests3")
-                : tests < 3500
-                ? (el3.className = "tests4")
-                : (el3.className = "tests5");
+              // active1k < 50
+              // ? (elactive.className = "active1")
+              // : active1k < 100
+              // ? (elactive.className = "active2")
+              // : active1k < 150
+              // ? (elactive.className = "active3")
+              // : active1k < 350
+              // ? (elactive.className = "active4")
+              // : (elactive.className = "active5");
 
-            //  function Toggle(e) {
-            //    { el3.className ? new mapboxgl.Marker(el3)
-            //     .setLngLat([longitude, latitude])
-            //     .addTo(map)
+              // cases <= 50
+              // ? (elcases.className = "cases1")
+              // : cases <= 100
+              // ? (elcases.className = "cases2")
+              // : cases <= 150
+              // ? (elcases.className = "cases3")
+              // : cases <= 350
+              // ? (elcases.className = "cases4")
+              // : (elcases.className = "cases5");
 
-            //    :
-        
+              // tests1k < 50
+              // ? (eltests.className = "tests1")
+              // : tests1k < 1000
+              // ? (eltests.className = "tests2")
+              // : tests1k < 1500
+              // ? (eltests.className = "tests3")
+              // : tests1k < 20000
+              // ? (eltests.className = "tests4")
+              // : (eltests.className = "tests5");
+              eltests.style.height = `${tests1k * 0.01}px`;
+              eltests.style.maxHeight = "100px";
+              eltests.style.minHeight = "10px";
+              eltests.style.width = `${tests1k * 0.01}px`;
+              eltests.style.maxWidth = "100px";
+              eltests.style.minWidth = "10px";
+              eltests.style.backgroundColor = "turquoise";
+              eltests.style.borderRadius = "50%";
+              eltests.style.opacity = 0.25;
 
-                new mapboxgl.Marker(el3)
-                .setLngLat([longitude, latitude])
-                .addTo(map)
+              elactive.style.height = `${active1k * 0.1}px`;
+              elactive.style.minHeight = "3px";
+              elactive.style.width = `${active1k * 0.1}px`;
+              elactive.style.minWidth = "3px";
+              elactive.style.backgroundColor = "rgb(200,120,0)";
+              elactive.style.borderRadius = "50%";
+              elactive.style.opacity = 1;
 
+              elcases.style.height = "100px";
+              elcases.style.width = "100px";
+              elcases.style.background = "transparent";
+              elcases.style.borderRadius = "50%";
+              elcases.style.opacity = 0.5;
+              elcases.style.cursor = "pointer";
 
-                new mapboxgl.Marker(el)
+              //  function Toggle(e) {
+              //    { el3.className ? new mapboxgl.Marker(el3)
+              //     .setLngLat([longitude, latitude])
+              //     .addTo(map)
+
+              //    :
+
+              new mapboxgl.Marker(eltests)
                 .setLngLat([longitude, latitude])
                 .addTo(map);
 
-            //    }
-            //   }
+              new mapboxgl.Marker(elactive)
+                .setLngLat([longitude, latitude])
+                .addTo(map);
 
-            
-          
-             
-                // elcases.addEventListener("mouseenter", function () {
-                //   // Change the cursor style as a UI indicator.
-                //   map.getCanvas().style.cursor = "pointer";
+              //    }
+              //   }
 
-                //    "mouseenter" ? 
-                   
-                //    new mapboxgl.Marker(el3)
-                //     .setLngLat([longitude, latitude])
-                //     .addTo(map)
+              // elcases.addEventListener("mouseenter", function () {
+              //   // Change the cursor style as a UI indicator.
+              //   map.getCanvas().style.cursor = "pointer";
 
-                //   :
+              //    "mouseenter" ?
 
-         
-                //   mapboxgl.Marker(el3)
-                //   .setLngLat([longitude, latitude])
-                //   .remove()
+              new mapboxgl.Marker(elcases)
+                .setLngLat([longitude, latitude])
+                .addTo(map);
 
+              //   :
 
+              //   mapboxgl.Marker(el3)
+              //   .setLngLat([longitude, latitude])
+              //   .remove()
 
-                // });
+              // });
 
+              // elcases.addEventListener("mouseleave", function () {
+              //   map.getCanvas().style.cursor = "";
+              //   mapboxgl.Marker(el3).remove();
+              // });
 
-                // elcases.addEventListener("mouseleave", function () {
-                //   map.getCanvas().style.cursor = "";
-                //   mapboxgl.Marker(el3).remove();
-                // });
+              // el.addEventListener("mouseenter", function () {
+              //   // Change the cursor style as a UI indicator.
+              //   map.getCanvas().style.cursor = "pointer";
+              // })
 
-        
-
-                // el3.addEventListener("mouseenter", function () {
-                //   // Change the cursor style as a UI indicator.
-                //   map.getCanvas().style.cursor = "pointer";
-                // })
-
-              el3.addEventListener("mouseenter", function () {
+              elcases.addEventListener("mouseenter", function () {
                 // Change the cursor style as a UI indicator.
-                map.getCanvas().style.cursor = "pointer";
 
-          
                 // <p class="deaths">Mortality: <b>${numberWithCommas(mortality)}%</b>&nbsp;</p>
-            
-                 // 
+
+                //
                 //  <button class="close"><h6>x</h6></button>
                 // <p>Population: <b>${numberWithCommas(population)}m </b>&nbsp;</p>
                 // <p>Recovered: <b>+${numberWithCommas(todayRecovered)}</b>&nbsp;</p>
-                const popup = "mouseenter" === true ? "" : new mapboxgl.Popup({
-                  // offset: 5,
-                  closeButton: true,
-                  closeOnClick: true,
-                  closeOnMove: false,
-                  className: "popup2 animated fadeInUp",
-                })
-             
-                  popup.setLngLat([longitude, latitude])
+                // <p class="deaths">Mortality: <b>${numberWithCommas(mortality)}%</b>&nbsp;&nbsp;&nbsp;</p>
+                // <p>Critical: <b>${numberWithCommas(critical)} </b>&nbsp;&nbsp;&nbsp;</p>
+
+                const popup =
+                  "mouseenter" === true
+                    ? " "
+                    : new mapboxgl.Popup({
+                        // offset: 5,
+
+                        closeButton: true,
+                        closeOnClick: true,
+                        closeOnMove: false,
+                        className: "popup2 animated fadeInUp",
+                      });
+
+                popup
+                  .setLngLat([longitude, latitude])
                   .setHTML(
                     `<div class="right">
                   
                     <p><img src=${flag} alt="flag" /></p>
                     <p><b>${title}</b>&nbsp;&nbsp;</p>
-                  
-                
-                    <p class="deaths">Deaths: <b>+${numberWithCommas(todayDeaths)}</b>&nbsp;</p>
-                    <p class="deaths">Deaths/1k: <b>${numberWithCommas(deaths)}</b>&nbsp</p>
-                    <p class="deaths">Mortality: <b>${numberWithCommas(mortality)}%</b>&nbsp;&nbsp;&nbsp;</p>
+                     
+                    <p class="deaths">Deaths Today:<b>+${numberWithCommas(
+                      todayDeaths
+                    )}</b>&nbsp;</p>
+                    <p class="deaths">Deaths/1k:<b>${numberWithCommas(
+                      deaths1k
+                    )}</b>&nbsp;</p>
+                    <p class="deaths">(${statusDeaths})&nbsp;&nbsp;&nbsp;</p>
 
-                    <p class="active">Active: <b>${numberWithCommas(activity)}%</b>&nbsp;</p>
-                    <p class="active">Active/1k: <b>${numberWithCommas(active)}</b>&nbsp;</p>
-                    <p>Critical: <b>${numberWithCommas(critical)} </b>&nbsp;&nbsp;&nbsp;</p>
+                    <p class="active">Active:<b>${numberWithCommas(
+                      active
+                    )}</b>&nbsp;</p>
+                    <p class="active">Active/1k:<b>${numberWithCommas(
+                      active1k
+                    )}</b>&nbsp;</p>
+                    <p class="active">(${statusActive})&nbsp;&nbsp;&nbsp;</p>
 
-                    <p class="cases">Cases: <b>+${numberWithCommas(todayCases)}</b>&nbsp;</p>
-                    <p class="cases">Cases/1k: <b>${numberWithCommas(cases)}</b>&nbsp;&nbsp;&nbsp;</p>
+                    <p class="cases">Cases Today:<b>+${numberWithCommas(
+                      todayCases
+                    )}</b>&nbsp;</p>
+                    <p class="cases">Cases/1k:<b>${numberWithCommas(
+                      cases1k
+                    )}</b>&nbsp;</p>
+                    <p class="cases">(${statusCases})</p>&nbsp;&nbsp;&nbsp;
               
-                  
-                    <p class="tests">Tests/1k: <b >${numberWithCommas(tests)}</b>&nbsp;</p>
-                    <p class="tests">Positive: <b>${numberWithCommas(positive)}%</b></p>
+                    <p class="tests">Tests: <b>${numberWithCommas(
+                      tests
+                    )}m</b>&nbsp;</p>
+                    <p class="tests">Tests/1k:<b >${numberWithCommas(
+                      tests1k
+                    )}</b>&nbsp;</p>
 
-                  
-                
-             
                     </div>`
                   )
                   .addTo(map);
-            
 
-                el3.addEventListener("mouseleave", function () {
+                elcases.addEventListener("mouseleave", function () {
                   map.getCanvas().style.cursor = "";
                   popup.remove();
                 });
@@ -329,8 +398,6 @@ const Map2 = () => {
             });
           });
       }
-
-
 
       // // Updates data after 20000ms
       // let interval = 20000;
@@ -405,7 +472,7 @@ const Map2 = () => {
         className: "popup",
         // offset: [0, 30]
         // className: "pop",
-      
+
         offset: 12,
       });
 
@@ -415,7 +482,7 @@ const Map2 = () => {
       function renderListings(features) {
         const empty = document.createElement("p");
         // Clear any existing listings
-        listingEl.innerHTML = `<div style={{color: "grey"}}>SELECT A LOCATION</div>`;
+        listingEl.innerHTML = `<div class="deaths">SELECT A LOCATION</div>`;
         if (features.length) {
           for (const feature of features) {
             const label =
@@ -425,7 +492,7 @@ const Map2 = () => {
 
             // itemLink.href = feature.properties.wikipedia;
             // itemLink.target = '_blank';
-       
+
             /* Add the link to the individual listing created above. */
             const itemLink = listingEl.appendChild(document.createElement("a"));
             itemLink.href = "#";
@@ -706,21 +773,20 @@ const Map2 = () => {
             //     colors[3],
             //     colors[4],
             //   ],
-            "circle-opacity": 0.2,
-         
+            "circle-opacity": 0.5,
+
             // 'circle-radius': 18,
             "circle-radius": [
               "interpolate",
               ["linear"],
               ["get", "mort"],
               0.0001,
-              10,
+              5,
               0.2,
               50,
             ],
           },
         });
-
 
         // map.addLayer({
         //   id: "Cases",
@@ -730,23 +796,17 @@ const Map2 = () => {
         //   paint: {
         //     'heatmap-intensity': .7,
         //     'heatmap-weight': 3,
-        //     'heatmap-radius': [ 'interpolate', [ 'linear' ], [ 'get', 'cases' ],    
+        //     'heatmap-radius': [ 'interpolate', [ 'linear' ], [ 'get', 'cases' ],
         //     1,
         //     10,
         //     1000000,
         //     200, ],
         //     'heatmap-opacity': 0.2,
         //   },
-       
-        // });   
-        
+
+        // });
+
         //initialize choropleth colors
-
-     
-
-
-
-  
 
         map.addLayer({
           id: "Deaths",
@@ -767,11 +827,10 @@ const Map2 = () => {
           },
         });
 
-
         map.addLayer({
           id: "Cases",
           source: "points",
-            filter: ["!=", "cluster", true],
+          filter: ["!=", "cluster", true],
           type: "circle",
           paint: {
             "circle-color": [
@@ -786,10 +845,8 @@ const Map2 = () => {
               colors[3],
               colors[4],
             ],
-            "circle-opacity": 0.25,
-      
-            
-    
+            "circle-opacity": 0.5,
+
             "circle-radius": [
               "interpolate",
               ["linear"],
@@ -802,21 +859,16 @@ const Map2 = () => {
           },
         });
 
-
         map.addLayer({
           id: "Pop",
           source: "points",
-            // filter: ["!=", "cluster", true],
+          // filter: ["!=", "cluster", true],
           type: "circle",
           paint: {
             "circle-color": "transparent",
-            "circle-radius": 30
-            
+            "circle-radius": 30,
           },
         });
-
-     
-
 
         //START DOUGHNUT
 
@@ -996,9 +1048,6 @@ const Map2 = () => {
           const coordinates = e.features[0].geometry.coordinates.slice();
           map.flyTo({ center: coordinates, zoom: 6 });
         });
-
-
-
 
         //TOGGLE
         // After the last frame rendered before the map enters an "idle" state.
@@ -1183,7 +1232,8 @@ const Map2 = () => {
           //   ? `<img src="${countryFlag}"></img>`
           //   : "";
 
-          const HTML =  country ? ` 
+          const HTML = country
+            ? ` 
         
           <p>Country: <b>${country}</b></p>
           ${provinceHTML}
@@ -1195,28 +1245,22 @@ const Map2 = () => {
           )}</b><span class="${classText2}"}>${statusDeath}</span></p>
           <p>Mortality Rate: <b>${mortalityRate}%</b></p>
          
-          ` : 
-
-          ` 
+          `
+            : ` 
           <p class=""><em>Click on the cluster to zoom in...</em></p>
        
          
-          `
+          `;
 
-
-          
-          ;
-
-         popup
+          popup
             .setLngLat(feature.geometry.coordinates)
             .setHTML(
               '<canvas className="info" id="foo' +
                 feature.properties.country +
-                '"></canvas>' + HTML 
-               
-         )
+                '"></canvas>' +
+                HTML
+            )
             .addTo(map);
-         
 
           var ctx = document.getElementById("foo" + country).getContext("2d");
 
@@ -1295,7 +1339,6 @@ const Map2 = () => {
           });
           i++;
         });
-      
 
         map.on("mouseleave", "Pop", () => {
           map.getCanvas().style.cursor = "";
@@ -1354,9 +1397,7 @@ const Map2 = () => {
         
       </div> */}
 
-
       <div id="map" className="mapBox map" ref={mapboxElRef} />
-
     </div>
   );
 };

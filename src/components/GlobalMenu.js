@@ -266,7 +266,7 @@ const Menu = ({
       title: "",
       content: (
         <>
-           <Row style={{ height: "95vh", border: "" }} className="pl-2 pr-2">
+           <Row style={{ height: "95vh", border: "" }} className="pl-2">
             {/* COLUMN ONE */}
 
             <Col

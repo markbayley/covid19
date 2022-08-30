@@ -17,6 +17,7 @@
     "chart.js": "^2.9.4",
     "chartjs-plugin-datalabels": "^2.1.0",
     "country-code-lookup": "^0.0.20",
+    "mapbox-choropleth": "^0.16.0",
     "mapbox-gl": "^1.13.2",
     "numeral": "^2.0.6",
     "react": "^16.13.1",
